@@ -321,6 +321,10 @@
         _compassButton.frame = CGRectMake(0, 0, compassImage.size.width, compassImage.size.height);
         [_compassButton setImage:compassImage forState:UIControlStateNormal];
         _compassButton.alpha = 0;
+        
+        // LeadNav customization to hide the compass button
+        _compassButton.hidden = YES;
+        
         [_compassButton addTarget:self action:@selector(tappedHeadingCompass:) forControlEvents:UIControlEventTouchUpInside];
         UIView *container = [[UIView alloc] initWithFrame:CGRectMake(self.bounds.size.width - compassImage.size.width - 5, 5, compassImage.size.width, compassImage.size.height)];
         container.translatesAutoresizingMaskIntoConstraints = NO;
@@ -3592,17 +3596,27 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading
 {
-    if ( ! _showsUserLocation || _mapScrollView.isDragging || newHeading.headingAccuracy < 0)
+    // LeadNav customization to use a heading based on the course at higher speeds
+    CLLocationDirection heading = newHeading.trueHeading;
+    
+    // If the speed is above 5 mph, use the course
+    if (manager.location.speed > 2.2352) {
+        heading = manager.location.course;
+    }
+    
+    double accuracy = (heading == newHeading.trueHeading) ? newHeading.headingAccuracy : manager.location.horizontalAccuracy;
+    
+    if ( ! _showsUserLocation || _mapScrollView.isDragging || /*newHeading.headingAccuracy < 0*/ accuracy < 0)
         return;
 
-    _userHeadingTrackingView.image = [self headingAngleImageForAccuracy:newHeading.headingAccuracy];
+    _userHeadingTrackingView.image = [self headingAngleImageForAccuracy:/*newHeading.headingAccuracy*/ accuracy];
 
     self.userLocation.heading = newHeading;
 
     if (_delegateHasDidUpdateUserLocation)
         [_delegate mapView:self didUpdateUserLocation:self.userLocation];
 
-    if (newHeading.trueHeading != 0 && self.userTrackingMode == RMUserTrackingModeFollowWithHeading)
+    if (/*newHeading.trueHeading*/ heading != 0 && self.userTrackingMode == RMUserTrackingModeFollowWithHeading)
     {
         if (_userHeadingTrackingView.alpha < 1.0)
             [UIView animateWithDuration:0.5 animations:^(void) { _userHeadingTrackingView.alpha = 1.0; }];
@@ -3616,7 +3630,7 @@
                             options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationCurveEaseInOut
                          animations:^(void)
                          {
-                             CGFloat angle = (M_PI / -180) * newHeading.trueHeading;
+                             CGFloat angle = (M_PI / -180) * /*newHeading.trueHeading*/ heading;
 
                              _mapTransform = CGAffineTransformMakeRotation(angle);
                              _annotationTransform = CATransform3DMakeAffineTransform(CGAffineTransformMakeRotation(-angle));
