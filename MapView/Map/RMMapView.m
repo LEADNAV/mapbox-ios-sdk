@@ -540,7 +540,8 @@
         }
     }
 
-    if (_logoBug)
+    // LeadNav customization to fix an auto layout constraint error
+    if (_logoBug && self.showLogoBug)
     {
         if ( ! [[viewController.view valueForKeyPath:@"constraints.firstItem"]  containsObject:_logoBug] &&
              ! [[viewController.view valueForKeyPath:@"constraints.secondItem"] containsObject:_logoBug])
