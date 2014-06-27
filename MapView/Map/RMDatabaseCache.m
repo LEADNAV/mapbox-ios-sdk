@@ -388,6 +388,16 @@
     }];
 }
 
+// LeadNav customization to clear all tile images excluding areas
+- (void)removeAllCachedImagesForCacheKey:(NSString *)cacheKey excludingAreas:(NSDictionary *)areas
+{
+    RMLog(@"removing tiles for key '%@' from the db cache, excluding areas", cacheKey);
+    
+    // TODO: Find the tile hash for all tiles included in the areas
+    
+    // DELETE FROM ZCACHE WHERE cache_key = ? AND tile_hash NOT IN (?)
+}
+
 - (void)touchTile:(RMTile)tile withKey:(NSString *)cacheKey
 {
     [_writeQueue addOperationWithBlock:^{

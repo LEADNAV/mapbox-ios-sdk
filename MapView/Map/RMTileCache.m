@@ -247,6 +247,20 @@
     });
 }
 
+// LeadNav customization to clear all tile images excluding areas
+- (void)removeAllCachedImagesForCacheKey:(NSString *)cacheKey excludingAreas:(NSDictionary *)areas
+{
+    [_memoryCache removeAllCachedImagesForCacheKey:cacheKey];
+    
+    dispatch_sync(_tileCacheQueue, ^{
+        
+        for (id<RMTileCache> cache in _tileCaches)
+        {
+            [cache removeAllCachedImagesForCacheKey:cacheKey excludingAreas:areas];
+        }
+    });
+}
+
 - (BOOL)isBackgroundCaching
 {
     return (_activeTileSource || _backgroundFetchQueue);
