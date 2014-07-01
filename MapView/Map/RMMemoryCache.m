@@ -194,10 +194,4 @@
     });
 }
 
-// LeadNav customization to clear all tile images excluding areas (included here because it's an optional method in the protocol)
-- (void)removeAllCachedImagesForCacheKey:(NSString *)cacheKey excludingAreas:(NSDictionary *)areas
-{
-    [self removeAllCachedImagesForCacheKey:cacheKey];
-}
-
 @end

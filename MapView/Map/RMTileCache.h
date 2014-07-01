@@ -67,8 +67,16 @@ typedef enum : short {
 /** Removes all tile images from a cache. */
 - (void)removeAllCachedImages;
 - (void)removeAllCachedImagesForCacheKey:(NSString *)cacheKey;
-// LeadNav customization to clear all tile images excluding areas
-- (void)removeAllCachedImagesForCacheKey:(NSString *)cacheKey excludingAreas:(NSDictionary *)areas;
+
+// LeadNav customization to allow user-saved areas to be cached indefinitely
+- (void)addArea:(NSDictionary *)area forCacheKey:(NSString *)cacheKey;
+- (void)removeArea:(NSDictionary *)area forCacheKey:(NSString *)cacheKey;
+
+// LeadNav customization to count the number of tiles in an area
+- (NSUInteger)countTilesInArea:(NSDictionary *)area;
+
+// LeadNav customization to estimate the cache size for an area
+- (unsigned long long)estimateCacheSizeForArea:(NSDictionary *)area;
 
 @end
 

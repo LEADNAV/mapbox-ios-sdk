@@ -98,6 +98,8 @@
         [db executeUpdate:@"CREATE TABLE IF NOT EXISTS ZCACHE (tile_hash INTEGER NOT NULL, cache_key VARCHAR(25) NOT NULL, last_used DOUBLE NOT NULL, data BLOB NOT NULL)"];
         [db executeUpdate:@"CREATE UNIQUE INDEX IF NOT EXISTS main_index ON ZCACHE(tile_hash, cache_key)"];
         [db executeUpdate:@"CREATE INDEX IF NOT EXISTS last_used_index ON ZCACHE(last_used)"];
+        // LeadNav customization to prevent user-saved areas from being purged from the cache
+        [db executeUpdate:@"ALTER TABLE ZCACHE ADD COLUMN leadnav_area_count INTEGER NOT NULL DEFAULT 0"];
     }];
 }
 
@@ -225,7 +227,9 @@
 
             [_queue inDatabase:^(FMDatabase *db)
              {
-                 BOOL result = [db executeUpdate:@"DELETE FROM ZCACHE WHERE last_used < ?", [NSDate dateWithTimeIntervalSinceNow:-_expiryPeriod]];
+                 // LeadNav customization to prevent user-saved areas from being purged from the cache
+                 //BOOL result = [db executeUpdate:@"DELETE FROM ZCACHE WHERE last_used < ?", [NSDate dateWithTimeIntervalSinceNow:-_expiryPeriod]];
+                 BOOL result = [db executeUpdate:@"DELETE FROM ZCACHE WHERE last_used < ? AND leadnav_area_count = 0", [NSDate dateWithTimeIntervalSinceNow:-_expiryPeriod]];
 
                  if (result == NO)
                      RMLog(@"Error expiring cache");
@@ -331,7 +335,9 @@
 
     [_queue inDatabase:^(FMDatabase *db)
      {
-         BOOL result = [db executeUpdate:@"DELETE FROM ZCACHE WHERE tile_hash IN (SELECT tile_hash FROM ZCACHE ORDER BY last_used LIMIT ?)", [NSNumber numberWithUnsignedLongLong:count]];
+         // LeadNav customization to prevent user-saved areas from being purged from the cache
+         //BOOL result = [db executeUpdate:@"DELETE FROM ZCACHE WHERE tile_hash IN (SELECT tile_hash FROM ZCACHE ORDER BY last_used LIMIT ?)", [NSNumber numberWithUnsignedLongLong:count]];
+         BOOL result = [db executeUpdate:@"DELETE FROM ZCACHE WHERE tile_hash IN (SELECT tile_hash FROM ZCACHE ORDER BY last_used LIMIT ?) AND leadnav_area_count = 0", [NSNumber numberWithUnsignedLongLong:count]];
 
          if (result == NO)
              RMLog(@"Error purging cache");
@@ -388,14 +394,130 @@
     }];
 }
 
-// LeadNav customization to clear all tile images excluding areas
-- (void)removeAllCachedImagesForCacheKey:(NSString *)cacheKey excludingAreas:(NSDictionary *)areas
+// LeadNav customization to allow user-saved areas to be cached indefinitely
+- (void)addArea:(NSDictionary *)area forCacheKey:(NSString *)cacheKey
 {
-    RMLog(@"removing tiles for key '%@' from the db cache, excluding areas", cacheKey);
+    RMLog(@"adding area for key '%@'", cacheKey);
     
-    // TODO: Find the tile hash for all tiles included in the areas
+    NSArray *tileHashes = [self tileHashesForArea:area];
     
-    // DELETE FROM ZCACHE WHERE cache_key = ? AND tile_hash NOT IN (?)
+    if (tileHashes.count == 0) {
+        return;
+    }
+    
+    NSMutableArray *updates = [NSMutableArray new];
+    
+    for (int i = 0; i < tileHashes.count; i += 100) {
+        NSRange range = NSMakeRange(i, (i + 100 > tileHashes.count) ? tileHashes.count - i : 100);
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
+        NSString *tileHashList = [[tileHashes objectsAtIndexes:indexSet] componentsJoinedByString:@", "];
+        NSString *update = [NSString stringWithFormat:@"UPDATE ZCACHE SET leadnav_area_count = leadnav_area_count + 1 WHERE cache_key = '%@' AND tile_hash IN (%@)", cacheKey, tileHashList];
+        
+        [updates addObject:update];
+    }
+    
+    [_writeQueue addOperationWithBlock:^{
+        [_writeQueueLock lock];
+        
+        [_queue inDatabase:^(FMDatabase *db)
+         {
+             [db beginTransaction];
+             
+             for (NSString *update in updates) {
+                 //RMLog(@"%@", update);
+                 
+                 [db executeUpdate:update];
+             }
+             
+             [db commit];
+         }];
+        
+        [_writeQueueLock unlock];
+    }];
+}
+
+// LeadNav customization to allow user-saved areas to be cached indefinitely
+- (void)removeArea:(NSDictionary *)area forCacheKey:(NSString *)cacheKey
+{
+    RMLog(@"removing area for key '%@'", cacheKey);
+    
+    NSArray *tileHashes = [self tileHashesForArea:area];
+    
+    if (tileHashes.count == 0) {
+        return;
+    }
+    
+    NSMutableArray *updates = [NSMutableArray new];
+    
+    for (int i = 0; i < tileHashes.count; i += 100) {
+        NSRange range = NSMakeRange(i, (i + 100 > tileHashes.count) ? tileHashes.count - i : 100);
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
+        NSString *tileHashList = [[tileHashes objectsAtIndexes:indexSet] componentsJoinedByString:@", "];
+        NSString *update = [NSString stringWithFormat:@"UPDATE ZCACHE SET leadnav_area_count = CASE WHEN leadnav_area_count = 0 THEN 0 ELSE leadnav_area_count - 1 END WHERE cache_key = '%@' AND tile_hash IN (%@)", cacheKey, tileHashList];
+        
+        [updates addObject:update];
+    }
+    
+    [_writeQueue addOperationWithBlock:^{
+        [_writeQueueLock lock];
+        
+        [_queue inDatabase:^(FMDatabase *db)
+         {
+             [db beginTransaction];
+             
+             for (NSString *update in updates) {
+                 //RMLog(@"%@", update);
+                 
+                 [db executeUpdate:update];
+             }
+             
+             [db commit];
+         }];
+        
+        [_writeQueueLock unlock];
+    }];
+}
+
+// LeadNav customization to calculate all the tile hashes for an area
+- (NSArray *)tileHashesForArea:(NSDictionary *)area
+{
+    NSMutableArray *tileHashes = [NSMutableArray new];
+    CLLocation *southWest = [area objectForKey:@"southWest"];
+    CLLocation *northEast = [area objectForKey:@"northEast"];
+    int minCacheZoom = [[area objectForKey:@"minZoom"] intValue];
+    int maxCacheZoom = [[area objectForKey:@"maxZoom"] intValue];
+    float minCacheLat  = southWest.coordinate.latitude;
+    float maxCacheLat  = northEast.coordinate.latitude;
+    float minCacheLon  = southWest.coordinate.longitude;
+    float maxCacheLon  = northEast.coordinate.longitude;
+    
+    if (minCacheLat > maxCacheLat || minCacheLon > maxCacheLon || minCacheZoom > maxCacheZoom) {
+        return [tileHashes copy];
+    }
+    
+    int n, xMin, yMax, xMax, yMin;
+    
+    for (int zoom = minCacheZoom; zoom <= maxCacheZoom; zoom++)
+    {
+        n = pow(2.0, zoom);
+        xMin = floor(((minCacheLon + 180.0) / 360.0) * n);
+        yMax = floor((1.0 - (logf(tanf(minCacheLat * M_PI / 180.0) + 1.0 / cosf(minCacheLat * M_PI / 180.0)) / M_PI)) / 2.0 * n);
+        xMax = floor(((maxCacheLon + 180.0) / 360.0) * n);
+        yMin = floor((1.0 - (logf(tanf(maxCacheLat * M_PI / 180.0) + 1.0 / cosf(maxCacheLat * M_PI / 180.0)) / M_PI)) / 2.0 * n);
+        
+        for (int x = xMin; x <= xMax; x++)
+        {
+            for (int y = yMin; y <= yMax; y++)
+            {
+                RMTile tile = RMTileMake(x, y, zoom);
+                unsigned long tileHash = RMTileHash(tile);
+                
+                [tileHashes addObject:[NSNumber numberWithUnsignedLong:tileHash]];
+            }
+        }
+    };
+    
+    return [tileHashes copy];
 }
 
 - (void)touchTile:(RMTile)tile withKey:(NSString *)cacheKey

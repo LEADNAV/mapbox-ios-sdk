@@ -1273,12 +1273,6 @@
     [self.tileCache removeAllCachedImages];
 }
 
-// LeadNav customization to clear all tile images excluding areas
-- (void)removeAllCachedImagesForCacheKey:(NSString *)cacheKey excludingAreas:(NSDictionary *)areas
-{
-    [self.tileCache removeAllCachedImagesForCacheKey:cacheKey excludingAreas:areas];
-}
-
 #pragma mark -
 #pragma mark MapView (ScrollView)
 

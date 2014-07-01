@@ -247,18 +247,70 @@
     });
 }
 
-// LeadNav customization to clear all tile images excluding areas
-- (void)removeAllCachedImagesForCacheKey:(NSString *)cacheKey excludingAreas:(NSDictionary *)areas
+// LeadNav customization to allow user-saved areas to be cached indefinitely
+- (void)addArea:(NSDictionary *)area forCacheKey:(NSString *)cacheKey
 {
-    [_memoryCache removeAllCachedImagesForCacheKey:cacheKey];
-    
     dispatch_sync(_tileCacheQueue, ^{
         
         for (id<RMTileCache> cache in _tileCaches)
         {
-            [cache removeAllCachedImagesForCacheKey:cacheKey excludingAreas:areas];
+            [cache addArea:area forCacheKey:cacheKey];
         }
+        
     });
+}
+
+// LeadNav customization to allow user-saved areas to be cached indefinitely
+- (void)removeArea:(NSDictionary *)area forCacheKey:(NSString *)cacheKey
+{
+    dispatch_sync(_tileCacheQueue, ^{
+        
+        for (id<RMTileCache> cache in _tileCaches)
+        {
+            [cache removeArea:area forCacheKey:cacheKey];
+        }
+        
+    });
+}
+
+// LeadNav customization to count the number of tiles in an area
+- (NSUInteger)countTilesInArea:(NSDictionary *)area
+{
+    CLLocation *southWest = [area objectForKey:@"southWest"];
+    CLLocation *northEast = [area objectForKey:@"northEast"];
+    int minCacheZoom = [[area objectForKey:@"minZoom"] intValue];
+    int maxCacheZoom = [[area objectForKey:@"maxZoom"] intValue];
+    float minCacheLat  = southWest.coordinate.latitude;
+    float maxCacheLat  = northEast.coordinate.latitude;
+    float minCacheLon  = southWest.coordinate.longitude;
+    float maxCacheLon  = northEast.coordinate.longitude;
+    
+    if (minCacheLat > maxCacheLat || minCacheLon > maxCacheLon || minCacheZoom > maxCacheZoom) {
+        return 0;
+    }
+    
+    int n, xMin, yMax, xMax, yMin;
+    
+    int totalTiles = 0;
+     
+    for (int zoom = minCacheZoom; zoom <= maxCacheZoom; zoom++)
+    {
+        n = pow(2.0, zoom);
+        xMin = floor(((minCacheLon + 180.0) / 360.0) * n);
+        yMax = floor((1.0 - (logf(tanf(minCacheLat * M_PI / 180.0) + 1.0 / cosf(minCacheLat * M_PI / 180.0)) / M_PI)) / 2.0 * n);
+        xMax = floor(((maxCacheLon + 180.0) / 360.0) * n);
+        yMin = floor((1.0 - (logf(tanf(maxCacheLat * M_PI / 180.0) + 1.0 / cosf(maxCacheLat * M_PI / 180.0)) / M_PI)) / 2.0 * n);
+
+        totalTiles += (xMax + 1 - xMin) * (yMax + 1 - yMin);
+    }
+    
+    return totalTiles;
+}
+
+// LeadNav customization to estimate the cache size for an area
+- (unsigned long long)estimateCacheSizeForArea:(NSDictionary *)area
+{
+    return [self countTilesInArea:area] * 3000; // The average size of a tile is ~3K
 }
 
 - (BOOL)isBackgroundCaching

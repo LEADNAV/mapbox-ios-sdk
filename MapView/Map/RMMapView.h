@@ -439,9 +439,6 @@ typedef enum : NSUInteger {
 /** Clear all tile images from the caching system. */
 -(void)removeAllCachedImages;
 
-// LeadNav customization to clear all tile images excluding areas
-- (void)removeAllCachedImagesForCacheKey:(NSString *)cacheKey excludingAreas:(NSDictionary *)areas;
-
 #pragma mark - Conversions
 
 // projections to convert from latitude/longitude to meters, from projected meters to tile coordinates
