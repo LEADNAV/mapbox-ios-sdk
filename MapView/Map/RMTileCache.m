@@ -276,14 +276,12 @@
 // LeadNav customization to count the number of tiles in an area
 - (NSUInteger)countTilesInArea:(NSDictionary *)area
 {
-    CLLocation *southWest = [area objectForKey:@"southWest"];
-    CLLocation *northEast = [area objectForKey:@"northEast"];
     int minCacheZoom = [[area objectForKey:@"minZoom"] intValue];
     int maxCacheZoom = [[area objectForKey:@"maxZoom"] intValue];
-    float minCacheLat  = southWest.coordinate.latitude;
-    float maxCacheLat  = northEast.coordinate.latitude;
-    float minCacheLon  = southWest.coordinate.longitude;
-    float maxCacheLon  = northEast.coordinate.longitude;
+    float minCacheLat = [[area objectForKey:@"southWestLat"] floatValue];
+    float maxCacheLat = [[area objectForKey:@"northEastLat"] floatValue];
+    float minCacheLon = [[area objectForKey:@"southWestLong"] floatValue];
+    float maxCacheLon = [[area objectForKey:@"northEastLong"] floatValue];
     
     if (minCacheLat > maxCacheLat || minCacheLon > maxCacheLon || minCacheZoom > maxCacheZoom) {
         return 0;
