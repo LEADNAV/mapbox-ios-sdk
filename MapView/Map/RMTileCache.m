@@ -308,7 +308,20 @@
 // LeadNav customization to estimate the cache size for an area
 - (unsigned long long)estimateCacheSizeForArea:(NSDictionary *)area
 {
-    return [self countTilesInArea:area] * 3000; // The average size of a tile is ~3K
+    return [self countTilesInArea:area] * 5000; // The average size of a tile is ~5K
+}
+
+// LeadNav customization to get the cache size for a cache
+- (unsigned long long)cacheSizeForCacheKey:(NSString *)cacheKey
+{
+    unsigned long long cacheSize = 0;
+    
+    for (id<RMTileCache> cache in _tileCaches)
+    {
+        cacheSize += [cache cacheSizeForCacheKey:cacheKey];
+    }
+    
+    return cacheSize;
 }
 
 - (BOOL)isBackgroundCaching

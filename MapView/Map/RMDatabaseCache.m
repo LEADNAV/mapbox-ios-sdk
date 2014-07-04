@@ -518,6 +518,30 @@
     return [tileHashes copy];
 }
 
+// LeadNav customization to get the cache size for a cache
+- (unsigned long long)cacheSizeForCacheKey:(NSString *)cacheKey
+{
+    __block NSUInteger cacheSize = 0;
+    
+    [_writeQueueLock lock];
+    
+    [_queue inDatabase:^(FMDatabase *db)
+     {
+         FMResultSet *results = [db executeQuery:@"SELECT SUM(LENGTH(data)) FROM ZCACHE WHERE cache_key = ?", cacheKey];
+         
+         if ([results next])
+             cacheSize = [results intForColumnIndex:0];
+         else
+             RMLog(@"Unable to calculate the cache size");
+         
+         [results close];
+     }];
+    
+    [_writeQueueLock unlock];
+    
+	return cacheSize;
+}
+
 - (void)touchTile:(RMTile)tile withKey:(NSString *)cacheKey
 {
     [_writeQueue addOperationWithBlock:^{

@@ -78,6 +78,9 @@ typedef enum : short {
 // LeadNav customization to estimate the cache size for an area
 - (unsigned long long)estimateCacheSizeForArea:(NSDictionary *)area;
 
+// LeadNav customization to get the cache size for a cache
+- (unsigned long long)cacheSizeForCacheKey:(NSString *)cacheKey;
+
 @end
 
 #pragma mark -
