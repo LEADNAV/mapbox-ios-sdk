@@ -161,6 +161,24 @@
     
     if ([[referenceURL pathExtension] isEqualToString:@"json"] && (dataObject = [NSString brandedStringWithContentsOfURL:referenceURL encoding:NSUTF8StringEncoding error:nil]) && dataObject)
         return [self initWithTileJSON:dataObject enablingDataOnMapView:mapView];
+    
+    // LeadNav customization to allow initialization without an internet connection
+    if (!dataObject) {
+        NSString *mapID = [referenceURL.absoluteString.lastPathComponent stringByDeletingPathExtension];
+        NSMutableString *json = [NSMutableString stringWithString:@"{"];
+        [json appendFormat:@"\"id\":\"%@\",", mapID];
+        [json appendString:@"\"bounds\":[-180,-85,180,85],"];
+        [json appendString:@"\"center\":[0,0,3],"];
+        [json appendString:@"\"maxzoom\":19,"];
+        [json appendString:@"\"minzoom\":0,"];
+        [json appendString:@"\"scheme\":\"xyz\","];
+        [json appendFormat:@"\"tiles\":[\"http://a.tiles.mapbox.com/v3/%@/{z}/{x}/{y}.png\",\"http://b.tiles.mapbox.com/v3/%@/{z}/{x}/{y}.png\"]", mapID, mapID];
+        [json appendString:@"}"];
+        
+        dataObject = (NSString *)[json copy];
+        
+        return [self initWithTileJSON:dataObject enablingDataOnMapView:mapView];
+    }
 
     return nil;
 }
