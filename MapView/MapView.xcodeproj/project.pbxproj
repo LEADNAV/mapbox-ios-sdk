@@ -83,6 +83,8 @@
 		B8F3FC650EA2E792004D8F85 /* RMMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F3FC630EA2E792004D8F85 /* RMMarker.m */; };
 		D1437B36122869E400888DAE /* RMDBMapSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D1437B32122869E400888DAE /* RMDBMapSource.m */; };
 		D1437B37122869E400888DAE /* RMDBMapSource.h in Headers */ = {isa = PBXBuildFile; fileRef = D1437B33122869E400888DAE /* RMDBMapSource.h */; };
+		D84F34CF19703B230050CE08 /* RMURLMapSource.h in Headers */ = {isa = PBXBuildFile; fileRef = D84F34CD19703B230050CE08 /* RMURLMapSource.h */; };
+		D84F34D019703B230050CE08 /* RMURLMapSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D84F34CE19703B230050CE08 /* RMURLMapSource.m */; };
 		DD07A23817F3AF9800E420B2 /* HeadingAngleMaskSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = DD07A23217F3AF9800E420B2 /* HeadingAngleMaskSmall.png */; };
 		DD07A23917F3AF9800E420B2 /* HeadingAngleMaskMedium.png in Resources */ = {isa = PBXBuildFile; fileRef = DD07A23317F3AF9800E420B2 /* HeadingAngleMaskMedium.png */; };
 		DD07A23A17F3AF9800E420B2 /* HeadingAngleMaskLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = DD07A23417F3AF9800E420B2 /* HeadingAngleMaskLarge.png */; };
@@ -262,6 +264,8 @@
 		B8F3FC630EA2E792004D8F85 /* RMMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMMarker.m; sourceTree = "<group>"; };
 		D1437B32122869E400888DAE /* RMDBMapSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMDBMapSource.m; sourceTree = "<group>"; };
 		D1437B33122869E400888DAE /* RMDBMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMDBMapSource.h; sourceTree = "<group>"; };
+		D84F34CD19703B230050CE08 /* RMURLMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMURLMapSource.h; sourceTree = "<group>"; };
+		D84F34CE19703B230050CE08 /* RMURLMapSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMURLMapSource.m; sourceTree = "<group>"; };
 		DD07A23217F3AF9800E420B2 /* HeadingAngleMaskSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HeadingAngleMaskSmall.png; path = Map/Resources/HeadingAngleMaskSmall.png; sourceTree = "<group>"; };
 		DD07A23317F3AF9800E420B2 /* HeadingAngleMaskMedium.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HeadingAngleMaskMedium.png; path = Map/Resources/HeadingAngleMaskMedium.png; sourceTree = "<group>"; };
 		DD07A23417F3AF9800E420B2 /* HeadingAngleMaskLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HeadingAngleMaskLarge.png; path = Map/Resources/HeadingAngleMaskLarge.png; sourceTree = "<group>"; };
@@ -411,6 +415,8 @@
 				DD4195C8162356900049E6BA /* RMBingSource.m */,
 				DD1985BF165C5F6400DF667F /* RMTileMillSource.h */,
 				DD1985C0165C5F6400DF667F /* RMTileMillSource.m */,
+				D84F34CD19703B230050CE08 /* RMURLMapSource.h */,
+				D84F34CE19703B230050CE08 /* RMURLMapSource.m */,
 			);
 			name = "Map Sources";
 			sourceTree = "<group>";
@@ -757,6 +763,7 @@
 				DD2B375514CF8197008DE8CB /* RMMBTilesSource.h in Headers */,
 				B8C9742B0E8A19B2007D16AD /* RMMemoryCache.h in Headers */,
 				B1EB26C610B5D8E6009F8658 /* RMNotifications.h in Headers */,
+				D84F34CF19703B230050CE08 /* RMURLMapSource.h in Headers */,
 				1606C9FE13D86BA400547581 /* RMOpenCycleMapSource.h in Headers */,
 				161E563A1594664E00B00BB6 /* RMOpenSeaMapLayer.h in Headers */,
 				16128CF5148D295300C23C0E /* RMOpenSeaMapSource.h in Headers */,
@@ -919,6 +926,7 @@
 				B8C9746C0E8A1A50007D16AD /* RMMapView.m in Sources */,
 				B8F3FC610EA2B382004D8F85 /* RMMapLayer.m in Sources */,
 				B8F3FC650EA2E792004D8F85 /* RMMarker.m in Sources */,
+				D84F34D019703B230050CE08 /* RMURLMapSource.m in Sources */,
 				B8474BA50EB40094006A0BC1 /* RMDatabaseCache.m in Sources */,
 				126693040EB76C0B00E002D5 /* RMConfiguration.m in Sources */,
 				23A0AAE90EB90A99003A4521 /* RMFoundation.c in Sources */,
