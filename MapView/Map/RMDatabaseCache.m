@@ -337,7 +337,7 @@
      {
          // LeadNav customization to prevent user-saved areas from being purged from the cache
          //BOOL result = [db executeUpdate:@"DELETE FROM ZCACHE WHERE tile_hash IN (SELECT tile_hash FROM ZCACHE ORDER BY last_used LIMIT ?)", [NSNumber numberWithUnsignedLongLong:count]];
-         BOOL result = [db executeUpdate:@"DELETE FROM ZCACHE WHERE tile_hash IN (SELECT tile_hash FROM ZCACHE ORDER BY last_used LIMIT ?) AND leadnav_area_count = 0", [NSNumber numberWithUnsignedLongLong:count]];
+         BOOL result = [db executeUpdate:@"DELETE FROM ZCACHE WHERE tile_hash IN (SELECT tile_hash FROM ZCACHE WHERE leadnav_area_count = 0 ORDER BY last_used LIMIT ?)", [NSNumber numberWithUnsignedLongLong:count]];
 
          if (result == NO)
              RMLog(@"Error purging cache");
@@ -507,10 +507,7 @@
         {
             for (int y = yMin; y <= yMax; y++)
             {
-                RMTile tile = RMTileMake(x, y, zoom);
-                unsigned long tileHash = RMTileHash(tile);
-                
-                [tileHashes addObject:[NSNumber numberWithUnsignedLong:tileHash]];
+                [tileHashes addObject:[RMTileCache tileHash:RMTileMake(x, y, zoom)]];
             }
         }
     };
