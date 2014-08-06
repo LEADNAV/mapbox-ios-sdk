@@ -63,65 +63,68 @@
 
 - (NSURL *)URLForTile:(RMTile)tile
 {
-    if ( ! _imageURLString)
+    @synchronized(self)
     {
-        NSString *imagerySetString = nil;
+        if ( ! _imageURLString)
+        {
+            NSString *imagerySetString = nil;
 
-        if (_imagerySet == RMBingImagerySetAerial)
-            imagerySetString = @"Aerial";
-        else if (_imagerySet == RMBingImagerySetAerialWithLabels)
-            imagerySetString = @"AerialWithLabels";
-        else
-            imagerySetString = @"Road";
+            if (_imagerySet == RMBingImagerySetAerial)
+                imagerySetString = @"Aerial";
+            else if (_imagerySet == RMBingImagerySetAerialWithLabels)
+                imagerySetString = @"AerialWithLabels";
+            else
+                imagerySetString = @"Road";
 
-        NSURL *metadataURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://dev.virtualearth.net/REST/v1/Imagery/Metadata/%@?key=%@", imagerySetString, _mapsKey]];
+            NSURL *metadataURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://dev.virtualearth.net/REST/v1/Imagery/Metadata/%@?key=%@", imagerySetString, _mapsKey]];
 
-        NSData *metadataData = [NSData brandedDataWithContentsOfURL:metadataURL];
+            NSData *metadataData = [NSData brandedDataWithContentsOfURL:metadataURL];
 
-        if ( ! metadataData)
+            if ( ! metadataData)
+                return nil;
+
+            id metadata = [NSJSONSerialization JSONObjectWithData:metadataData options:0 error:NULL];
+
+            if (metadata && [metadata isKindOfClass:[NSDictionary class]] && [[metadata objectForKey:@"statusCode"] intValue] == 200)
+            {
+                NSDictionary *resources = [[[[(NSDictionary *)metadata objectForKey:@"resourceSets"] objectAtIndex:0] objectForKey:@"resources"] objectAtIndex:0];
+
+                _imageURLString = [[[resources objectForKey:@"imageUrl"] stringByReplacingOccurrencesOfString:@"{subdomain}"
+                                                                                                   withString:[[resources objectForKey:@"imageUrlSubdomains"] objectAtIndex:0]] copy];
+            }
+        }
+
+        if ( ! _imageURLString)
             return nil;
 
-        id metadata = [NSJSONSerialization JSONObjectWithData:metadataData options:0 error:NULL];
+        NSMutableString *tileURLString = [NSMutableString stringWithString:_imageURLString];
+        
+        [tileURLString replaceOccurrencesOfString:@"{culture}" withString:@"en" options:0 range:NSMakeRange(0, [tileURLString length])];
 
-        if (metadata && [metadata isKindOfClass:[NSDictionary class]] && [[metadata objectForKey:@"statusCode"] intValue] == 200)
+        NSMutableString *quadKey = [NSMutableString string];
+
+        for (int i = tile.zoom; i > 0; i--)
         {
-            NSDictionary *resources = [[[[(NSDictionary *)metadata objectForKey:@"resourceSets"] objectAtIndex:0] objectForKey:@"resources"] objectAtIndex:0];
+            int digit = 0;
 
-            _imageURLString = [[[resources objectForKey:@"imageUrl"] stringByReplacingOccurrencesOfString:@"{subdomain}"
-                                                                                               withString:[[resources objectForKey:@"imageUrlSubdomains"] objectAtIndex:0]] copy];
-        }
-    }
+            int mask = 1 << (i - 1);
 
-    if ( ! _imageURLString)
-        return nil;
+            if ((tile.x & mask) != 0)
+                digit++;
 
-    NSMutableString *tileURLString = [NSMutableString stringWithString:_imageURLString];
+            if ((tile.y & mask) != 0)
+            {
+                digit++;
+                digit++;
+            }
 
-    [tileURLString replaceOccurrencesOfString:@"{culture}" withString:@"en" options:0 range:NSMakeRange(0, [tileURLString length])];
-
-    NSMutableString *quadKey = [NSMutableString string];
-
-    for (int i = tile.zoom; i > 0; i--)
-    {
-        int digit = 0;
-
-        int mask = 1 << (i - 1);
-
-        if ((tile.x & mask) != 0)
-            digit++;
-
-        if ((tile.y & mask) != 0)
-        {
-            digit++;
-            digit++;
+            [quadKey appendString:[NSString stringWithFormat:@"%i", digit]];
         }
 
-        [quadKey appendString:[NSString stringWithFormat:@"%i", digit]];
+        [tileURLString replaceOccurrencesOfString:@"{quadkey}" withString:quadKey options:0 range:NSMakeRange(0, [tileURLString length])];
+        
+        return [NSURL URLWithString:tileURLString];
     }
-
-    [tileURLString replaceOccurrencesOfString:@"{quadkey}" withString:quadKey options:0 range:NSMakeRange(0, [tileURLString length])];
-
-    return [NSURL URLWithString:tileURLString];
 }
 
 - (NSString *)uniqueTilecacheKey
