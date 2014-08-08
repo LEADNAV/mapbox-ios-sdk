@@ -37,6 +37,9 @@
 {
     CGRect pathBoundingBox;
 
+    // LeadNav customization to enable line edges
+    float lineEdgeWidth;
+    
     // Width of the line, in pixels
     float lineWidth;
 
@@ -80,6 +83,11 @@
 @property (nonatomic, assign) CGFloat shadowBlur;
 @property (nonatomic, assign) CGSize shadowOffset;
 @property (nonatomic, assign) BOOL enableShadow;
+
+// LeadNav customization to enable line edges
+@property (nonatomic, strong) UIColor *lineEdgeColor;
+@property (nonatomic, assign) float lineEdgeWidth;
+@property (nonatomic, assign) BOOL enableLineEdge;
 
 /** The bounding box of the shape in the current viewport. */
 @property (nonatomic, readonly) CGRect pathBoundingBox;

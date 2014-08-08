@@ -39,6 +39,9 @@
     CGRect nonClippedBounds;
     CGRect previousBounds;
 
+    // LeadNav customization to enable line edges
+    CAShapeLayer *lineEdgeLayer;
+    
     CAShapeLayer *shapeLayer;
     UIBezierPath *bezierPath;
 
@@ -67,7 +70,19 @@
     bezierPath = [UIBezierPath new];
     lineWidth = kDefaultLineWidth;
     ignorePathUpdates = NO;
-
+    
+    // LeadNav customization to enable line edges
+    lineEdgeLayer = [CAShapeLayer new];
+    lineEdgeLayer.rasterizationScale = [[UIScreen mainScreen] scale];
+    lineEdgeLayer.lineWidth = lineWidth;
+    lineEdgeLayer.lineCap = kCALineCapButt;
+    lineEdgeLayer.lineJoin = kCALineJoinMiter;
+    lineEdgeLayer.strokeColor = [UIColor blackColor].CGColor;
+    lineEdgeLayer.fillColor = [UIColor clearColor].CGColor;
+    lineEdgeLayer.shadowRadius = 0.0;
+    lineEdgeLayer.shadowOpacity = 0.0;
+    lineEdgeLayer.shadowOffset = CGSizeMake(0, 0);
+    
     shapeLayer = [CAShapeLayer new];
     shapeLayer.rasterizationScale = [[UIScreen mainScreen] scale];
     shapeLayer.lineWidth = lineWidth;
@@ -78,6 +93,7 @@
     shapeLayer.shadowRadius = 0.0;
     shapeLayer.shadowOpacity = 0.0;
     shapeLayer.shadowOffset = CGSizeMake(0, 0);
+    
     [self addSublayer:shapeLayer];
 
     pathBoundingBox = CGRectZero;
@@ -122,6 +138,19 @@
         scaledLineWidth = lineWidth;
 
     shapeLayer.lineWidth = scaledLineWidth;
+    
+    // LeadNav customization to enable line edges
+    if (self.enableLineEdge)
+    {
+        float scaledLineEdgeWidth;
+        
+        if (scaleLineWidth)
+            scaledLineEdgeWidth = (lineWidth + self.lineEdgeWidth * 2) * scale;
+        else
+            scaledLineEdgeWidth = (lineWidth + self.lineEdgeWidth * 2);
+        
+        lineEdgeLayer.lineWidth = scaledLineEdgeWidth;
+    }
 
     if (self.fillPatternImage)
         shapeLayer.fillColor = [[UIColor colorWithPatternImage:self.fillPatternImage] CGColor];
@@ -166,8 +195,11 @@
             animation.toValue = (id) scaledPath.CGPath;
             [shapeLayer addAnimation:animation forKey:@"animatePath"];
         }
-
+        
         shapeLayer.path = scaledPath.CGPath;
+        
+        // LeadNav customization to enable line edges
+        lineEdgeLayer.path = scaledPath.CGPath;
 
         // calculate the bounds of the scaled path
         CGRect boundsInMercators = scaledPath.bounds;
@@ -476,6 +508,9 @@
 
 - (void)setLineCap:(NSString *)newLineCap
 {
+    // LeadNav customization to enable line edges
+    lineEdgeLayer.lineCap = newLineCap;
+    
     shapeLayer.lineCap = newLineCap;
     [self setNeedsDisplay];
 }
@@ -487,6 +522,9 @@
 
 - (void)setLineJoin:(NSString *)newLineJoin
 {
+    // LeadNav customization to enable line edges
+    lineEdgeLayer.lineJoin = newLineJoin;
+    
     shapeLayer.lineJoin = newLineJoin;
     [self setNeedsDisplay];
 }
@@ -562,6 +600,51 @@
 {
     shapeLayer.shadowOpacity   = (flag ? 1.0 : 0.0);
     shapeLayer.shouldRasterize = ! flag;
+    [self setNeedsDisplay];
+}
+
+// LeadNav customization to enable line edges
+- (UIColor *)lineEdgeColor
+{
+    return [UIColor colorWithCGColor:lineEdgeLayer.strokeColor];
+}
+
+- (void)setLineEdgeColor:(UIColor *)lineEdgeColor
+{
+    if (lineEdgeLayer.strokeColor != lineEdgeColor.CGColor)
+    {
+        lineEdgeLayer.strokeColor = lineEdgeColor.CGColor;
+        [self setNeedsDisplay];
+    }
+}
+
+// LeadNav customization to enable line edges
+- (float)lineEdgeWidth
+{
+    return lineEdgeWidth;
+}
+
+- (void)setLineEdgeWidth:(float)newLineEdgeWidth
+{
+    lineEdgeWidth = newLineEdgeWidth;
+    
+    lastScale = 0.0;
+    [self recalculateGeometryAnimated:NO];
+}
+
+// LeadNav customization to enable line edges
+- (BOOL)enableLineEdge
+{
+    return (lineEdgeLayer.superlayer != nil);
+}
+
+- (void)setEnableLineEdge:(BOOL)enableLineEdge
+{
+    if (enableLineEdge)
+        [self insertSublayer:lineEdgeLayer below:shapeLayer];
+    else if (!enableLineEdge && lineEdgeLayer.superlayer != nil)
+        [lineEdgeLayer removeFromSuperlayer];
+    
     [self setNeedsDisplay];
 }
 
