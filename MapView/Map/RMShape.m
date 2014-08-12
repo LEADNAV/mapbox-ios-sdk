@@ -194,6 +194,11 @@
             animation.fromValue = (id) shapeLayer.path;
             animation.toValue = (id) scaledPath.CGPath;
             [shapeLayer addAnimation:animation forKey:@"animatePath"];
+            
+            // LeadNav customization to enable line edges
+            if (self.enableLineEdge) {
+                [lineEdgeLayer addAnimation:animation forKey:@"animatePath"];
+            }
         }
         
         shapeLayer.path = scaledPath.CGPath;
