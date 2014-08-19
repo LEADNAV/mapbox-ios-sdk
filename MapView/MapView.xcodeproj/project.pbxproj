@@ -85,6 +85,8 @@
 		D1437B37122869E400888DAE /* RMDBMapSource.h in Headers */ = {isa = PBXBuildFile; fileRef = D1437B33122869E400888DAE /* RMDBMapSource.h */; };
 		D84F34CF19703B230050CE08 /* RMURLMapSource.h in Headers */ = {isa = PBXBuildFile; fileRef = D84F34CD19703B230050CE08 /* RMURLMapSource.h */; };
 		D84F34D019703B230050CE08 /* RMURLMapSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D84F34CE19703B230050CE08 /* RMURLMapSource.m */; };
+		D8C0D4FF19A258B4002588C0 /* RMFileCache.h in Headers */ = {isa = PBXBuildFile; fileRef = D8C0D4FD19A258B4002588C0 /* RMFileCache.h */; };
+		D8C0D50019A258B4002588C0 /* RMFileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C0D4FE19A258B4002588C0 /* RMFileCache.m */; };
 		DD07A23817F3AF9800E420B2 /* HeadingAngleMaskSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = DD07A23217F3AF9800E420B2 /* HeadingAngleMaskSmall.png */; };
 		DD07A23917F3AF9800E420B2 /* HeadingAngleMaskMedium.png in Resources */ = {isa = PBXBuildFile; fileRef = DD07A23317F3AF9800E420B2 /* HeadingAngleMaskMedium.png */; };
 		DD07A23A17F3AF9800E420B2 /* HeadingAngleMaskLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = DD07A23417F3AF9800E420B2 /* HeadingAngleMaskLarge.png */; };
@@ -266,6 +268,8 @@
 		D1437B33122869E400888DAE /* RMDBMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMDBMapSource.h; sourceTree = "<group>"; };
 		D84F34CD19703B230050CE08 /* RMURLMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMURLMapSource.h; sourceTree = "<group>"; };
 		D84F34CE19703B230050CE08 /* RMURLMapSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMURLMapSource.m; sourceTree = "<group>"; };
+		D8C0D4FD19A258B4002588C0 /* RMFileCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMFileCache.h; sourceTree = "<group>"; };
+		D8C0D4FE19A258B4002588C0 /* RMFileCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMFileCache.m; sourceTree = "<group>"; };
 		DD07A23217F3AF9800E420B2 /* HeadingAngleMaskSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HeadingAngleMaskSmall.png; path = Map/Resources/HeadingAngleMaskSmall.png; sourceTree = "<group>"; };
 		DD07A23317F3AF9800E420B2 /* HeadingAngleMaskMedium.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HeadingAngleMaskMedium.png; path = Map/Resources/HeadingAngleMaskMedium.png; sourceTree = "<group>"; };
 		DD07A23417F3AF9800E420B2 /* HeadingAngleMaskLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HeadingAngleMaskLarge.png; path = Map/Resources/HeadingAngleMaskLarge.png; sourceTree = "<group>"; };
@@ -485,6 +489,8 @@
 				B83E64D30E80E73F001663B6 /* RMMemoryCache.m */,
 				B8474B980EB40094006A0BC1 /* RMDatabaseCache.h */,
 				B8474B990EB40094006A0BC1 /* RMDatabaseCache.m */,
+				D8C0D4FD19A258B4002588C0 /* RMFileCache.h */,
+				D8C0D4FE19A258B4002588C0 /* RMFileCache.m */,
 			);
 			name = "Tile Cache";
 			sourceTree = "<group>";
@@ -745,6 +751,7 @@
 				B8474BA40EB40094006A0BC1 /* RMDatabaseCache.h in Headers */,
 				D1437B37122869E400888DAE /* RMDBMapSource.h in Headers */,
 				23A0AAEB0EB90AA6003A4521 /* RMFoundation.h in Headers */,
+				D8C0D4FF19A258B4002588C0 /* RMFileCache.h in Headers */,
 				B8C9742D0E8A19B2007D16AD /* RMFractalTileProjection.h in Headers */,
 				1607499514E120A100D535F5 /* RMGenericMapSource.h in Headers */,
 				96492C400FA8AD3400EBA6D2 /* RMGlobalConstants.h in Headers */,
@@ -921,6 +928,7 @@
 				B8C974430E8A19B2007D16AD /* RMPixel.c in Sources */,
 				B8C974440E8A19B2007D16AD /* RMFractalTileProjection.m in Sources */,
 				B8C974480E8A19B2007D16AD /* RMTileCache.m in Sources */,
+				D8C0D50019A258B4002588C0 /* RMFileCache.m in Sources */,
 				DD63176417D15EB5008CA79B /* RMCircleAnnotation.m in Sources */,
 				B8C9744A0E8A19B2007D16AD /* RMProjection.m in Sources */,
 				B8C9746C0E8A1A50007D16AD /* RMMapView.m in Sources */,

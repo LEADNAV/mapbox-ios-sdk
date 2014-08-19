@@ -95,6 +95,8 @@
         [[db executeQuery:@"PRAGMA journal_mode=OFF"] close];
         [[db executeQuery:@"PRAGMA cache-size=100"] close];
         [[db executeQuery:@"PRAGMA count_changes=OFF"] close];
+        // LeadNav customization for optimizing performance; see http://www.sqlite.org/intern-v-extern-blob.html
+        [[db executeQuery:@"PRAGMA page_size=8192"] close];
         [db executeUpdate:@"CREATE TABLE IF NOT EXISTS ZCACHE (tile_hash INTEGER NOT NULL, cache_key VARCHAR(25) NOT NULL, last_used DOUBLE NOT NULL, data BLOB NOT NULL)"];
         [db executeUpdate:@"CREATE UNIQUE INDEX IF NOT EXISTS main_index ON ZCACHE(tile_hash, cache_key)"];
         [db executeUpdate:@"CREATE INDEX IF NOT EXISTS last_used_index ON ZCACHE(last_used)"];
