@@ -650,7 +650,28 @@ static NSMutableDictionary *predicateValues = nil;
 
 - (id <RMTileCache>)fileCacheWithConfig:(NSDictionary *)cfg
 {
-    RMFileCache *fileCache = [[RMFileCache alloc] init];
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    NSString *cacheDir = [NSString pathWithComponents:@[ documentsDirectory, @"Cache" ]];
+    NSUInteger capacity = 1000;
+    NSTimeInterval expiryPeriod = 0;
+    
+    NSNumber *capacityNumber = [cfg objectForKey:@"capacity"];
+    
+    if (capacityNumber) {
+        capacity = capacityNumber.unsignedIntegerValue;
+    }
+    
+    NSNumber *expiryPeriodNumber = [cfg objectForKey:@"expiryPeriod"];
+    
+    if (expiryPeriodNumber) {
+        expiryPeriod = expiryPeriodNumber.doubleValue;
+    }
+    
+    RMLog(@"File cache configuration: {cacheDir : %@, capacity : %lu, expiryPeriod : %.0f}", cacheDir, (unsigned long)capacity, expiryPeriod);
+    
+    RMFileCache *fileCache = [RMFileCache cacheWithCacheDir:cacheDir];
+    fileCache.capacity = capacity;
+    fileCache.expiryPeriod = expiryPeriod;
     
     return fileCache;
 }

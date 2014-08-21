@@ -6,6 +6,7 @@
 //
 //
 
+#import <sys/stat.h>
 #import "RMFileCache.h"
 
 @interface RMFileCache ()
@@ -20,6 +21,24 @@
 @implementation RMFileCache
 
 #pragma mark - Initialization
+
++ (id)cacheWithCacheDir:(NSString *)cacheDir
+{
+    static NSMutableDictionary *caches;
+    static dispatch_once_t predicate;
+    
+    dispatch_once(&predicate, ^{
+        caches = [NSMutableDictionary new];
+    });
+    
+    @synchronized(caches) {
+        if (![caches objectForKey:cacheDir]) {
+            [caches setObject:[[RMFileCache alloc] initWithCacheDir:cacheDir] forKey:cacheDir];
+        }
+    }
+    
+    return [caches objectForKey:cacheDir];
+}
 
 - (id)init
 {
@@ -51,6 +70,8 @@
 
 - (void)initialize
 {
+    RMLog(@"Initializing file cache %@ with cache directory %@", self, self.cacheDir);
+    
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
     
@@ -71,7 +92,8 @@
         }
     }
     
-    self.expiryPeriod = 3600; // Default to one hour
+    self.capacity = 1000;
+    self.expiryPeriod = 0;
     self.cachePurgeTimer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(purgeCache) userInfo:nil repeats:YES];
     self.isUpdatingAreaData = NO;
     self.isPurgingCache = NO;
@@ -309,41 +331,50 @@
     return [tiles copy];
 }
 
-// LeadNav customization to count the number of tiles in an area
-- (NSUInteger)countTilesInArea:(NSDictionary *)area
-{
-    return 0;
-}
-
-// LeadNav customization to estimate the cache size for an area
-- (unsigned long long)estimateCacheSizeForArea:(NSDictionary *)area
-{
-    return 0;
-}
-
 // LeadNav customization to get the cache size for a cache
 - (unsigned long long)cacheSizeForCacheKey:(NSString *)cacheKey
 {
-    return 0;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *cacheDirectoryPath = [NSString pathWithComponents:@[ self.cacheDir, cacheKey ]];
+    NSDirectoryEnumerator *cacheDirectoryEnumerator = [fileManager enumeratorAtPath:cacheDirectoryPath];
+    NSString *file = [cacheDirectoryEnumerator nextObject];
+    
+    unsigned long long cacheSize = 0;
+    
+    while (file) {
+        @autoreleasepool {
+            NSDictionary *attributes = [cacheDirectoryEnumerator fileAttributes];
+            
+            if (attributes.fileType == NSFileTypeRegular) {
+                cacheSize += attributes.fileSize;
+            }
+            
+            file = [cacheDirectoryEnumerator nextObject];
+        }
+    }
+    
+    return cacheSize;
 }
 
 #pragma mark - Private methods
 
 - (void)purgeCache
 {
-    if (self.isPurgingCache || self.isUpdatingAreaData) {
+    if (self.isPurgingCache || self.isUpdatingAreaData || (self.capacity == 0 && self.expiryPeriod == 0)) {
         return;
     }
     
     self.isPurgingCache = YES;
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RMLog(@"Purging images from the cache.");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        //RMLog(@"Purging images from the cache.");
         
         NSFileManager *fileManager = [NSFileManager defaultManager];
         NSError *error;
-        NSDate *expiryPeriod = [NSDate dateWithTimeIntervalSinceNow:(self.expiryPeriod * -1)];
-        NSArray *contents = [fileManager contentsOfDirectoryAtPath:self.cacheDir error:&error];
+        NSDate *purgeStartTime = [NSDate date];
+        NSDate *expiryTime = [NSDate dateWithTimeIntervalSinceNow:(self.expiryPeriod * -1)];
+        NSArray *cacheDirectoryContents = [fileManager contentsOfDirectoryAtPath:self.cacheDir error:&error];
+        NSMutableArray *cachedImages = [NSMutableArray new];
         
         if (error) {
             RMLog(@"Error purging cache: %@", error.localizedDescription);
@@ -353,47 +384,72 @@
             return;
         }
         
-        for (NSString *cacheKey in contents) {
+        // Find cached images for removal
+        for (NSString *cacheKey in cacheDirectoryContents) {
             NSDictionary *areaData = [self loadAreaDataForCacheKey:cacheKey];
-            NSString *path = [NSString pathWithComponents:@[ self.cacheDir, cacheKey ]];
-            NSURL *cacheURL = [[NSURL alloc] initFileURLWithPath:path];
-            NSDirectoryEnumerator *cacheDirectoryEnumerator = [fileManager enumeratorAtURL:cacheURL
-                                                                includingPropertiesForKeys:@[ NSURLContentModificationDateKey, NSURLIsDirectoryKey ]
-                                                                                   options:0
-                                                                              errorHandler:^BOOL(NSURL *url, NSError *error) { return YES; }];
+            NSString *cacheDirectoryPath = [NSString pathWithComponents:@[ self.cacheDir, cacheKey ]];
+            NSDirectoryEnumerator *cacheDirectoryEnumerator = [fileManager enumeratorAtPath:cacheDirectoryPath];
+            NSString *file = [cacheDirectoryEnumerator nextObject];
             
-            for (NSURL *cachedImageURL in cacheDirectoryEnumerator) {
-                if (self.isUpdatingAreaData) {
-                    RMLog(@"Aborting purge for area data update.");
+            while (file && !self.isUpdatingAreaData) {
+                @autoreleasepool {
+                    NSString *filePath = [NSString pathWithComponents:@[ self.cacheDir, cacheKey, file ]];
+                    NSDictionary *attributes = [cacheDirectoryEnumerator fileAttributes];
+                    BOOL isAreaDataFile = [filePath.lastPathComponent isEqualToString:@"area-data"]; // Don't remove the area data file
+                    BOOL isAreaData = ([areaData objectForKey:filePath] != nil); // Don't remove cached images that are part of a saved area
+                    BOOL isFile = (attributes.fileType == NSFileTypeRegular);
                     
-                    self.isPurgingCache = NO;
-                    
-                    return;
-                }
-                
-                if ([cachedImageURL.lastPathComponent isEqualToString:@"area-data"]) {
-                    continue;
-                }
-                
-                if ([areaData objectForKey:cachedImageURL.path] != nil) {
-                    continue;
-                }
-                
-                NSDate *contentModificationDate;
-                NSNumber *isDirectory;
-                
-                [cachedImageURL getResourceValue:&contentModificationDate forKey:NSURLContentModificationDateKey error:NULL];
-                [cachedImageURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:NULL];
-                
-                if (![isDirectory boolValue] && [contentModificationDate compare:expiryPeriod] == NSOrderedAscending) {
-                    [fileManager removeItemAtURL:cachedImageURL error:&error];
-                    
-                    if (error) {
-                        RMLog(@"Error purging image %@ from cache: %@", cachedImageURL.lastPathComponent, error.localizedDescription);
+                    // Add cached images for removal
+                    if (!isAreaDataFile && !isAreaData && isFile) {
+                        [cachedImages addObject:@{ @"filePath" : filePath, @"fileModificationDate" : attributes.fileModificationDate }];
                     }
+                    
+                    file = [cacheDirectoryEnumerator nextObject];
                 }
             }
+            
+            if (self.isUpdatingAreaData) {
+                RMLog(@"Aborted purge for area data update.");
+                
+                self.isPurgingCache = NO;
+                
+                return;
+            }
         }
+        
+        // Sort the cached images by modification date in ascending order (earliest dates first)
+        [cachedImages sortUsingComparator:^NSComparisonResult(NSDictionary *cachedImage1, NSDictionary *cachedImage2) {
+            NSDate *cachedImage1Date = [cachedImage1 objectForKey:@"fileModificationDate"];
+            NSDate *cachedImage2Date = [cachedImage2 objectForKey:@"fileModificationDate"];
+            
+            return [cachedImage1Date compare:cachedImage2Date];
+        }];
+        
+        // Remove the LRU cached images that are over the cache capacity or modified earlier than the expiry date
+        NSUInteger capacity = (self.capacity > 0) ? self.capacity : cachedImages.count;
+        NSUInteger count = 0;
+        
+        for (int i = 0; i < cachedImages.count; i++) {
+            NSDictionary *cachedImage = [cachedImages objectAtIndex:i];
+            NSString *filePath = [cachedImage objectForKey:@"filePath"];
+            NSDate *fileModificationDate = [cachedImage objectForKey:@"fileModificationDate"];
+            
+            if ((self.expiryPeriod > 0 && [fileModificationDate compare:expiryTime] == NSOrderedAscending) || (i < (long)(cachedImages.count - capacity))) {
+                [fileManager removeItemAtPath:filePath error:&error];
+                
+                if (error) {
+                    RMLog(@"Error purging image %@ from cache: %@", filePath.lastPathComponent, error.localizedDescription);
+                }
+                
+                count++;
+            }
+        }
+        
+        if (count > 0) {
+            RMLog(@"Removed %lu images from the cache.", (unsigned long)count);
+        }
+        
+        RMLog(@"Completed purging cache (%.6f sec).", ([purgeStartTime timeIntervalSinceNow] * -1));
         
         self.isPurgingCache = NO;
     });

@@ -11,8 +11,10 @@
 
 @interface RMFileCache : NSObject <RMTileCache>
 
+@property (nonatomic, assign) NSUInteger capacity;
 @property (nonatomic, assign) NSTimeInterval expiryPeriod;
 
++ (id)cacheWithCacheDir:(NSString *)cacheDir;
 - (id)initWithCacheDir:(NSString *)cacheDir;
 
 @end
