@@ -652,7 +652,7 @@ static NSMutableDictionary *predicateValues = nil;
 {
     NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
     NSString *cacheDir = [NSString pathWithComponents:@[ documentsDirectory, @"Cache" ]];
-    NSUInteger capacity = 1000;
+    NSUInteger capacity = 3000; // 1000
     NSTimeInterval expiryPeriod = 0;
     
     NSNumber *capacityNumber = [cfg objectForKey:@"capacity"];
