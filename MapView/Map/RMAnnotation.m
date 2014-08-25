@@ -63,6 +63,9 @@
 @synthesize clusteredAnnotations;
 @synthesize isUserLocationAnnotation;
 
+// LeadNav customization for arbitrary ordering
+@synthesize zPosition;
+
 + (instancetype)annotationWithMapView:(RMMapView *)aMapView coordinate:(CLLocationCoordinate2D)aCoordinate andTitle:(NSString *)aTitle
 {
     return [[self alloc] initWithMapView:aMapView coordinate:aCoordinate andTitle:aTitle];
@@ -89,6 +92,9 @@
     self.clusteringEnabled = YES;
 
     self.isUserLocationAnnotation = NO;
+    
+    // LeadNav customization for arbitrary ordering
+    self.zPosition = 0;
 
     layer = nil;
 

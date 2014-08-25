@@ -3080,6 +3080,13 @@
         RMAnnotation *annotation1 = (RMAnnotation *)obj1;
         RMAnnotation *annotation2 = (RMAnnotation *)obj2;
 
+        // LeadNav customization for arbitrary ordering
+        if (annotation1.zPosition > annotation2.zPosition)
+            return NSOrderedDescending;
+
+        if (annotation2.zPosition > annotation1.zPosition)
+            return NSOrderedAscending;
+
         // clusters above/below non-clusters (based on _orderClusterMarkersAboveOthers)
         //
         if (   annotation1.isClusterAnnotation && ! annotation2.isClusterAnnotation)
