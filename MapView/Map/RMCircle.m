@@ -90,6 +90,10 @@
     CGFloat latRadians = [[mapView projection] projectedPointToCoordinate:projectedLocation].latitude * M_PI / 180.0f;
     CGFloat pixelRadius = radiusInMeters / cos(latRadians) / [mapView metersPerPixel];
     //	DLog(@"Pixel Radius: %f", pixelRadius);
+    
+    if (isnan(pixelRadius)) {
+        pixelRadius = 0; // LeadNav customization to prevent a crash when the bounds rect contains NaN
+    }
 
     CGRect rectangle = CGRectMake(self.position.x - pixelRadius,
                                   self.position.y - pixelRadius,
