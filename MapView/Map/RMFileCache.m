@@ -127,7 +127,7 @@
     //    RMLog(@"Error reading cached image for tile %d %d %d: %@", tile.zoom, tile.x, tile.y, error.localizedDescription);
     //}
     
-    if (self.expiryPeriod > 0 && arc4random_uniform(1000) == 0) {
+    if (self.expiryPeriod > 0 && arc4random_uniform(100) == 0) {
         [self purgeCache];
     }
     
@@ -186,7 +186,7 @@
         }
     }
     
-    if (self.capacity > 0 && self.expiryPeriod == 0 && arc4random_uniform(1000) == 0) {
+    if (self.capacity > 0 && self.expiryPeriod == 0 && arc4random_uniform(100) == 0) {
         [self purgeCache];
     }
 }
