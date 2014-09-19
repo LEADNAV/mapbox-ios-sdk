@@ -94,7 +94,7 @@
     
     self.capacity = 1000;
     self.expiryPeriod = 0;
-    self.cachePurgeTimer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(purgeCache) userInfo:nil repeats:YES];
+    //self.cachePurgeTimer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(purgeCache) userInfo:nil repeats:YES];
     self.isUpdatingAreaData = NO;
     self.isPurgingCache = NO;
 }
@@ -126,6 +126,10 @@
     //if (error) {
     //    RMLog(@"Error reading cached image for tile %d %d %d: %@", tile.zoom, tile.x, tile.y, error.localizedDescription);
     //}
+    
+    if (self.expiryPeriod > 0 && arc4random_uniform(1000) == 0) {
+        [self purgeCache];
+    }
     
     return cachedImage;
 }
@@ -180,6 +184,10 @@
         if (error) {
             RMLog(@"Error writing image for tile %d %d %d: %@", tile.zoom, tile.x, tile.y, error.localizedDescription);
         }
+    }
+    
+    if (self.capacity > 0 && self.expiryPeriod == 0 && arc4random_uniform(1000) == 0) {
+        [self purgeCache];
     }
 }
 
