@@ -243,15 +243,15 @@
         NSString *zoom = @(tile.zoom).stringValue;
         NSString *x = @(tile.x).stringValue;
         NSString *y = @(tile.y).stringValue;
-        NSString *path = [NSString pathWithComponents:@[ self.cacheDir, cacheKey, zoom, x, y ]];
-        NSNumber *areaCount = [areaData objectForKey:path];
+        NSString *key = [NSString pathWithComponents:@[ cacheKey, zoom, x, y ]];
+        NSNumber *areaCount = [areaData objectForKey:key];
         int _areaCount = (areaCount == nil) ? 0 : areaCount.intValue;
         
         _areaCount++;
         
         areaCount = [NSNumber numberWithInt:_areaCount];
         
-        [areaData setObject:areaCount forKey:path];
+        [areaData setObject:areaCount forKey:key];
     }
     
     [self saveAreaData:areaData forCacheKey:cacheKey];
@@ -275,8 +275,8 @@
         NSString *zoom = @(tile.zoom).stringValue;
         NSString *x = @(tile.x).stringValue;
         NSString *y = @(tile.y).stringValue;
-        NSString *path = [NSString pathWithComponents:@[ self.cacheDir, cacheKey, zoom, x, y ]];
-        NSNumber *areaCount = [areaData objectForKey:path];
+        NSString *key = [NSString pathWithComponents:@[ cacheKey, zoom, x, y ]];
+        NSNumber *areaCount = [areaData objectForKey:key];
         
         if (areaCount == nil) {
             continue;
@@ -287,11 +287,11 @@
         _areaCount--;
         
         if (_areaCount < 1) {
-            [areaData removeObjectForKey:path];
+            [areaData removeObjectForKey:key];
         } else {
             areaCount = [NSNumber numberWithInt:_areaCount];
             
-            [areaData setObject:areaCount forKey:path];
+            [areaData setObject:areaCount forKey:key];
         }
     }
     
@@ -402,9 +402,10 @@
             while (file && !self.isUpdatingAreaData) {
                 @autoreleasepool {
                     NSString *filePath = [NSString pathWithComponents:@[ self.cacheDir, cacheKey, file ]];
+                    NSString *key = [NSString pathWithComponents:@[ cacheKey, file ]];
                     NSDictionary *attributes = [cacheDirectoryEnumerator fileAttributes];
                     BOOL isAreaDataFile = [filePath.lastPathComponent isEqualToString:@"area-data"]; // Don't remove the area data file
-                    BOOL isAreaData = ([areaData objectForKey:filePath] != nil); // Don't remove cached images that are part of a saved area
+                    BOOL isAreaData = ([areaData objectForKey:key] != nil); // Don't remove cached images that are part of a saved area
                     BOOL isFile = (attributes.fileType == NSFileTypeRegular);
                     
                     // Add cached images for removal
@@ -438,6 +439,14 @@
         NSUInteger count = 0;
         
         for (int i = 0; i < cachedImages.count; i++) {
+            if (self.isUpdatingAreaData) {
+                RMLog(@"Aborted purge for area data update.");
+                
+                self.isPurgingCache = NO;
+                
+                return;
+            }
+            
             NSDictionary *cachedImage = [cachedImages objectAtIndex:i];
             NSString *filePath = [cachedImage objectForKey:@"filePath"];
             NSDate *fileModificationDate = [cachedImage objectForKey:@"fileModificationDate"];
