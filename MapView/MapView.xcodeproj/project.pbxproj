@@ -86,6 +86,8 @@
 		D84F34D019703B230050CE08 /* RMURLMapSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D84F34CE19703B230050CE08 /* RMURLMapSource.m */; };
 		D8C0D4FF19A258B4002588C0 /* RMFileCache.h in Headers */ = {isa = PBXBuildFile; fileRef = D8C0D4FD19A258B4002588C0 /* RMFileCache.h */; };
 		D8C0D50019A258B4002588C0 /* RMFileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C0D4FE19A258B4002588C0 /* RMFileCache.m */; };
+		D8F8C60E19D1DAD5005C4585 /* LoadingTileLeadNav.png in Resources */ = {isa = PBXBuildFile; fileRef = D8F8C60C19D1DAD5005C4585 /* LoadingTileLeadNav.png */; };
+		D8F8C60F19D1DAD5005C4585 /* LoadingTileLeadNav@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8F8C60D19D1DAD5005C4585 /* LoadingTileLeadNav@2x.png */; };
 		DD07A23817F3AF9800E420B2 /* HeadingAngleMaskSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = DD07A23217F3AF9800E420B2 /* HeadingAngleMaskSmall.png */; };
 		DD07A23917F3AF9800E420B2 /* HeadingAngleMaskMedium.png in Resources */ = {isa = PBXBuildFile; fileRef = DD07A23317F3AF9800E420B2 /* HeadingAngleMaskMedium.png */; };
 		DD07A23A17F3AF9800E420B2 /* HeadingAngleMaskLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = DD07A23417F3AF9800E420B2 /* HeadingAngleMaskLarge.png */; };
@@ -269,6 +271,8 @@
 		D84F34CE19703B230050CE08 /* RMURLMapSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMURLMapSource.m; sourceTree = "<group>"; };
 		D8C0D4FD19A258B4002588C0 /* RMFileCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMFileCache.h; sourceTree = "<group>"; };
 		D8C0D4FE19A258B4002588C0 /* RMFileCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMFileCache.m; sourceTree = "<group>"; };
+		D8F8C60C19D1DAD5005C4585 /* LoadingTileLeadNav.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoadingTileLeadNav.png; path = Map/Resources/LoadingTileLeadNav.png; sourceTree = "<group>"; };
+		D8F8C60D19D1DAD5005C4585 /* LoadingTileLeadNav@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoadingTileLeadNav@2x.png"; path = "Map/Resources/LoadingTileLeadNav@2x.png"; sourceTree = "<group>"; };
 		DD07A23217F3AF9800E420B2 /* HeadingAngleMaskSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HeadingAngleMaskSmall.png; path = Map/Resources/HeadingAngleMaskSmall.png; sourceTree = "<group>"; };
 		DD07A23317F3AF9800E420B2 /* HeadingAngleMaskMedium.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HeadingAngleMaskMedium.png; path = Map/Resources/HeadingAngleMaskMedium.png; sourceTree = "<group>"; };
 		DD07A23417F3AF9800E420B2 /* HeadingAngleMaskLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HeadingAngleMaskLarge.png; path = Map/Resources/HeadingAngleMaskLarge.png; sourceTree = "<group>"; };
@@ -668,6 +672,8 @@
 				DD07A23717F3AF9800E420B2 /* HeadingAngleMaskLarge@2x.png */,
 				DD932BAB165C287000D69D49 /* LoadingTile.png */,
 				DDC8D28517E92ED100A4FB32 /* LoadingTile6.png */,
+				D8F8C60C19D1DAD5005C4585 /* LoadingTileLeadNav.png */,
+				D8F8C60D19D1DAD5005C4585 /* LoadingTileLeadNav@2x.png */,
 				DD932BA7165C287000D69D49 /* TrackingDot.png */,
 				DD932BA8165C287000D69D49 /* TrackingDot@2x.png */,
 				DD932BAD165C287000D69D49 /* TrackingDotHalo.png */,
@@ -877,12 +883,14 @@
 				DD07A23A17F3AF9800E420B2 /* HeadingAngleMaskLarge.png in Resources */,
 				DD07A23C17F3AF9800E420B2 /* HeadingAngleMaskMedium@2x.png in Resources */,
 				DD07A23917F3AF9800E420B2 /* HeadingAngleMaskMedium.png in Resources */,
+				D8F8C60E19D1DAD5005C4585 /* LoadingTileLeadNav.png in Resources */,
 				DDA257071798A95600BBB325 /* Compass@2x.png in Resources */,
 				DD932BB8165C287000D69D49 /* HeadingAngleSmall@2x.png in Resources */,
 				DD932BB9165C287000D69D49 /* LoadingTile.png in Resources */,
 				DDE68E5A17D94C0500F1E869 /* mapbox-logo.png in Resources */,
 				DD932BB5165C287000D69D49 /* TrackingDot.png in Resources */,
 				DD932BB6165C287000D69D49 /* TrackingDot@2x.png in Resources */,
+				D8F8C60F19D1DAD5005C4585 /* LoadingTileLeadNav@2x.png in Resources */,
 				DD932BBB165C287000D69D49 /* TrackingDotHalo.png in Resources */,
 				DD932BBC165C287000D69D49 /* TrackingDotHalo@2x.png in Resources */,
 				DDA257031798A95600BBB325 /* TrackingLocationMaskLandscape@2x.png in Resources */,
