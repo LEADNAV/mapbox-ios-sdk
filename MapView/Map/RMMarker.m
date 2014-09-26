@@ -284,13 +284,14 @@
 
 - (void)setDragState:(RMMapLayerDragState)dragState animated:(BOOL)animated
 {
+    // LeadNav customization to remove the starting/ending animation
     if (dragState == RMMapLayerDragStateStarting)
     {
         [CATransaction begin];
         [CATransaction setAnimationDuration:(animated ? 0.3 : 0)];
 
         self.opacity -= 0.1;
-        self.transform = CATransform3DScale(self.transform, 1.3, 1.3, 1.0);
+        //self.transform = CATransform3DScale(self.transform, 1.3, 1.3, 1.0);
 
         [CATransaction setCompletionBlock:^(void)
         {
@@ -305,7 +306,7 @@
         [CATransaction setAnimationDuration:(animated ? 0.3 : 0)];
 
         self.opacity += 0.1;
-        self.transform = CATransform3DScale(self.transform, 1.0/1.3, 1.0/1.3, 1.0);
+        //self.transform = CATransform3DScale(self.transform, 1.0/1.3, 1.0/1.3, 1.0);
 
         [CATransaction setCompletionBlock:^(void)
         {
