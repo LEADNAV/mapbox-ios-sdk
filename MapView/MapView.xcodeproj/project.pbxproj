@@ -269,8 +269,10 @@
 		D1437B33122869E400888DAE /* RMDBMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMDBMapSource.h; sourceTree = "<group>"; };
 		D84F34CD19703B230050CE08 /* RMURLMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMURLMapSource.h; sourceTree = "<group>"; };
 		D84F34CE19703B230050CE08 /* RMURLMapSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMURLMapSource.m; sourceTree = "<group>"; };
+		D8BA121819E3439200A4D431 /* LNNavigationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LNNavigationManager.h; path = ../../leadNav7/LNNavigationManager.h; sourceTree = "<group>"; };
 		D8C0D4FD19A258B4002588C0 /* RMFileCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMFileCache.h; sourceTree = "<group>"; };
 		D8C0D4FE19A258B4002588C0 /* RMFileCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMFileCache.m; sourceTree = "<group>"; };
+		D8D0880119E346CF004E1337 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		D8F8C60C19D1DAD5005C4585 /* LoadingTileLeadNav.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoadingTileLeadNav.png; path = Map/Resources/LoadingTileLeadNav.png; sourceTree = "<group>"; };
 		D8F8C60D19D1DAD5005C4585 /* LoadingTileLeadNav@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoadingTileLeadNav@2x.png"; path = "Map/Resources/LoadingTileLeadNav@2x.png"; sourceTree = "<group>"; };
 		DD07A23217F3AF9800E420B2 /* HeadingAngleMaskSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HeadingAngleMaskSmall.png; path = Map/Resources/HeadingAngleMaskSmall.png; sourceTree = "<group>"; };
@@ -439,6 +441,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				D8BA121819E3439200A4D431 /* LNNavigationManager.h */,
 				B8C9740D0E8A196E007D16AD /* Map */,
 				DD932BC2165C294100D69D49 /* Externals */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -450,6 +453,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D8D0880119E346CF004E1337 /* libxml2.dylib */,
 				B83E65590E80E7EB001663B6 /* CoreFoundation.framework */,
 				288765A40DF7441C002DB57D /* CoreGraphics.framework */,
 				B83E65630E80E81C001663B6 /* CoreLocation.framework */,
@@ -1020,6 +1024,9 @@
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../Proj4\"",
 					"\"$(SRCROOT)/Map/GRMustache/include\"",
+					"\"$(SRCROOT)/../../leadNav7\"",
+					"\"$(SRCROOT)/../../KissXML\"",
+					"\"$(SDKROOT)/usr/include/libxml2\"",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1045,6 +1052,9 @@
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../Proj4\"",
 					"\"$(SRCROOT)/Map/GRMustache/include\"",
+					"\"$(SRCROOT)/../../leadNav7\"",
+					"\"$(SRCROOT)/../../KissXML\"",
+					"\"$(SDKROOT)/usr/include/libxml2\"",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

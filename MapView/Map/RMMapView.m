@@ -55,6 +55,9 @@
 
 #import "SMCalloutView.h"
 
+// LeadNav customization to use external location updates
+#import "LNNavigationManager.h"
+
 #pragma mark --- begin constants ----
 
 #define kZoomRectPixelBuffer 150.0
@@ -74,7 +77,7 @@
 @interface RMMapView (PrivateMethods) <UIScrollViewDelegate,
                                        UIGestureRecognizerDelegate,
                                        RMMapScrollViewDelegate,
-                                       CLLocationManagerDelegate,
+                                       //CLLocationManagerDelegate, // LeadNav customization to use external location updates
                                        SMCalloutViewDelegate,
                                        UIPopoverControllerDelegate,
                                        UIViewControllerTransitioningDelegate,
@@ -188,7 +191,9 @@
     RMAnnotation *_draggedAnnotation;
     CGPoint _dragOffset;
 
-    CLLocationManager *_locationManager;
+    // LeadNav customization to use external location updates
+    //CLLocationManager *_locationManager;
+    LNNavigationManager *_navigationManager;
 
     RMAnnotation *_accuracyCircleAnnotation;
     RMAnnotation *_trackingHaloAnnotation;
@@ -445,9 +450,10 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_mapScrollView removeObserver:self forKeyPath:@"contentOffset"];
     [_tileSourcesContainer cancelAllDownloads];
-    _locationManager.delegate = nil;
-    [_locationManager stopUpdatingLocation];
-    [_locationManager stopUpdatingHeading];
+    // LeadNav customization to use external location updates
+    //_locationManager.delegate = nil;
+    //[_locationManager stopUpdatingLocation];
+    //[_locationManager stopUpdatingHeading];
 }
 
 - (void)didReceiveMemoryWarning
@@ -468,7 +474,9 @@
     // send a dummy heading update to force re-rotation
     //
     if (self.userTrackingMode == RMUserTrackingModeFollowWithHeading)
-        [self locationManager:_locationManager didUpdateHeading:_locationManager.heading];
+        // LeadNav customization to use external location updates
+        //[self locationManager:_locationManager didUpdateHeading:_locationManager.heading];
+        [self locationManager:nil didUpdateHeading:_navigationManager.rawHeading];
 
     // fix UIScrollView artifacts from rotation at minZoomScale
     //
@@ -2663,7 +2671,9 @@
         // update heading tracking views
         //
         if (self.userTrackingMode == RMUserTrackingModeFollowWithHeading)
-            _userHeadingTrackingView.image  = [self headingAngleImageForAccuracy:_locationManager.heading.headingAccuracy];
+            // LeadNav customization to use external location updates
+            //_userHeadingTrackingView.image  = [self headingAngleImageForAccuracy:_locationManager.heading.headingAccuracy];
+            _userHeadingTrackingView.image = [self headingAngleImageForAccuracy:_navigationManager.headingAccuracy];
     }
 
     // update tracking button
@@ -3239,17 +3249,30 @@
 
         self.userLocation = [RMUserLocation annotationWithMapView:self coordinate:CLLocationCoordinate2DMake(MAXFLOAT, MAXFLOAT) andTitle:nil];
 
-        _locationManager = [CLLocationManager new];
-        _locationManager.headingFilter = 5.0;
-        _locationManager.delegate = self;
-        [_locationManager startUpdatingLocation];
+        // LeadNav customization to use external location updates
+        //_locationManager = [CLLocationManager new];
+        //_locationManager.headingFilter = 5.0;
+        //_locationManager.delegate = self;
+        //[_locationManager startUpdatingLocation];
+        _navigationManager = [LNNavigationManager sharedManager];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(navigationManagerDidUpdateLocation:) name:NAVIGATION_MANAGER_LOCATION_UPDATED object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(navigationManagerDidUpdateHeading:) name:NAVIGATION_MANAGER_HEADING_UPDATED object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(navigationManagerDidChangeAuthorizationStatus:) name:NAVIGATION_MANAGER_AUTHORIZATION_STATUS_CHANGED object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(navigationManagerLocationError:) name:NAVIGATION_MANAGER_LOCATION_ERROR object:nil];
     }
     else
     {
-        [_locationManager stopUpdatingLocation];
-        [_locationManager stopUpdatingHeading];
-        _locationManager.delegate = nil;
-         _locationManager = nil;
+        // LeadNav customization to use external location updates
+        //[_locationManager stopUpdatingLocation];
+        //[_locationManager stopUpdatingHeading];
+        //_locationManager.delegate = nil;
+        //_locationManager = nil;
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:NAVIGATION_MANAGER_LOCATION_UPDATED object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:NAVIGATION_MANAGER_HEADING_UPDATED object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:NAVIGATION_MANAGER_AUTHORIZATION_STATUS_CHANGED object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:NAVIGATION_MANAGER_LOCATION_ERROR object:nil];
 
         if (_delegateHasDidStopLocatingUser)
             [_delegate mapViewDidStopLocatingUser:self];
@@ -3309,7 +3332,9 @@
         case RMUserTrackingModeNone:
         default:
         {
-            [_locationManager stopUpdatingHeading];
+            // LeadNav customization to use external location updates
+            //[_locationManager stopUpdatingHeading];
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:NAVIGATION_MANAGER_HEADING_UPDATED object:nil];
 
             [CATransaction setAnimationDuration:0.5];
             [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
@@ -3345,13 +3370,17 @@
         {
             self.showsUserLocation = YES;
 
-            [_locationManager stopUpdatingHeading];
+            // LeadNav customization to use external location updates
+            //[_locationManager stopUpdatingHeading];
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:NAVIGATION_MANAGER_HEADING_UPDATED object:nil];
 
             if (self.userLocation)
-                #pragma clang diagnostic push
-                #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-                [self locationManager:_locationManager didUpdateToLocation:self.userLocation.location fromLocation:self.userLocation.location];
-                #pragma clang diagnostic pop
+                // LeadNav customization to use external location updates
+                //#pragma clang diagnostic push
+                //#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                //[self locationManager:_locationManager didUpdateToLocation:self.userLocation.location fromLocation:self.userLocation.location];
+                //#pragma clang diagnostic pop
+                [self locationManager:nil didUpdateToLocation:_navigationManager.currentLocation fromLocation:_navigationManager.currentLocation];
 
             if (_userHeadingTrackingView)
                 [_userHeadingTrackingView removeFromSuperview]; _userHeadingTrackingView = nil;
@@ -3409,14 +3438,18 @@
                 [self zoomByFactor:exp2f(3 - [self zoom]) near:self.center animated:YES];
 
             if (self.userLocation)
-                #pragma clang diagnostic push
-                #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-                [self locationManager:_locationManager didUpdateToLocation:self.userLocation.location fromLocation:self.userLocation.location];
-                #pragma clang diagnostic pop
+                // LeadNav customization to use external location updates
+                //#pragma clang diagnostic push
+                //#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                //[self locationManager:_locationManager didUpdateToLocation:self.userLocation.location fromLocation:self.userLocation.location];
+                //#pragma clang diagnostic pop
+                [self locationManager:nil didUpdateToLocation:_navigationManager.currentLocation fromLocation:_navigationManager.currentLocation];
 
             [self updateHeadingForDeviceOrientation];
 
-            [_locationManager startUpdatingHeading];
+            // LeadNav customization to use external location updates
+            //[_locationManager startUpdatingHeading];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(navigationManagerDidUpdateHeading:) name:NAVIGATION_MANAGER_HEADING_UPDATED object:nil];
 
             break;
         }
@@ -3596,23 +3629,34 @@
 
 - (BOOL)locationManagerShouldDisplayHeadingCalibration:(CLLocationManager *)manager
 {
-    if (self.displayHeadingCalibration)
-        [_locationManager performSelector:@selector(dismissHeadingCalibrationDisplay) withObject:nil afterDelay:10.0];
+    // LeadNav customization to use external location updates
+    //if (self.displayHeadingCalibration)
+    //    [_locationManager performSelector:@selector(dismissHeadingCalibrationDisplay) withObject:nil afterDelay:10.0];
 
-    return self.displayHeadingCalibration;
+    //return self.displayHeadingCalibration;
+    
+    return NO;
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading
 {
     // LeadNav customization to use a heading based on the course at higher speeds
-    CLLocationDirection heading = newHeading.trueHeading;
+    //CLLocationDirection heading = newHeading.trueHeading;
     
     // If the speed is above 5 mph, use the course
-    if (manager.location.speed > 2.2352) {
-        heading = manager.location.course;
+    //if (manager.location.speed > 2.2352) {
+    //    heading = manager.location.course;
+    //}
+    
+    //double accuracy = (heading == newHeading.trueHeading) ? newHeading.headingAccuracy : manager.location.horizontalAccuracy;
+    
+    // LeadNav customization to use external location updates
+    if (!newHeading) {
+        newHeading = _navigationManager.rawHeading;
     }
     
-    double accuracy = (heading == newHeading.trueHeading) ? newHeading.headingAccuracy : manager.location.horizontalAccuracy;
+    CLLocationDirection heading = _navigationManager.currentHeading;
+    double accuracy = _navigationManager.headingAccuracy;
     
     if ( ! _showsUserLocation || _mapScrollView.isDragging || /*newHeading.headingAccuracy < 0*/ accuracy < 0)
         return;
@@ -3682,37 +3726,62 @@
     }
 }
 
+// LeadNav customization to use external location updates
+- (void)navigationManagerDidUpdateLocation:(NSNotification *)notification
+{
+    [self locationManager:nil didUpdateToLocation:_navigationManager.currentLocation fromLocation:_navigationManager.previousLocation];
+}
+
+// LeadNav customization to use external location updates
+- (void)navigationManagerDidUpdateHeading:(NSNotification *)notification
+{
+    [self locationManager:nil didUpdateHeading:_navigationManager.rawHeading];
+}
+
+// LeadNav customization to use external location updates
+- (void)navigationManagerDidChangeAuthorizationStatus:(NSNotification *)notification
+{
+    [self locationManager:nil didChangeAuthorizationStatus:_navigationManager.authorizationStatus];
+}
+
+// LeadNav customization to use external location updates
+- (void)navigationManagerLocationError:(NSNotification *)notification
+{
+    [self locationManager:nil didFailWithError:(NSError *)notification.object];
+}
+
 - (void)updateHeadingForDeviceOrientation
 {
-    if (_locationManager)
-    {
-        // note that right/left device and interface orientations are opposites (see UIApplication.h)
-        //
-        switch ([[UIApplication sharedApplication] statusBarOrientation])
-        {
-            case (UIInterfaceOrientationLandscapeLeft):
-            {
-                _locationManager.headingOrientation = CLDeviceOrientationLandscapeRight;
-                break;
-            }
-            case (UIInterfaceOrientationLandscapeRight):
-            {
-                _locationManager.headingOrientation = CLDeviceOrientationLandscapeLeft;
-                break;
-            }
-            case (UIInterfaceOrientationPortraitUpsideDown):
-            {
-                _locationManager.headingOrientation = CLDeviceOrientationPortraitUpsideDown;
-                break;
-            }
-            case (UIInterfaceOrientationPortrait):
-            default:
-            {
-                _locationManager.headingOrientation = CLDeviceOrientationPortrait;
-                break;
-            }
-        }
-    }
+    // LeadNav customization to use external location updates
+    //if (_locationManager)
+    //{
+    //    // note that right/left device and interface orientations are opposites (see UIApplication.h)
+    //    //
+    //    switch ([[UIApplication sharedApplication] statusBarOrientation])
+    //    {
+    //        case (UIInterfaceOrientationLandscapeLeft):
+    //        {
+    //            _locationManager.headingOrientation = CLDeviceOrientationLandscapeRight;
+    //            break;
+    //        }
+    //        case (UIInterfaceOrientationLandscapeRight):
+    //        {
+    //            _locationManager.headingOrientation = CLDeviceOrientationLandscapeLeft;
+    //            break;
+    //        }
+    //        case (UIInterfaceOrientationPortraitUpsideDown):
+    //        {
+    //            _locationManager.headingOrientation = CLDeviceOrientationPortraitUpsideDown;
+    //            break;
+    //        }
+    //        case (UIInterfaceOrientationPortrait):
+    //        default:
+    //        {
+    //            _locationManager.headingOrientation = CLDeviceOrientationPortrait;
+    //            break;
+    //        }
+    //    }
+    //}
 }
 
 - (void)tappedHeadingCompass:(id)sender
