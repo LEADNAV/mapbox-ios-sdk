@@ -3256,6 +3256,8 @@
         //[_locationManager startUpdatingLocation];
         _navigationManager = [LNNavigationManager sharedManager];
         
+        [self navigationManagerDidUpdateLocation:nil]; // Force a location update
+        
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(navigationManagerDidUpdateLocation:) name:NAVIGATION_MANAGER_LOCATION_UPDATED object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(navigationManagerDidUpdateHeading:) name:NAVIGATION_MANAGER_HEADING_UPDATED object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(navigationManagerDidChangeAuthorizationStatus:) name:NAVIGATION_MANAGER_AUTHORIZATION_STATUS_CHANGED object:nil];
