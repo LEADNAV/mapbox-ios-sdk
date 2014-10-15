@@ -3382,7 +3382,7 @@
                 //#pragma clang diagnostic ignored "-Wdeprecated-declarations"
                 //[self locationManager:_locationManager didUpdateToLocation:self.userLocation.location fromLocation:self.userLocation.location];
                 //#pragma clang diagnostic pop
-                [self locationManager:nil didUpdateToLocation:_navigationManager.currentLocation fromLocation:_navigationManager.currentLocation];
+                [self locationManager:nil didUpdateToLocation:self.userLocation.location fromLocation:self.userLocation.location];
 
             if (_userHeadingTrackingView)
                 [_userHeadingTrackingView removeFromSuperview]; _userHeadingTrackingView = nil;
@@ -3445,7 +3445,7 @@
                 //#pragma clang diagnostic ignored "-Wdeprecated-declarations"
                 //[self locationManager:_locationManager didUpdateToLocation:self.userLocation.location fromLocation:self.userLocation.location];
                 //#pragma clang diagnostic pop
-                [self locationManager:nil didUpdateToLocation:_navigationManager.currentLocation fromLocation:_navigationManager.currentLocation];
+                [self locationManager:nil didUpdateToLocation:self.userLocation.location fromLocation:self.userLocation.location];
 
             [self updateHeadingForDeviceOrientation];
 
@@ -3669,19 +3669,19 @@
 
     if (_delegateHasDidUpdateUserLocation)
         [_delegate mapView:self didUpdateUserLocation:self.userLocation];
-
+    
     if (/*newHeading.trueHeading*/ heading != 0 && self.userTrackingMode == RMUserTrackingModeFollowWithHeading)
     {
         if (_userHeadingTrackingView.alpha < 1.0)
             [UIView animateWithDuration:0.5 animations:^(void) { _userHeadingTrackingView.alpha = 1.0; }];
-
+        
         [CATransaction begin];
         [CATransaction setAnimationDuration:0.5];
         [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-
+        
         [UIView animateWithDuration:0.5
                               delay:0.0
-                            options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationCurveEaseInOut
+                            options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
                          animations:^(void)
                          {
                              CGFloat angle = (M_PI / -180) * /*newHeading.trueHeading*/ heading;
@@ -3696,8 +3696,16 @@
                              _compassButton.alpha = 1.0;
 
                              for (RMAnnotation *annotation in _annotations)
-                                 if ([annotation.layer isKindOfClass:[RMMarker class]])
+                                 if ([annotation.layer isKindOfClass:[RMMarker class]]) {
+                                     //CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
+                                     //animation.toValue = [NSValue valueWithCATransform3D:_annotationTransform];
+                                     //animation.duration = 0.5;
+                                     //animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+                                     
+                                     //[annotation.layer addAnimation:animation forKey:@"transform"];
+                                     
                                      annotation.layer.transform = _annotationTransform;
+                                 }
 
                              [self correctPositionOfAllAnnotations];
                          }
