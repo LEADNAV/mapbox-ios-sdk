@@ -3259,7 +3259,7 @@
         [self navigationManagerDidUpdateLocation:nil]; // Force a location update
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(navigationManagerDidUpdateLocation:) name:NAVIGATION_MANAGER_LOCATION_UPDATED object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(navigationManagerDidUpdateHeading:) name:NAVIGATION_MANAGER_HEADING_UPDATED object:nil];
+        //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(navigationManagerDidUpdateHeading:) name:NAVIGATION_MANAGER_HEADING_UPDATED object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(navigationManagerDidChangeAuthorizationStatus:) name:NAVIGATION_MANAGER_AUTHORIZATION_STATUS_CHANGED object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(navigationManagerLocationError:) name:NAVIGATION_MANAGER_LOCATION_ERROR object:nil];
     }
@@ -3697,12 +3697,14 @@
 
                              for (RMAnnotation *annotation in _annotations)
                                  if ([annotation.layer isKindOfClass:[RMMarker class]]) {
-                                     //CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
-                                     //animation.toValue = [NSValue valueWithCATransform3D:_annotationTransform];
-                                     //animation.duration = 0.5;
-                                     //animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+                                     /*CABasicAnimation *previousAnimation = (CABasicAnimation *)[annotation.layer animationForKey:@"transform"];
+                                     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
+                                     animation.fromValue = [NSValue valueWithCATransform3D:((CALayer *)annotation.layer.presentationLayer).transform];
+                                     animation.toValue = [NSValue valueWithCATransform3D:_annotationTransform];
+                                     animation.duration = 0.5 - (CACurrentMediaTime() - previousAnimation.beginTime);
+                                     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
                                      
-                                     //[annotation.layer addAnimation:animation forKey:@"transform"];
+                                     [annotation.layer addAnimation:animation forKey:@"transform"];*/
                                      
                                      annotation.layer.transform = _annotationTransform;
                                  }
