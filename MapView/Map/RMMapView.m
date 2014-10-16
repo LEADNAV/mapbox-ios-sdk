@@ -3697,14 +3697,14 @@
 
                              for (RMAnnotation *annotation in _annotations)
                                  if ([annotation.layer isKindOfClass:[RMMarker class]]) {
-                                     /*CABasicAnimation *previousAnimation = (CABasicAnimation *)[annotation.layer animationForKey:@"transform"];
-                                     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
-                                     animation.fromValue = [NSValue valueWithCATransform3D:((CALayer *)annotation.layer.presentationLayer).transform];
-                                     animation.toValue = [NSValue valueWithCATransform3D:_annotationTransform];
-                                     animation.duration = 0.5 - (CACurrentMediaTime() - previousAnimation.beginTime);
-                                     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+                                     //CABasicAnimation *previousAnimation = (CABasicAnimation *)[annotation.layer animationForKey:@"transform"];
+                                     //CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
+                                     //animation.fromValue = [NSValue valueWithCATransform3D:((CALayer *)annotation.layer.presentationLayer).transform];
+                                     //animation.toValue = [NSValue valueWithCATransform3D:_annotationTransform];
+                                     //animation.duration = 0.5 - (CACurrentMediaTime() - previousAnimation.beginTime);
+                                     //animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
                                      
-                                     [annotation.layer addAnimation:animation forKey:@"transform"];*/
+                                     //[annotation.layer addAnimation:animation forKey:@"transform"];
                                      
                                      annotation.layer.transform = _annotationTransform;
                                  }
