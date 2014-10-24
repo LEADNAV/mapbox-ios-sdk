@@ -3681,7 +3681,7 @@
         
         [UIView animateWithDuration:0.5
                               delay:0.0
-                            options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
+                            options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction
                          animations:^(void)
                          {
                              CGFloat angle = (M_PI / -180) * /*newHeading.trueHeading*/ heading;

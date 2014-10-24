@@ -11,7 +11,7 @@
 
 @interface RMFileCache ()
 
-@property (strong, nonatomic) NSTimer *cachePurgeTimer;
+//@property (strong, nonatomic) NSTimer *cachePurgeTimer;
 @property (strong, nonatomic) NSString *cacheDir;
 @property (nonatomic, assign) BOOL isUpdatingAreaData;
 @property (nonatomic, assign) BOOL isPurgingCache;
@@ -101,10 +101,10 @@
 
 - (void)dealloc
 {
-    if (self.cachePurgeTimer) {
-        [self.cachePurgeTimer invalidate];
-        self.cachePurgeTimer = nil;
-    }
+    //if (self.cachePurgeTimer) {
+    //    [self.cachePurgeTimer invalidate];
+    //    self.cachePurgeTimer = nil;
+    //}
 }
 
 #pragma mark - RM tile cache protocol (required)
