@@ -320,7 +320,9 @@
 
 - (void)addCurveToProjectedPoint:(RMProjectedPoint)point controlPoint1:(RMProjectedPoint)controlPoint1 controlPoint2:(RMProjectedPoint)controlPoint2 withDrawing:(BOOL)isDrawing
 {
-    [points addObject:[[CLLocation alloc] initWithLatitude:[mapView projectedPointToCoordinate:point].latitude longitude:[mapView projectedPointToCoordinate:point].longitude]];
+    // LeadNav optimization to prevent a slow call to [NSDate date]
+    //[points addObject:[[CLLocation alloc] initWithLatitude:[mapView projectedPointToCoordinate:point].latitude longitude:[mapView projectedPointToCoordinate:point].longitude]];
+    [points addObject:[[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake([mapView projectedPointToCoordinate:point].latitude, [mapView projectedPointToCoordinate:point].longitude) altitude:0 horizontalAccuracy:0 verticalAccuracy:0 timestamp:nil]];
 
     if (isFirstPoint)
     {
