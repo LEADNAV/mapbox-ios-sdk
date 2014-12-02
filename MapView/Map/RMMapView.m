@@ -3490,7 +3490,8 @@
 
         if (fabsf(userLocationPoint.x - mapCenterPoint.x) > 1.0 || fabsf(userLocationPoint.y - mapCenterPoint.y) > 1.0)
         {
-            if (round(_zoom) >= 10)
+            // LeadNav customization to prevent zooming while tracking the user location
+            if (YES /*round(_zoom) >= 10*/)
             {
                 // at sufficient detail, just re-center the map; don't zoom
                 //
