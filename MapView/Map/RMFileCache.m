@@ -11,10 +11,10 @@
 
 @interface RMFileCache ()
 
-//@property (strong, nonatomic) NSTimer *cachePurgeTimer;
 @property (strong, nonatomic) NSString *cacheDir;
 @property (nonatomic, assign) BOOL isUpdatingAreaData;
 @property (nonatomic, assign) BOOL isPurgingCache;
+@property (nonatomic, assign) BOOL shouldCancelPurge;
 
 @end
 
@@ -94,17 +94,9 @@
     
     self.capacity = 1000;
     self.expiryPeriod = 0;
-    //self.cachePurgeTimer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(purgeCache) userInfo:nil repeats:YES];
     self.isUpdatingAreaData = NO;
     self.isPurgingCache = NO;
-}
-
-- (void)dealloc
-{
-    //if (self.cachePurgeTimer) {
-    //    [self.cachePurgeTimer invalidate];
-    //    self.cachePurgeTimer = nil;
-    //}
+    self.shouldCancelPurge = NO;
 }
 
 #pragma mark - RM tile cache protocol (required)
@@ -136,7 +128,11 @@
 
 - (void)didReceiveMemoryWarning
 {
-    // Nothing to do here
+    RMLog(@"Received memory warning.");
+    
+    if (self.isPurgingCache) {
+        self.shouldCancelPurge = YES;
+    }
 }
 
 #pragma mark - RM tile cache protocol (optional)
@@ -373,6 +369,7 @@
     }
     
     self.isPurgingCache = YES;
+    self.shouldCancelPurge = NO;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         //RMLog(@"Purging images from the cache.");
@@ -399,7 +396,7 @@
             NSDirectoryEnumerator *cacheDirectoryEnumerator = [fileManager enumeratorAtPath:cacheDirectoryPath];
             NSString *file = [cacheDirectoryEnumerator nextObject];
             
-            while (file && !self.isUpdatingAreaData) {
+            while (file && !self.isUpdatingAreaData && !self.shouldCancelPurge) {
                 @autoreleasepool {
                     NSString *filePath = [NSString pathWithComponents:@[ self.cacheDir, cacheKey, file ]];
                     NSString *key = [NSString pathWithComponents:@[ cacheKey, file ]];
@@ -424,6 +421,15 @@
                 
                 return;
             }
+            
+            if (self.shouldCancelPurge) {
+                RMLog(@"Canceled purge.");
+                
+                self.isPurgingCache = NO;
+                self.shouldCancelPurge = NO;
+                
+                return;
+            }
         }
         
         // Sort the cached images by modification date in ascending order (earliest dates first)
@@ -443,6 +449,15 @@
                 RMLog(@"Aborted purge for area data update.");
                 
                 self.isPurgingCache = NO;
+                
+                return;
+            }
+            
+            if (self.shouldCancelPurge) {
+                RMLog(@"Canceled purge.");
+                
+                self.isPurgingCache = NO;
+                self.shouldCancelPurge = NO;
                 
                 return;
             }
