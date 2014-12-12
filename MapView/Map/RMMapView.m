@@ -3325,6 +3325,9 @@
 {
     if (mode == _userTrackingMode)
         return;
+    
+    // LeadNav customization to use external location updates
+    [self navigationManagerDidUpdateLocation:nil]; // Force a location update
 
     if (mode == RMUserTrackingModeFollowWithHeading && ! CLLocationCoordinate2DIsValid(self.userLocation.coordinate))
         mode = RMUserTrackingModeNone;
