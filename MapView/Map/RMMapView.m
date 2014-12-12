@@ -1860,6 +1860,11 @@
         //
         [_delegate longPressOnMap:self at:[recognizer locationInView:self]];
     }
+    // LeadNav customization to fix an issue where an annotation can get stuck in a drag state
+    else if (_draggedAnnotation)
+    {
+        _draggedAnnotation = nil;
+    }
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
