@@ -147,7 +147,9 @@
 
         UIImage *tileImage = nil;
 
-        if (zoom >= _tileSource.minZoom && zoom <= _tileSource.maxZoom)
+        // HACK: LeadNav customization to clamp the zoom (fixes an iPhone 6 issue where tiles are rendered 2 zoom levels higher)
+        //if (zoom >= _tileSource.minZoom && zoom <= _tileSource.maxZoom)
+        if (zoom >= _tileSource.minZoom && zoom <= _tileSource.maxZoom && zoom <= (_mapView.maxZoom + _mapView.missingTilesDepth))
         {
             RMDatabaseCache *databaseCache = nil;
 
