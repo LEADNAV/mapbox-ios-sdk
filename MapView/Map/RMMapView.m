@@ -254,6 +254,9 @@
                                minZoomLevel:(float)initialTileSourceMinZoomLevel
                             backgroundImage:(UIImage *)backgroundImage
 {
+    // LeadNav customization to use external location updates
+    _navigationManager = [LNNavigationManager sharedManager];
+    
     _constrainMovement = _constrainMovementByUser = _bouncingEnabled = _zoomingInPivotsAroundCenter = NO;
     _draggingEnabled = YES;
 
@@ -3254,14 +3257,15 @@
         if (_delegateHasWillStartLocatingUser)
             [_delegate mapViewWillStartLocatingUser:self];
 
-        self.userLocation = [RMUserLocation annotationWithMapView:self coordinate:CLLocationCoordinate2DMake(MAXFLOAT, MAXFLOAT) andTitle:nil];
-
         // LeadNav customization to use external location updates
+        //self.userLocation = [RMUserLocation annotationWithMapView:self coordinate:CLLocationCoordinate2DMake(MAXFLOAT, MAXFLOAT) andTitle:nil];
+        self.userLocation = [RMUserLocation annotationWithMapView:self coordinate:_navigationManager.currentLocation.coordinate andTitle:nil];
+        
         //_locationManager = [CLLocationManager new];
         //_locationManager.headingFilter = 5.0;
         //_locationManager.delegate = self;
         //[_locationManager startUpdatingLocation];
-        _navigationManager = [LNNavigationManager sharedManager];
+        //_navigationManager = [LNNavigationManager sharedManager]; // This was moved to the performInitializationWithTilesource method
         
         [self navigationManagerDidUpdateLocation:nil]; // Force a location update
         
@@ -3533,107 +3537,109 @@
         }
     }
 
-    if ( ! _accuracyCircleAnnotation)
-    {
-        _accuracyCircleAnnotation = [RMAnnotation annotationWithMapView:self coordinate:newLocation.coordinate andTitle:nil];
-        _accuracyCircleAnnotation.annotationType = kRMAccuracyCircleAnnotationTypeName;
-        _accuracyCircleAnnotation.clusteringEnabled = NO;
-        _accuracyCircleAnnotation.enabled = NO;
-        _accuracyCircleAnnotation.layer = [[RMCircle alloc] initWithView:self radiusInMeters:newLocation.horizontalAccuracy];
-        _accuracyCircleAnnotation.layer.zPosition = -MAXFLOAT;
-        _accuracyCircleAnnotation.isUserLocationAnnotation = YES;
+    // LeadNav customization to remove the accuracy circle annotation
+//    if ( ! _accuracyCircleAnnotation)
+//    {
+//        _accuracyCircleAnnotation = [RMAnnotation annotationWithMapView:self coordinate:newLocation.coordinate andTitle:nil];
+//        _accuracyCircleAnnotation.annotationType = kRMAccuracyCircleAnnotationTypeName;
+//        _accuracyCircleAnnotation.clusteringEnabled = NO;
+//        _accuracyCircleAnnotation.enabled = NO;
+//        _accuracyCircleAnnotation.layer = [[RMCircle alloc] initWithView:self radiusInMeters:newLocation.horizontalAccuracy];
+//        _accuracyCircleAnnotation.layer.zPosition = -MAXFLOAT;
+//        _accuracyCircleAnnotation.isUserLocationAnnotation = YES;
+//
+//        ((RMCircle *)_accuracyCircleAnnotation.layer).lineColor = (RMPreVersion7 ? [UIColor colorWithRed:0.378 green:0.552 blue:0.827 alpha:0.7] : [UIColor clearColor]);
+//        ((RMCircle *)_accuracyCircleAnnotation.layer).fillColor = (RMPreVersion7 ? [UIColor colorWithRed:0.378 green:0.552 blue:0.827 alpha:0.15] : [self.tintColor colorWithAlphaComponent:0.1]);
+//
+//        ((RMCircle *)_accuracyCircleAnnotation.layer).lineWidthInPixels = 2.0;
+//
+//        [self addAnnotation:_accuracyCircleAnnotation];
+//    }
+//
+//    if ( ! oldLocation)
+//    {
+//        // make accuracy circle bounce until we get our second update
+//        //
+//        [CATransaction begin];
+//        [CATransaction setAnimationDuration:0.75];
+//        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+//
+//        CABasicAnimation *bounceAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
+//        bounceAnimation.repeatCount = MAXFLOAT;
+//        bounceAnimation.fromValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.2, 1.2, 1.0)];
+//        bounceAnimation.toValue   = [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.8, 0.8, 1.0)];
+//        bounceAnimation.removedOnCompletion = NO;
+//        bounceAnimation.autoreverses = YES;
+//
+//        [_accuracyCircleAnnotation.layer addAnimation:bounceAnimation forKey:@"animateScale"];
+//
+//        [CATransaction commit];
+//    }
+//    else
+//    {
+//        [_accuracyCircleAnnotation.layer removeAnimationForKey:@"animateScale"];
+//    }
+//
+//    if ([newLocation distanceFromLocation:oldLocation])
+//        _accuracyCircleAnnotation.coordinate = newLocation.coordinate;
+//
+//    if (newLocation.horizontalAccuracy != oldLocation.horizontalAccuracy)
+//        ((RMCircle *)_accuracyCircleAnnotation.layer).radiusInMeters = newLocation.horizontalAccuracy;
 
-        ((RMCircle *)_accuracyCircleAnnotation.layer).lineColor = (RMPreVersion7 ? [UIColor colorWithRed:0.378 green:0.552 blue:0.827 alpha:0.7] : [UIColor clearColor]);
-        ((RMCircle *)_accuracyCircleAnnotation.layer).fillColor = (RMPreVersion7 ? [UIColor colorWithRed:0.378 green:0.552 blue:0.827 alpha:0.15] : [self.tintColor colorWithAlphaComponent:0.1]);
-
-        ((RMCircle *)_accuracyCircleAnnotation.layer).lineWidthInPixels = 2.0;
-
-        [self addAnnotation:_accuracyCircleAnnotation];
-    }
-
-    if ( ! oldLocation)
-    {
-        // make accuracy circle bounce until we get our second update
-        //
-        [CATransaction begin];
-        [CATransaction setAnimationDuration:0.75];
-        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-
-        CABasicAnimation *bounceAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
-        bounceAnimation.repeatCount = MAXFLOAT;
-        bounceAnimation.fromValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.2, 1.2, 1.0)];
-        bounceAnimation.toValue   = [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.8, 0.8, 1.0)];
-        bounceAnimation.removedOnCompletion = NO;
-        bounceAnimation.autoreverses = YES;
-
-        [_accuracyCircleAnnotation.layer addAnimation:bounceAnimation forKey:@"animateScale"];
-
-        [CATransaction commit];
-    }
-    else
-    {
-        [_accuracyCircleAnnotation.layer removeAnimationForKey:@"animateScale"];
-    }
-
-    if ([newLocation distanceFromLocation:oldLocation])
-        _accuracyCircleAnnotation.coordinate = newLocation.coordinate;
-
-    if (newLocation.horizontalAccuracy != oldLocation.horizontalAccuracy)
-        ((RMCircle *)_accuracyCircleAnnotation.layer).radiusInMeters = newLocation.horizontalAccuracy;
-
-    if ( ! _trackingHaloAnnotation)
-    {
-        _trackingHaloAnnotation = [RMAnnotation annotationWithMapView:self coordinate:newLocation.coordinate andTitle:nil];
-        _trackingHaloAnnotation.annotationType = kRMTrackingHaloAnnotationTypeName;
-        _trackingHaloAnnotation.clusteringEnabled = NO;
-        _trackingHaloAnnotation.enabled = NO;
-
-        // create image marker
-        //
-        _trackingHaloAnnotation.layer = [[RMMarker alloc] initWithUIImage:[self trackingDotHaloImage]];
-        _trackingHaloAnnotation.layer.zPosition = -MAXFLOAT + 1;
-        _trackingHaloAnnotation.isUserLocationAnnotation = YES;
-
-        [CATransaction begin];
-
-        if (RMPreVersion7)
-        {
-            [CATransaction setAnimationDuration:2.5];
-            [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-        }
-        else
-        {
-            [CATransaction setAnimationDuration:3.5];
-            [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
-        }
-
-        // scale out radially
-        //
-        CABasicAnimation *boundsAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
-        boundsAnimation.repeatCount = MAXFLOAT;
-        boundsAnimation.fromValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.1, 0.1, 1.0)];
-        boundsAnimation.toValue   = [NSValue valueWithCATransform3D:CATransform3DMakeScale(2.0, 2.0, 1.0)];
-        boundsAnimation.removedOnCompletion = NO;
-
-        [_trackingHaloAnnotation.layer addAnimation:boundsAnimation forKey:@"animateScale"];
-
-        // go transparent as scaled out
-        //
-        CABasicAnimation *opacityAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
-        opacityAnimation.repeatCount = MAXFLOAT;
-        opacityAnimation.fromValue = [NSNumber numberWithFloat:1.0];
-        opacityAnimation.toValue   = [NSNumber numberWithFloat:-1.0];
-        opacityAnimation.removedOnCompletion = NO;
-
-        [_trackingHaloAnnotation.layer addAnimation:opacityAnimation forKey:@"animateOpacity"];
-
-        [CATransaction commit];
-
-        [self addAnnotation:_trackingHaloAnnotation];
-    }
-
-    if ([newLocation distanceFromLocation:oldLocation])
-        _trackingHaloAnnotation.coordinate = newLocation.coordinate;
+    // LeadNav customization to remove the tracking halo annotation
+//    if ( ! _trackingHaloAnnotation)
+//    {
+//        _trackingHaloAnnotation = [RMAnnotation annotationWithMapView:self coordinate:newLocation.coordinate andTitle:nil];
+//        _trackingHaloAnnotation.annotationType = kRMTrackingHaloAnnotationTypeName;
+//        _trackingHaloAnnotation.clusteringEnabled = NO;
+//        _trackingHaloAnnotation.enabled = NO;
+//
+//        // create image marker
+//        //
+//        _trackingHaloAnnotation.layer = [[RMMarker alloc] initWithUIImage:[self trackingDotHaloImage]];
+//        _trackingHaloAnnotation.layer.zPosition = -MAXFLOAT + 1;
+//        _trackingHaloAnnotation.isUserLocationAnnotation = YES;
+//
+//        [CATransaction begin];
+//
+//        if (RMPreVersion7)
+//        {
+//            [CATransaction setAnimationDuration:2.5];
+//            [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+//        }
+//        else
+//        {
+//            [CATransaction setAnimationDuration:3.5];
+//            [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+//        }
+//
+//        // scale out radially
+//        //
+//        CABasicAnimation *boundsAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
+//        boundsAnimation.repeatCount = MAXFLOAT;
+//        boundsAnimation.fromValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.1, 0.1, 1.0)];
+//        boundsAnimation.toValue   = [NSValue valueWithCATransform3D:CATransform3DMakeScale(2.0, 2.0, 1.0)];
+//        boundsAnimation.removedOnCompletion = NO;
+//
+//        [_trackingHaloAnnotation.layer addAnimation:boundsAnimation forKey:@"animateScale"];
+//
+//        // go transparent as scaled out
+//        //
+//        CABasicAnimation *opacityAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+//        opacityAnimation.repeatCount = MAXFLOAT;
+//        opacityAnimation.fromValue = [NSNumber numberWithFloat:1.0];
+//        opacityAnimation.toValue   = [NSNumber numberWithFloat:-1.0];
+//        opacityAnimation.removedOnCompletion = NO;
+//
+//        [_trackingHaloAnnotation.layer addAnimation:opacityAnimation forKey:@"animateOpacity"];
+//
+//        [CATransaction commit];
+//
+//        [self addAnnotation:_trackingHaloAnnotation];
+//    }
+//
+//    if ([newLocation distanceFromLocation:oldLocation])
+//        _trackingHaloAnnotation.coordinate = newLocation.coordinate;
 
     self.userLocation.layer.hidden = ( ! CLLocationCoordinate2DIsValid(self.userLocation.coordinate));
 
