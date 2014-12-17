@@ -3257,10 +3257,9 @@
         if (_delegateHasWillStartLocatingUser)
             [_delegate mapViewWillStartLocatingUser:self];
 
-        // LeadNav customization to use external location updates
-        //self.userLocation = [RMUserLocation annotationWithMapView:self coordinate:CLLocationCoordinate2DMake(MAXFLOAT, MAXFLOAT) andTitle:nil];
-        self.userLocation = [RMUserLocation annotationWithMapView:self coordinate:_navigationManager.currentLocation.coordinate andTitle:nil];
+        self.userLocation = [RMUserLocation annotationWithMapView:self coordinate:CLLocationCoordinate2DMake(MAXFLOAT, MAXFLOAT) andTitle:nil];
         
+        // LeadNav customization to use external location updates
         //_locationManager = [CLLocationManager new];
         //_locationManager.headingFilter = 5.0;
         //_locationManager.delegate = self;
