@@ -28,6 +28,7 @@
 #import "RMCircle.h"
 #import "RMProjection.h"
 #import "RMMapView.h"
+#import "RMAnnotation.h" // LeadNav customization to correctly set the value of latRadians
 
 #define kDefaultLineWidth 2.0
 #define kDefaultLineColor [UIColor blackColor]
@@ -87,7 +88,9 @@
 
     CGMutablePathRef newPath = CGPathCreateMutable();
 
-    CGFloat latRadians = [[mapView projection] projectedPointToCoordinate:projectedLocation].latitude * M_PI / 180.0f;
+    // LeadNav customization to correctly set the value of latRadians
+    //CGFloat latRadians = [[mapView projection] projectedPointToCoordinate:projectedLocation].latitude * M_PI / 180.0f;
+    CGFloat latRadians = self.annotation.coordinate.latitude * M_PI / 180.0f;
     CGFloat pixelRadius = radiusInMeters / cos(latRadians) / [mapView metersPerPixel];
     //	DLog(@"Pixel Radius: %f", pixelRadius);
     
