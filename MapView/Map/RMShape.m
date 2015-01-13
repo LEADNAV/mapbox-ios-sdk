@@ -126,6 +126,10 @@
     if (ignorePathUpdates)
         return;
 
+    // LeadNav customization to disable implicit layer animations
+    [CATransaction begin];
+    [CATransaction setDisableActions:!animated];
+    
     float scale = 1.0f / [mapView metersPerPixel];
 
     // we have to calculate the scaledLineWidth even if scalling did not change
@@ -313,6 +317,9 @@
         self.annotation.coordinate = ((CLLocation *)[points objectAtIndex:0]).coordinate;
         [self.annotation setBoundingBoxFromLocations:points];
     }
+    
+    // LeadNav customization to disable implicit layer animations
+    [CATransaction commit];
 }
 
 #pragma mark -
