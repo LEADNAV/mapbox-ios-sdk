@@ -72,6 +72,9 @@ typedef enum : short {
 - (void)addArea:(NSDictionary *)area forCacheKey:(NSString *)cacheKey;
 - (void)removeArea:(NSDictionary *)area forCacheKey:(NSString *)cacheKey;
 
+// LeadNav customization to get all the tiles for an area
+- (NSArray *)tilesForArea:(NSDictionary *)area;
+
 // LeadNav customization to count the number of tiles in an area
 - (NSUInteger)countTilesInArea:(NSDictionary *)area;
 

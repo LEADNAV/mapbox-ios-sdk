@@ -279,6 +279,23 @@
     });
 }
 
+// LeadNav customization to get all the tiles for an area
+- (NSArray *)tilesForArea:(NSDictionary *)area
+{
+    __block NSArray *tiles = nil;
+    
+    dispatch_sync(_tileCacheQueue, ^{
+        
+        for (id<RMTileCache> cache in _tileCaches)
+        {
+            tiles = [cache tilesForArea:area];
+        }
+        
+    });
+    
+    return tiles;
+}
+
 // LeadNav customization to count the number of tiles in an area
 - (NSUInteger)countTilesInArea:(NSDictionary *)area
 {
