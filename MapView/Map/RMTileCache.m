@@ -687,6 +687,7 @@ static NSMutableDictionary *predicateValues = nil;
     RMLog(@"File cache configuration: {cacheDir : %@, capacity : %lu, expiryPeriod : %.0f}", cacheDir, (unsigned long)capacity, expiryPeriod);
     
     RMFileCache *fileCache = [RMFileCache cacheWithCacheDir:cacheDir];
+    fileCache.tileCache = self;
     fileCache.capacity = capacity;
     fileCache.expiryPeriod = expiryPeriod;
     

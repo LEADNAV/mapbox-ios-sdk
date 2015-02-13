@@ -171,18 +171,22 @@
         }
     }
     
-    // Write the image data to the cache
-    NSData *data = UIImagePNGRepresentation(image);
-    
-    if (data) {
-        [data writeToFile:path options:NSDataWritingAtomic error:&error];
+    @autoreleasepool {
+        // Write the image data to the cache
+        NSData *data = UIImagePNGRepresentation(image);
         
-        if (error) {
-            RMLog(@"Error writing image for tile %d %d %d: %@", tile.zoom, tile.x, tile.y, error.localizedDescription);
-        }
-        
-        if (self.capacity > 0 && self.expiryPeriod == 0 && arc4random_uniform(100) == 0) {
-            [self purgeCache];
+        if (data) {
+            [data writeToFile:path options:NSDataWritingAtomic error:&error];
+            
+            if (error) {
+                RMLog(@"Error writing image for tile %d %d %d: %@", tile.zoom, tile.x, tile.y, error.localizedDescription);
+            }
+            
+            if (self.capacity > 0 && self.expiryPeriod == 0 && arc4random_uniform(100) == 0) {
+                [self purgeCache];
+            }
+            
+            data = nil;
         }
     }
 }
@@ -364,7 +368,7 @@
 
 - (void)purgeCache
 {
-    if (self.isPurgingCache || self.isUpdatingAreaData || (self.capacity == 0 && self.expiryPeriod == 0)) {
+    if (self.isPurgingCache || self.isUpdatingAreaData || (self.capacity == 0 && self.expiryPeriod == 0) || self.tileCache.isBackgroundCaching) {
         return;
     }
     

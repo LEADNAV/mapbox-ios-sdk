@@ -11,6 +11,7 @@
 
 @interface RMFileCache : NSObject <RMTileCache>
 
+@property (weak, nonatomic) RMTileCache *tileCache;
 @property (nonatomic, assign) NSUInteger capacity;
 @property (nonatomic, assign) NSTimeInterval expiryPeriod;
 

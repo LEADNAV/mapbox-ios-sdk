@@ -48,19 +48,23 @@
 
 - (void)main
 {
-    if ( ! _source || ! _cache)
-        [self cancel];
-
-    if ([self isCancelled])
-        return;
-
-    if ( ! [_cache cachedImage:_tile withCacheKey:[_source uniqueTilecacheKey]])
+    // LeadNav customization to reduce memory usage while background caching
+    @autoreleasepool
     {
+        if ( ! _source || ! _cache)
+            [self cancel];
+
         if ([self isCancelled])
             return;
 
-        if ( ! [_source imageForTile:_tile inCache:_cache])
-            [self cancel];
+        if ( ! [_cache cachedImage:_tile withCacheKey:[_source uniqueTilecacheKey]])
+        {
+            if ([self isCancelled])
+                return;
+
+            if ( ! [_source imageForTile:_tile inCache:_cache])
+                [self cancel];
+        }
     }
 }
 
