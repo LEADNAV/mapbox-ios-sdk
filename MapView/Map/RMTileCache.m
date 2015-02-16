@@ -224,6 +224,17 @@
         }
 
     });
+    
+    // LeadNav customization to throttle memory usage when a memory warning is received during background caching
+    if (_backgroundFetchQueue && _backgroundFetchQueue.operationCount > 6) {
+        RMLog(@"Suspending background caching for 10 sec.");
+        
+        _backgroundFetchQueue.suspended = YES;
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 10 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            _backgroundFetchQueue.suspended = NO;
+        });
+    }
 }
 
 - (void)removeAllCachedImages
