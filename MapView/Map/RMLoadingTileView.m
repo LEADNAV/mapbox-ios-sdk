@@ -58,17 +58,16 @@
 
 - (void)setMapZooming:(BOOL)zooming
 {
-    // LeadNav customization to show a dark background
+    // LeadNav customization to show a custom background
     if (zooming)
     {
         //_contentView.backgroundColor = [UIColor clearColor];
-        _contentView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+        _contentView.backgroundColor = [UIColor colorWithWhite:0.8 alpha:1.0];
     }
     else
     {
         //_contentView.backgroundColor = [UIColor colorWithPatternImage:[RMMapView resourceImageNamed:(RMPostVersion6 ? @"LoadingTile6.png" : @"LoadingTile.png")]];
-        //_contentView.backgroundColor = [UIColor colorWithPatternImage:[RMMapView resourceImageNamed:(@"LoadingTileLeadNav.png")]];
-        _contentView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+        _contentView.backgroundColor = [UIColor colorWithPatternImage:[RMMapView resourceImageNamed:(@"LoadingTileLeadNav.png")]];
         
         _contentView.frame = CGRectMake(0, 0, self.frame.size.width * 3, self.frame.size.height * 3);
         self.contentSize = _contentView.bounds.size;
