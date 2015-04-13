@@ -81,7 +81,9 @@
 
 @property (nonatomic, assign) BOOL scaleLineWidth;
 @property (nonatomic, assign) CGFloat shadowBlur;
-@property (nonatomic, assign) CGSize shadowOffset;
+// LeadNav customization to fix a compiler warning about inheritance form CALayer
+//@property (nonatomic, assign) CGSize shadowOffset;
+@property (atomic, assign) CGSize shadowOffset;
 @property (nonatomic, assign) BOOL enableShadow;
 
 // LeadNav customization to enable line edges
