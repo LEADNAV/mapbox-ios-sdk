@@ -12,9 +12,13 @@
 @interface RMFileCache ()
 
 @property (strong, nonatomic) NSString *cacheDir;
+@property (strong, nonatomic) NSMutableDictionary *cacheAreaData;
+@property (strong, nonatomic) NSMutableSet *shouldSaveAreaDataCacheKeys;
+@property (nonatomic, assign) BOOL isSavingAreaData;
 @property (nonatomic, assign) BOOL isUpdatingAreaData;
 @property (nonatomic, assign) BOOL isPurgingCache;
 @property (nonatomic, assign) BOOL shouldCancelPurge;
+@property (strong, nonatomic) NSTimer *saveAreaDataTimer;
 
 @end
 
@@ -94,9 +98,22 @@
     
     self.capacity = 1000;
     self.expiryPeriod = 0;
+    self.cacheAreaData = [NSMutableDictionary new];
+    self.shouldSaveAreaDataCacheKeys = [NSMutableSet new];
+    self.isSavingAreaData = NO;
     self.isUpdatingAreaData = NO;
     self.isPurgingCache = NO;
     self.shouldCancelPurge = NO;
+    self.saveAreaDataTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(saveAreaDataAsync) userInfo:nil repeats:YES];
+    self.saveAreaDataTimer.tolerance = 1.0;
+}
+
+- (void)dealloc
+{
+    if (self.saveAreaDataTimer) {
+        [self.saveAreaDataTimer invalidate];
+        self.saveAreaDataTimer = nil;
+    }
 }
 
 #pragma mark - RM tile cache protocol (required)
@@ -129,6 +146,10 @@
 - (void)didReceiveMemoryWarning
 {
     RMLog(@"Received memory warning.");
+    
+    if (self.shouldSaveAreaDataCacheKeys.count == 0) {
+        self.cacheAreaData = [NSMutableDictionary new];
+    }
     
     if (self.isPurgingCache) {
         self.shouldCancelPurge = YES;
@@ -493,21 +514,28 @@
 
 - (NSDictionary *)loadAreaDataForCacheKey:(NSString *)cacheKey
 {
-    NSString *path = [NSString pathWithComponents:@[ self.cacheDir, cacheKey, @"area-data" ]];
-    NSDictionary *areaData = nil;
+    NSDictionary *areaData = [self.cacheAreaData objectForKey:cacheKey];
     
-    @try {
-        areaData = (NSDictionary *)[NSKeyedUnarchiver unarchiveObjectWithFile:path];
-    }
-    @catch (NSException *exception) {
-        RMLog(@"Area data for cache key %@ is corrupted. Removing the area data file.", cacheKey);
+    if (!areaData) {
+        NSString *path = [NSString pathWithComponents:@[ self.cacheDir, cacheKey, @"area-data" ]];
         
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        [fileManager removeItemAtPath:path error:nil];
+        @try {
+            areaData = (NSDictionary *)[NSKeyedUnarchiver unarchiveObjectWithFile:path];
+            
+            [self.cacheAreaData setObject:areaData forKey:cacheKey];
+        }
+        @catch (NSException *exception) {
+            RMLog(@"Area data for cache key %@ is corrupted. Removing the area data file.", cacheKey);
+            
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            [fileManager removeItemAtPath:path error:nil];
+        }
     }
     
     if (!areaData) {
         areaData = [NSDictionary new];
+        
+        [self.cacheAreaData setObject:areaData forKey:cacheKey];
     }
     
     return areaData;
@@ -515,15 +543,42 @@
 
 - (void)saveAreaData:(NSDictionary *)areaData forCacheKey:(NSString *)cacheKey
 {
-    NSString *path = [NSString pathWithComponents:@[ self.cacheDir, cacheKey, @"area-data" ]];
-    
     if (!areaData) {
         areaData = [NSDictionary new];
     }
     
-    if (![NSKeyedArchiver archiveRootObject:areaData toFile:path]) {
-        RMLog(@"Error writing area data for cache key %@", cacheKey);
+    [self.cacheAreaData setObject:areaData forKey:cacheKey];
+    [self.shouldSaveAreaDataCacheKeys addObject:cacheKey];
+}
+
+- (void)saveAreaDataAsync
+{
+    if (self.shouldSaveAreaDataCacheKeys.count == 0 || self.isSavingAreaData) {
+        return;
     }
+    
+#if DEBUG
+    RMLog(@"Saving area data.");
+#endif
+    
+    NSSet *cacheKeys = [self.shouldSaveAreaDataCacheKeys copy];
+    [self.shouldSaveAreaDataCacheKeys removeAllObjects];
+    self.isSavingAreaData = YES;
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        for (NSString *cacheKey in cacheKeys) {
+            NSString *path = [NSString pathWithComponents:@[ self.cacheDir, cacheKey, @"area-data" ]];
+            NSDictionary *areaData = [self.cacheAreaData objectForKey:cacheKey];
+            
+            if (![NSKeyedArchiver archiveRootObject:areaData toFile:path]) {
+                RMLog(@"Error writing area data for cache key %@", cacheKey);
+            }
+        }
+        
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            self.isSavingAreaData = NO;
+        });
+    });
 }
 
 @end
