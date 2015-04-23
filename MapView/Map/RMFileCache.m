@@ -522,7 +522,9 @@
         @try {
             areaData = (NSDictionary *)[NSKeyedUnarchiver unarchiveObjectWithFile:path];
             
-            [self.cacheAreaData setObject:areaData forKey:cacheKey];
+            if (areaData) {
+                [self.cacheAreaData setObject:areaData forKey:cacheKey];
+            }
         }
         @catch (NSException *exception) {
             RMLog(@"Area data for cache key %@ is corrupted. Removing the area data file.", cacheKey);
