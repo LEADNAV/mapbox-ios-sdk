@@ -363,6 +363,10 @@
 // LeadNav customization to get the cache size for a cache
 - (unsigned long long)cacheSizeForCacheKey:(NSString *)cacheKey
 {
+    if (!self.cacheDir && !cacheKey) {
+        return 0;
+    }
+    
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *cacheDirectoryPath = [NSString pathWithComponents:@[ self.cacheDir, cacheKey ]];
     NSDirectoryEnumerator *cacheDirectoryEnumerator = [fileManager enumeratorAtPath:cacheDirectoryPath];
