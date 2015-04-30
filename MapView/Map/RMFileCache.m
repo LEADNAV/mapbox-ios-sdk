@@ -363,7 +363,7 @@
 // LeadNav customization to get the cache size for a cache
 - (unsigned long long)cacheSizeForCacheKey:(NSString *)cacheKey
 {
-    if (!self.cacheDir && !cacheKey) {
+    if (!self.cacheDir || !cacheKey) {
         return 0;
     }
     
