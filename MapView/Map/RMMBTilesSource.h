@@ -81,4 +81,7 @@
 /** Returns YES if the tile source provides full-world coverage; otherwise, returns NO. */
 - (BOOL)coversFullWorld;
 
+// LeadNav customization to check the database integrity
+- (BOOL)checkDatabaseIntegrity;
+
 @end

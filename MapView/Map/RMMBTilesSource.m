@@ -326,6 +326,32 @@
     return NO;
 }
 
+// LeadNav customization to check the database integrity
+- (BOOL)checkDatabaseIntegrity
+{
+    __block BOOL checkDidSucceed = YES;
+    
+    [queue inDatabase:^(FMDatabase *db) {
+        FMResultSet *results;
+        
+        results = [db executeQuery:@"select name, value from metadata"];
+        
+        if ([db hadError])
+            checkDidSucceed = NO;
+        
+        [results close];
+        
+        results = [db executeQuery:@"select min(zoom_level) from tiles"];
+        
+        if ([db hadError])
+            checkDidSucceed = NO;
+        
+        [results close];
+    }];
+    
+    return checkDidSucceed;
+}
+
 - (void)didReceiveMemoryWarning
 {
     NSLog(@"*** didReceiveMemoryWarning in %@", [self class]);
