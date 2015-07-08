@@ -340,40 +340,43 @@
 
         [bezierPath moveToPoint:CGPointMake(0.0f, 0.0f)];
     }
-    else
+    else if (!bezierPath.empty) // LeadNav customization to prevent crashes from addLineToPoint on an empty path
     {
         point.x = point.x - projectedLocation.x;
         point.y = point.y - projectedLocation.y;
 
-        if (isDrawing)
+        if (!isnan(point.x) && !isnan(point.y)) // LeadNav customization to prevent crashes when x or y is NaN
         {
-            if (controlPoint1.x == (double)INFINITY && controlPoint2.x == (double)INFINITY)
+            if (isDrawing)
             {
-                [bezierPath addLineToPoint:CGPointMake(point.x, -point.y)];
-            }
-            else if (controlPoint2.x == (double)INFINITY)
-            {
-                controlPoint1.x = controlPoint1.x - projectedLocation.x;
-                controlPoint1.y = controlPoint1.y - projectedLocation.y;
+                if (controlPoint1.x == (double)INFINITY && controlPoint2.x == (double)INFINITY)
+                {
+                    [bezierPath addLineToPoint:CGPointMake(point.x, -point.y)];
+                }
+                else if (controlPoint2.x == (double)INFINITY)
+                {
+                    controlPoint1.x = controlPoint1.x - projectedLocation.x;
+                    controlPoint1.y = controlPoint1.y - projectedLocation.y;
 
-                [bezierPath addQuadCurveToPoint:CGPointMake(point.x, -point.y)
-                                   controlPoint:CGPointMake(controlPoint1.x, -controlPoint1.y)];
+                    [bezierPath addQuadCurveToPoint:CGPointMake(point.x, -point.y)
+                                       controlPoint:CGPointMake(controlPoint1.x, -controlPoint1.y)];
+                }
+                else
+                {
+                    controlPoint1.x = controlPoint1.x - projectedLocation.x;
+                    controlPoint1.y = controlPoint1.y - projectedLocation.y;
+                    controlPoint2.x = controlPoint2.x - projectedLocation.x;
+                    controlPoint2.y = controlPoint2.y - projectedLocation.y;
+
+                    [bezierPath addCurveToPoint:CGPointMake(point.x, -point.y)
+                                  controlPoint1:CGPointMake(controlPoint1.x, -controlPoint1.y)
+                                  controlPoint2:CGPointMake(controlPoint2.x, -controlPoint2.y)];
+                }
             }
             else
             {
-                controlPoint1.x = controlPoint1.x - projectedLocation.x;
-                controlPoint1.y = controlPoint1.y - projectedLocation.y;
-                controlPoint2.x = controlPoint2.x - projectedLocation.x;
-                controlPoint2.y = controlPoint2.y - projectedLocation.y;
-
-                [bezierPath addCurveToPoint:CGPointMake(point.x, -point.y)
-                              controlPoint1:CGPointMake(controlPoint1.x, -controlPoint1.y)
-                              controlPoint2:CGPointMake(controlPoint2.x, -controlPoint2.y)];
+                [bezierPath moveToPoint:CGPointMake(point.x, -point.y)];
             }
-        }
-        else
-        {
-            [bezierPath moveToPoint:CGPointMake(point.x, -point.y)];
         }
 
         lastScale = 0.0;
