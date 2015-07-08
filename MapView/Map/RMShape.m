@@ -345,7 +345,8 @@
         point.x = point.x - projectedLocation.x;
         point.y = point.y - projectedLocation.y;
 
-        if (!isnan(point.x) && !isnan(point.y)) // LeadNav customization to prevent crashes when x or y is NaN
+        // LeadNav customization to prevent crashes when the point is NaN
+        if (!isnan(point.x) && !isnan(point.y))
         {
             if (isDrawing)
             {

@@ -156,7 +156,8 @@
          layer = nil;
     }
 
-    if (aLayer)
+    // LeadNav customization to prevent crashes when the position is NaN
+    if (aLayer && !isnan(self.position.x) && !isnan(self.position.y))
     {
         layer = aLayer;
         layer.annotation = self;
