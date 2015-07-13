@@ -48,9 +48,9 @@ static RMConfiguration *RMConfigurationSharedInstance = nil;
 
 + (instancetype)brandedDataWithContentsOfURL:(NSURL *)aURL
 {
-    // LeadNav customization to reduce the timeout interval to 10 sec
+    // LeadNav customization to reduce the timeout interval to 5 sec
     //NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aURL];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];
 
     [request setValue:[[RMConfiguration configuration] userAgent] forHTTPHeaderField:@"User-Agent"];
 
@@ -65,9 +65,9 @@ static RMConfiguration *RMConfigurationSharedInstance = nil;
 
 + (instancetype)brandedStringWithContentsOfURL:(NSURL *)url encoding:(NSStringEncoding)enc error:(NSError **)error
 {
-    // LeadNav customization to reduce the timeout interval to 10 sec
+    // LeadNav customization to reduce the timeout interval to 5 sec
     //NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];
 
     [request setValue:[[RMConfiguration configuration] userAgent] forHTTPHeaderField:@"User-Agent"];
 
