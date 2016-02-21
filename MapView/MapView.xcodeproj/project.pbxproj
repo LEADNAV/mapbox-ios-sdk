@@ -84,6 +84,18 @@
 		D1437B37122869E400888DAE /* RMDBMapSource.h in Headers */ = {isa = PBXBuildFile; fileRef = D1437B33122869E400888DAE /* RMDBMapSource.h */; };
 		D84F34CF19703B230050CE08 /* RMURLMapSource.h in Headers */ = {isa = PBXBuildFile; fileRef = D84F34CD19703B230050CE08 /* RMURLMapSource.h */; };
 		D84F34D019703B230050CE08 /* RMURLMapSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D84F34CE19703B230050CE08 /* RMURLMapSource.m */; };
+		D8C088F21C7A6AA300124824 /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = D8C088E81C7A6AA300124824 /* FMDatabase.h */; };
+		D8C088F31C7A6AA300124824 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C088E91C7A6AA300124824 /* FMDatabase.m */; };
+		D8C088F41C7A6AA300124824 /* FMDatabaseAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D8C088EA1C7A6AA300124824 /* FMDatabaseAdditions.h */; };
+		D8C088F51C7A6AA300124824 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C088EB1C7A6AA300124824 /* FMDatabaseAdditions.m */; };
+		D8C088F61C7A6AA300124824 /* FMDatabasePool.h in Headers */ = {isa = PBXBuildFile; fileRef = D8C088EC1C7A6AA300124824 /* FMDatabasePool.h */; };
+		D8C088F71C7A6AA300124824 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C088ED1C7A6AA300124824 /* FMDatabasePool.m */; };
+		D8C088F81C7A6AA300124824 /* FMDatabaseQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = D8C088EE1C7A6AA300124824 /* FMDatabaseQueue.h */; };
+		D8C088F91C7A6AA300124824 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C088EF1C7A6AA300124824 /* FMDatabaseQueue.m */; };
+		D8C088FA1C7A6AA300124824 /* FMResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = D8C088F01C7A6AA300124824 /* FMResultSet.h */; };
+		D8C088FB1C7A6AA300124824 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C088F11C7A6AA300124824 /* FMResultSet.m */; };
+		D8C088FD1C7A6B2E00124824 /* libGRMustache7-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D8C088FC1C7A6B2E00124824 /* libGRMustache7-iOS.a */; };
+		D8C088FF1C7A7CD200124824 /* libProj4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D8C088FE1C7A7CD200124824 /* libProj4.a */; };
 		D8C0D4FF19A258B4002588C0 /* RMFileCache.h in Headers */ = {isa = PBXBuildFile; fileRef = D8C0D4FD19A258B4002588C0 /* RMFileCache.h */; };
 		D8C0D50019A258B4002588C0 /* RMFileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C0D4FE19A258B4002588C0 /* RMFileCache.m */; };
 		D8F8C60E19D1DAD5005C4585 /* LoadingTileLeadNav.png in Resources */ = {isa = PBXBuildFile; fileRef = D8F8C60C19D1DAD5005C4585 /* LoadingTileLeadNav.png */; };
@@ -99,16 +111,6 @@
 		DD1E3C6E161F954F004FC649 /* SMCalloutView.h in Headers */ = {isa = PBXBuildFile; fileRef = DD1E3C6C161F954F004FC649 /* SMCalloutView.h */; };
 		DD1E3C6F161F954F004FC649 /* SMCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD1E3C6D161F954F004FC649 /* SMCalloutView.m */; };
 		DD280D1416EFDDD30014B549 /* examples.map-z2effxa8.json in Resources */ = {isa = PBXBuildFile; fileRef = DD280D1216EFDDD30014B549 /* examples.map-z2effxa8.json */; };
-		DD2B374514CF8041008DE8CB /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = DD2B373F14CF8041008DE8CB /* FMDatabase.h */; };
-		DD2B374614CF8041008DE8CB /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2B374014CF8041008DE8CB /* FMDatabase.m */; };
-		DD2B374714CF8041008DE8CB /* FMDatabaseAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = DD2B374114CF8041008DE8CB /* FMDatabaseAdditions.h */; };
-		DD2B374814CF8041008DE8CB /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2B374214CF8041008DE8CB /* FMDatabaseAdditions.m */; };
-		DD2B374914CF8041008DE8CB /* FMResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = DD2B374314CF8041008DE8CB /* FMResultSet.h */; };
-		DD2B374A14CF8041008DE8CB /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2B374414CF8041008DE8CB /* FMResultSet.m */; };
-		DD2B374F14CF814F008DE8CB /* FMDatabasePool.h in Headers */ = {isa = PBXBuildFile; fileRef = DD2B374B14CF814F008DE8CB /* FMDatabasePool.h */; };
-		DD2B375014CF814F008DE8CB /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2B374C14CF814F008DE8CB /* FMDatabasePool.m */; };
-		DD2B375114CF814F008DE8CB /* FMDatabaseQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = DD2B374D14CF814F008DE8CB /* FMDatabaseQueue.h */; };
-		DD2B375214CF814F008DE8CB /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2B374E14CF814F008DE8CB /* FMDatabaseQueue.m */; };
 		DD2B375514CF8197008DE8CB /* RMMBTilesSource.h in Headers */ = {isa = PBXBuildFile; fileRef = DD2B375314CF8197008DE8CB /* RMMBTilesSource.h */; };
 		DD2B375614CF8197008DE8CB /* RMMBTilesSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2B375414CF8197008DE8CB /* RMMBTilesSource.m */; };
 		DD36766B17D94F980001F27B /* mapbox-logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD36766A17D94F980001F27B /* mapbox-logo@2x.png */; };
@@ -123,7 +125,6 @@
 		DD5FA1EC15E2B020004EB6C5 /* RMLoadingTileView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5FA1EA15E2B020004EB6C5 /* RMLoadingTileView.m */; };
 		DD63176317D15EB5008CA79B /* RMCircleAnnotation.h in Headers */ = {isa = PBXBuildFile; fileRef = DD63176117D15EB5008CA79B /* RMCircleAnnotation.h */; };
 		DD63176417D15EB5008CA79B /* RMCircleAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = DD63176217D15EB5008CA79B /* RMCircleAnnotation.m */; };
-		DD63DD531811AD0B00726E03 /* libGRMustache6-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD63DD521811AD0B00726E03 /* libGRMustache6-iOS.a */; };
 		DD7C7E38164C894F0021CCA5 /* RMStaticMapView.h in Headers */ = {isa = PBXBuildFile; fileRef = DD7C7E36164C894F0021CCA5 /* RMStaticMapView.h */; };
 		DD7C7E39164C894F0021CCA5 /* RMStaticMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7C7E37164C894F0021CCA5 /* RMStaticMapView.m */; };
 		DD8CDB4A14E0507100B73EB9 /* RMMapQuestOSMSource.h in Headers */ = {isa = PBXBuildFile; fileRef = DD8CDB4814E0507100B73EB9 /* RMMapQuestOSMSource.h */; };
@@ -147,7 +148,6 @@
 		DD94D46B16C2E064003D5739 /* HeadingAngleLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD94D46716C2E064003D5739 /* HeadingAngleLarge@2x.png */; };
 		DD94D46C16C2E064003D5739 /* HeadingAngleMedium.png in Resources */ = {isa = PBXBuildFile; fileRef = DD94D46816C2E064003D5739 /* HeadingAngleMedium.png */; };
 		DD94D46D16C2E064003D5739 /* HeadingAngleMedium@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD94D46916C2E064003D5739 /* HeadingAngleMedium@2x.png */; };
-		DD97C11616489678007C4652 /* libProj4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD97C11516489678007C4652 /* libProj4.a */; };
 		DD98B6FA14D76B930092882F /* RMMapboxSource.h in Headers */ = {isa = PBXBuildFile; fileRef = DD98B6F814D76B930092882F /* RMMapboxSource.h */; };
 		DD98B6FB14D76B930092882F /* RMMapboxSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DD98B6F914D76B930092882F /* RMMapboxSource.m */; };
 		DDA257011798A95600BBB325 /* TrackingLocationOffMaskLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DDA256F61798A95600BBB325 /* TrackingLocationOffMaskLandscape@2x.png */; };
@@ -269,6 +269,18 @@
 		D1437B33122869E400888DAE /* RMDBMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMDBMapSource.h; sourceTree = "<group>"; };
 		D84F34CD19703B230050CE08 /* RMURLMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMURLMapSource.h; sourceTree = "<group>"; };
 		D84F34CE19703B230050CE08 /* RMURLMapSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMURLMapSource.m; sourceTree = "<group>"; };
+		D8C088E81C7A6AA300124824 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabase.h; path = fmdb/FMDatabase.h; sourceTree = "<group>"; };
+		D8C088E91C7A6AA300124824 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = fmdb/FMDatabase.m; sourceTree = "<group>"; };
+		D8C088EA1C7A6AA300124824 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = fmdb/FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		D8C088EB1C7A6AA300124824 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseAdditions.m; path = fmdb/FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		D8C088EC1C7A6AA300124824 /* FMDatabasePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabasePool.h; path = fmdb/FMDatabasePool.h; sourceTree = "<group>"; };
+		D8C088ED1C7A6AA300124824 /* FMDatabasePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabasePool.m; path = fmdb/FMDatabasePool.m; sourceTree = "<group>"; };
+		D8C088EE1C7A6AA300124824 /* FMDatabaseQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabaseQueue.h; path = fmdb/FMDatabaseQueue.h; sourceTree = "<group>"; };
+		D8C088EF1C7A6AA300124824 /* FMDatabaseQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseQueue.m; path = fmdb/FMDatabaseQueue.m; sourceTree = "<group>"; };
+		D8C088F01C7A6AA300124824 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = fmdb/FMResultSet.h; sourceTree = "<group>"; };
+		D8C088F11C7A6AA300124824 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = fmdb/FMResultSet.m; sourceTree = "<group>"; };
+		D8C088FC1C7A6B2E00124824 /* libGRMustache7-iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libGRMustache7-iOS.a"; path = "GRMustache/lib/libGRMustache7-iOS.a"; sourceTree = "<group>"; };
+		D8C088FE1C7A7CD200124824 /* libProj4.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libProj4.a; path = ../Proj4/libProj4.a; sourceTree = "<group>"; };
 		D8C0D4FD19A258B4002588C0 /* RMFileCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMFileCache.h; sourceTree = "<group>"; };
 		D8C0D4FE19A258B4002588C0 /* RMFileCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMFileCache.m; sourceTree = "<group>"; };
 		D8D0880119E346CF004E1337 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
@@ -285,16 +297,6 @@
 		DD1E3C6C161F954F004FC649 /* SMCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SMCalloutView.h; path = SMCalloutView/SMCalloutView.h; sourceTree = "<group>"; };
 		DD1E3C6D161F954F004FC649 /* SMCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SMCalloutView.m; path = SMCalloutView/SMCalloutView.m; sourceTree = "<group>"; };
 		DD280D1216EFDDD30014B549 /* examples.map-z2effxa8.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "examples.map-z2effxa8.json"; path = "Map/Resources/examples.map-z2effxa8.json"; sourceTree = "<group>"; };
-		DD2B373F14CF8041008DE8CB /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
-		DD2B374014CF8041008DE8CB /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
-		DD2B374114CF8041008DE8CB /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
-		DD2B374214CF8041008DE8CB /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseAdditions.m; sourceTree = "<group>"; };
-		DD2B374314CF8041008DE8CB /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
-		DD2B374414CF8041008DE8CB /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
-		DD2B374B14CF814F008DE8CB /* FMDatabasePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabasePool.h; sourceTree = "<group>"; };
-		DD2B374C14CF814F008DE8CB /* FMDatabasePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabasePool.m; sourceTree = "<group>"; };
-		DD2B374D14CF814F008DE8CB /* FMDatabaseQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseQueue.h; sourceTree = "<group>"; };
-		DD2B374E14CF814F008DE8CB /* FMDatabaseQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseQueue.m; sourceTree = "<group>"; };
 		DD2B375314CF8197008DE8CB /* RMMBTilesSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMBTilesSource.h; sourceTree = "<group>"; };
 		DD2B375414CF8197008DE8CB /* RMMBTilesSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMMBTilesSource.m; sourceTree = "<group>"; };
 		DD36766A17D94F980001F27B /* mapbox-logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mapbox-logo@2x.png"; path = "Map/Resources/mapbox-logo@2x.png"; sourceTree = "<group>"; };
@@ -309,7 +311,6 @@
 		DD5FA1EA15E2B020004EB6C5 /* RMLoadingTileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMLoadingTileView.m; sourceTree = "<group>"; };
 		DD63176117D15EB5008CA79B /* RMCircleAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMCircleAnnotation.h; sourceTree = "<group>"; };
 		DD63176217D15EB5008CA79B /* RMCircleAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMCircleAnnotation.m; sourceTree = "<group>"; };
-		DD63DD521811AD0B00726E03 /* libGRMustache6-iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libGRMustache6-iOS.a"; path = "GRMustache/lib/libGRMustache6-iOS.a"; sourceTree = "<group>"; };
 		DD6A83751644A20C0097F31F /* Mapbox.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Mapbox.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD7C7E36164C894F0021CCA5 /* RMStaticMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMStaticMapView.h; sourceTree = "<group>"; };
 		DD7C7E37164C894F0021CCA5 /* RMStaticMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMStaticMapView.m; sourceTree = "<group>"; };
@@ -334,7 +335,6 @@
 		DD94D46716C2E064003D5739 /* HeadingAngleLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "HeadingAngleLarge@2x.png"; path = "Map/Resources/HeadingAngleLarge@2x.png"; sourceTree = "<group>"; };
 		DD94D46816C2E064003D5739 /* HeadingAngleMedium.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HeadingAngleMedium.png; path = Map/Resources/HeadingAngleMedium.png; sourceTree = "<group>"; };
 		DD94D46916C2E064003D5739 /* HeadingAngleMedium@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "HeadingAngleMedium@2x.png"; path = "Map/Resources/HeadingAngleMedium@2x.png"; sourceTree = "<group>"; };
-		DD97C11516489678007C4652 /* libProj4.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libProj4.a; path = ../Proj4/libProj4.a; sourceTree = "<group>"; };
 		DD98B6F814D76B930092882F /* RMMapboxSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapboxSource.h; sourceTree = "<group>"; };
 		DD98B6F914D76B930092882F /* RMMapboxSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMMapboxSource.m; sourceTree = "<group>"; };
 		DDA256F61798A95600BBB325 /* TrackingLocationOffMaskLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TrackingLocationOffMaskLandscape@2x.png"; path = "Map/Resources/TrackingLocationOffMaskLandscape@2x.png"; sourceTree = "<group>"; };
@@ -373,9 +373,9 @@
 				B8C974510E8A19B2007D16AD /* CoreGraphics.framework in Frameworks */,
 				B8C974520E8A19B2007D16AD /* CoreLocation.framework in Frameworks */,
 				B8C974530E8A19B2007D16AD /* UIKit.framework in Frameworks */,
+				D8C088FD1C7A6B2E00124824 /* libGRMustache7-iOS.a in Frameworks */,
+				D8C088FF1C7A7CD200124824 /* libProj4.a in Frameworks */,
 				B8C974540E8A19B2007D16AD /* QuartzCore.framework in Frameworks */,
-				DD63DD531811AD0B00726E03 /* libGRMustache6-iOS.a in Frameworks */,
-				DD97C11616489678007C4652 /* libProj4.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -529,16 +529,16 @@
 		B8474B8C0EB40094006A0BC1 /* FMDB */ = {
 			isa = PBXGroup;
 			children = (
-				DD2B373F14CF8041008DE8CB /* FMDatabase.h */,
-				DD2B374014CF8041008DE8CB /* FMDatabase.m */,
-				DD2B374114CF8041008DE8CB /* FMDatabaseAdditions.h */,
-				DD2B374214CF8041008DE8CB /* FMDatabaseAdditions.m */,
-				DD2B374314CF8041008DE8CB /* FMResultSet.h */,
-				DD2B374414CF8041008DE8CB /* FMResultSet.m */,
-				DD2B374B14CF814F008DE8CB /* FMDatabasePool.h */,
-				DD2B374C14CF814F008DE8CB /* FMDatabasePool.m */,
-				DD2B374D14CF814F008DE8CB /* FMDatabaseQueue.h */,
-				DD2B374E14CF814F008DE8CB /* FMDatabaseQueue.m */,
+				D8C088E81C7A6AA300124824 /* FMDatabase.h */,
+				D8C088E91C7A6AA300124824 /* FMDatabase.m */,
+				D8C088EA1C7A6AA300124824 /* FMDatabaseAdditions.h */,
+				D8C088EB1C7A6AA300124824 /* FMDatabaseAdditions.m */,
+				D8C088EC1C7A6AA300124824 /* FMDatabasePool.h */,
+				D8C088ED1C7A6AA300124824 /* FMDatabasePool.m */,
+				D8C088EE1C7A6AA300124824 /* FMDatabaseQueue.h */,
+				D8C088EF1C7A6AA300124824 /* FMDatabaseQueue.m */,
+				D8C088F01C7A6AA300124824 /* FMResultSet.h */,
+				D8C088F11C7A6AA300124824 /* FMResultSet.m */,
 			);
 			name = FMDB;
 			path = Map/FMDB/src;
@@ -721,7 +721,7 @@
 		DDC4BEEE152E3DEC00089409 /* GRMustache */ = {
 			isa = PBXGroup;
 			children = (
-				DD63DD521811AD0B00726E03 /* libGRMustache6-iOS.a */,
+				D8C088FC1C7A6B2E00124824 /* libGRMustache7-iOS.a */,
 			);
 			name = GRMustache;
 			path = Map;
@@ -730,7 +730,7 @@
 		DDDFF7FE165D5BA200A9D877 /* Proj4 */ = {
 			isa = PBXGroup;
 			children = (
-				DD97C11516489678007C4652 /* libProj4.a */,
+				D8C088FE1C7A7CD200124824 /* libProj4.a */,
 			);
 			name = Proj4;
 			sourceTree = "<group>";
@@ -743,21 +743,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD4BE198161CE296003EF677 /* Mapbox.h in Headers */,
+				D8C088FA1C7A6AA300124824 /* FMResultSet.h in Headers */,
 				16EC85D2133CA6C300219947 /* RMAbstractMercatorTileSource.h in Headers */,
 				16EC85D4133CA6C300219947 /* RMAbstractWebMapSource.h in Headers */,
 				160EEDAF13D41DEC007C5501 /* RMAnnotation.h in Headers */,
+				D8C088F41C7A6AA300124824 /* FMDatabaseAdditions.h in Headers */,
 				DD3BEF7915913C55007892D8 /* RMAttributionViewController.h in Headers */,
 				DD4195C9162356900049E6BA /* RMBingSource.h in Headers */,
 				16EC85D6133CA6C300219947 /* RMCacheObject.h in Headers */,
 				25757F4F1291C8640083D504 /* RMCircle.h in Headers */,
 				DD63176317D15EB5008CA79B /* RMCircleAnnotation.h in Headers */,
 				16E5A63A15E531F200C92A5A /* RMCompositeSource.h in Headers */,
+				D8C088F21C7A6AA300124824 /* FMDatabase.h in Headers */,
 				B8800FF30EC3A23D003E9CDD /* RMConfiguration.h in Headers */,
 				1656665515A1DF7900EF3DC7 /* RMCoordinateGridSource.h in Headers */,
 				B8474BA40EB40094006A0BC1 /* RMDatabaseCache.h in Headers */,
 				D1437B37122869E400888DAE /* RMDBMapSource.h in Headers */,
 				23A0AAEB0EB90AA6003A4521 /* RMFoundation.h in Headers */,
 				D8C0D4FF19A258B4002588C0 /* RMFileCache.h in Headers */,
+				D8C088F81C7A6AA300124824 /* FMDatabaseQueue.h in Headers */,
 				B8C9742D0E8A19B2007D16AD /* RMFractalTileProjection.h in Headers */,
 				1607499514E120A100D535F5 /* RMGenericMapSource.h in Headers */,
 				96492C400FA8AD3400EBA6D2 /* RMGlobalConstants.h in Headers */,
@@ -794,16 +798,12 @@
 				B8C974230E8A19B2007D16AD /* RMTileCache.h in Headers */,
 				DD41960116250ED40049E6BA /* RMTileCacheDownloadOperation.h in Headers */,
 				B8C9742A0E8A19B2007D16AD /* RMTileImage.h in Headers */,
+				D8C088F61C7A6AA300124824 /* FMDatabasePool.h in Headers */,
 				DD1985C1165C5F6400DF667F /* RMTileMillSource.h in Headers */,
 				B8C974620E8A19E8007D16AD /* RMTileSource.h in Headers */,
 				16FBF07615936BF1004ECAD1 /* RMTileSourcesContainer.h in Headers */,
 				DD8FD7541559E4A40044D96F /* RMUserLocation.h in Headers */,
 				DDA6B8BD155CAB67003DB5D8 /* RMUserTrackingBarButtonItem.h in Headers */,
-				DD2B374514CF8041008DE8CB /* FMDatabase.h in Headers */,
-				DD2B374714CF8041008DE8CB /* FMDatabaseAdditions.h in Headers */,
-				DD2B374914CF8041008DE8CB /* FMResultSet.h in Headers */,
-				DD2B374F14CF814F008DE8CB /* FMDatabasePool.h in Headers */,
-				DD2B375114CF814F008DE8CB /* FMDatabaseQueue.h in Headers */,
 				DD1E3C6E161F954F004FC649 /* SMCalloutView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -934,6 +934,7 @@
 				B8C974410E8A19B2007D16AD /* RMOpenStreetMapSource.m in Sources */,
 				B8C974420E8A19B2007D16AD /* RMMemoryCache.m in Sources */,
 				B8C974430E8A19B2007D16AD /* RMPixel.c in Sources */,
+				D8C088F71C7A6AA300124824 /* FMDatabasePool.m in Sources */,
 				B8C974440E8A19B2007D16AD /* RMFractalTileProjection.m in Sources */,
 				B8C974480E8A19B2007D16AD /* RMTileCache.m in Sources */,
 				D8C0D50019A258B4002588C0 /* RMFileCache.m in Sources */,
@@ -955,13 +956,9 @@
 				1606C9FF13D86BA400547581 /* RMOpenCycleMapSource.m in Sources */,
 				16FAB66513E03D55002F4E1C /* RMQuadTree.m in Sources */,
 				160E535813FBDB48004F82F9 /* RMMapTiledLayerView.m in Sources */,
+				D8C088F91C7A6AA300124824 /* FMDatabaseQueue.m in Sources */,
 				1609AF8F14068B09008344B7 /* RMMapOverlayView.m in Sources */,
 				16128CF6148D295300C23C0E /* RMOpenSeaMapSource.m in Sources */,
-				DD2B374614CF8041008DE8CB /* FMDatabase.m in Sources */,
-				DD2B374814CF8041008DE8CB /* FMDatabaseAdditions.m in Sources */,
-				DD2B374A14CF8041008DE8CB /* FMResultSet.m in Sources */,
-				DD2B375014CF814F008DE8CB /* FMDatabasePool.m in Sources */,
-				DD2B375214CF814F008DE8CB /* FMDatabaseQueue.m in Sources */,
 				DD2B375614CF8197008DE8CB /* RMMBTilesSource.m in Sources */,
 				DD98B6FB14D76B930092882F /* RMMapboxSource.m in Sources */,
 				DD8CDB4B14E0507100B73EB9 /* RMMapQuestOSMSource.m in Sources */,
@@ -976,7 +973,9 @@
 				16FBF07715936BF1004ECAD1 /* RMTileSourcesContainer.m in Sources */,
 				161E563B1594664E00B00BB6 /* RMOpenSeaMapLayer.m in Sources */,
 				1656665615A1DF7900EF3DC7 /* RMCoordinateGridSource.m in Sources */,
+				D8C088F31C7A6AA300124824 /* FMDatabase.m in Sources */,
 				16E5A63B15E531F200C92A5A /* RMCompositeSource.m in Sources */,
+				D8C088FB1C7A6AA300124824 /* FMResultSet.m in Sources */,
 				DD5FA1EC15E2B020004EB6C5 /* RMLoadingTileView.m in Sources */,
 				DD41960216250ED40049E6BA /* RMTileCacheDownloadOperation.m in Sources */,
 				DD4195CA162356900049E6BA /* RMBingSource.m in Sources */,
@@ -987,6 +986,7 @@
 				DDE357F516522661001DB842 /* RMPolylineAnnotation.m in Sources */,
 				DDE357F916522CD8001DB842 /* RMPolygonAnnotation.m in Sources */,
 				DD1985C2165C5F6400DF667F /* RMTileMillSource.m in Sources */,
+				D8C088F51C7A6AA300124824 /* FMDatabaseAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1030,6 +1030,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Map/GRMustache/lib\"",
 					"\"$(SRCROOT)/../Proj4\"",
+					"$(PROJECT_DIR)/Map/GRMustache/lib",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Mapbox;
@@ -1058,6 +1059,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Map/GRMustache/lib\"",
 					"\"$(SRCROOT)/../Proj4\"",
+					"$(PROJECT_DIR)/Map/GRMustache/lib",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Mapbox;

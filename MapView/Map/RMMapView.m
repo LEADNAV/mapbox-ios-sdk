@@ -1619,11 +1619,13 @@
             //
             _currentCallout.delegate = nil;
 
-            [_currentCallout presentCalloutFromRect:_currentAnnotation.layer.bounds
+            // LeadNav customization for the latest version of SMCalloutView
+            /*[_currentCallout presentCalloutFromRect:_currentAnnotation.layer.bounds
                                             inLayer:_currentAnnotation.layer
                                  constrainedToLayer:self.layer
                            permittedArrowDirections:SMCalloutArrowDirectionDown
-                                           animated:NO];
+                                           animated:NO];*/
+            [_currentCallout presentCalloutFromRect:_currentAnnotation.layer.bounds inLayer:_currentAnnotation.layer constrainedToLayer:self.layer animated:NO];
 
             _currentCallout.delegate = self;
         }
@@ -1925,8 +1927,11 @@
         {
             _currentCallout = [SMCalloutView new];
 
+            // LeadNav customization for the latest version of SMCalloutView
+            //if (RMPreVersion7)
+            //    _currentCallout.backgroundView = [SMCalloutBackgroundView systemBackgroundView];
             if (RMPreVersion7)
-                _currentCallout.backgroundView = [SMCalloutBackgroundView systemBackgroundView];
+                _currentCallout.backgroundView = [[SMCalloutBackgroundView alloc] init];
 
             if (RMPostVersion7)
                 _currentCallout.tintColor = self.tintColor;
@@ -1954,11 +1959,13 @@
 
             _currentCallout.delegate = self;
 
-            [_currentCallout presentCalloutFromRect:anAnnotation.layer.bounds
+            // LeadNav customization for the latest version of SMCalloutView
+            /*[_currentCallout presentCalloutFromRect:anAnnotation.layer.bounds
                                             inLayer:anAnnotation.layer
                                  constrainedToLayer:self.layer
                            permittedArrowDirections:SMCalloutArrowDirectionDown
-                                           animated:animated];
+                                           animated:animated];*/
+            [_currentCallout presentCalloutFromRect:anAnnotation.layer.bounds inLayer:anAnnotation.layer constrainedToLayer:self.layer animated:animated];
         }
 
         [self correctPositionOfAllAnnotations];
