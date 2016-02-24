@@ -170,7 +170,7 @@
     return [_mapView.viewControllerPresentingAttribution shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return [_mapView.viewControllerPresentingAttribution supportedInterfaceOrientations];
 }
