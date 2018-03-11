@@ -134,6 +134,7 @@
         int x = floor(rect.origin.x / rect.size.width),
             y = floor(fabs(rect.origin.y / rect.size.height));
 
+	 
         if (_mapView.adjustTilesForRetinaDisplay && _mapView.screenScale > 1.0)
         {
             zoom--;
@@ -141,7 +142,7 @@
             y >>= 1;
         }
 
-//        NSLog(@"Tile @ x:%d, y:%d, zoom:%d", x, y, zoom);
+//        NSLog(@"Tile @ x:%d, y:%d, zoom:%d", x, y, zoom);	 
 
         UIGraphicsPushContext(context);
 

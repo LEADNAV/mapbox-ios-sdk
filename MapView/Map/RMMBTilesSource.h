@@ -84,4 +84,7 @@
 // LeadNav customization to check the database integrity
 - (BOOL)checkDatabaseIntegrity;
 
+
+- (RMSphericalTrapezium)maxAreaBoundingBox;
+
 @end

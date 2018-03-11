@@ -1,1 +1,1 @@
-This document has been [superseded](../standard_library.md#localize).
+This document has been [superseded](../standard_library.md).

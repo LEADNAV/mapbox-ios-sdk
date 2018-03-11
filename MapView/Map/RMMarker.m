@@ -251,6 +251,35 @@
     [self setLabel:aLabel];
 }
 
+- (void)changeLabelUsingTextOnFirstLine:(NSString *)firstLine textOnSecondLine:(NSString *)secondLine position:(CGPoint)position font:(UIFont *)font foregroundColor:(UIColor *)textColor backgroundColor:(UIColor *)backgroundColor
+{
+ CGSize firstLineSize  = [firstLine  sizeWithFont:font];
+ CGSize secondLineSize = [secondLine sizeWithFont:font];
+ 
+ CGFloat width, height;
+ 
+ if (firstLineSize.width > secondLineSize.width) width = firstLineSize.width;
+ else width = secondLineSize.width;
+ 
+ if (firstLineSize.height > secondLineSize.height) height = firstLineSize.height;
+ else height = secondLineSize.height;
+ 
+ CGRect frame = CGRectMake(position.x, position.y, width + 4, (2 * height) + 4);
+ 
+ UILabel *aLabel = [[UILabel alloc] initWithFrame:frame];
+ [self setTextForegroundColor:textColor];
+ [self setTextBackgroundColor:backgroundColor];
+ [aLabel setNumberOfLines:2];
+ [aLabel setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
+ [aLabel setBackgroundColor:backgroundColor];
+ [aLabel setTextColor:textColor];
+ [aLabel setFont:font];
+ [aLabel setTextAlignment:NSTextAlignmentCenter];
+ [aLabel setText:[NSString stringWithFormat:@"%@\n%@", firstLine, secondLine]];
+ 
+ [self setLabel:aLabel];
+}
+
 - (void)toggleLabel
 {
     if (self.label == nil)

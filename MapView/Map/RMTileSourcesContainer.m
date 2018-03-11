@@ -218,25 +218,25 @@
 
     RMSphericalTrapezium newLatitudeLongitudeBoundingBox = [tileSource latitudeLongitudeBoundingBox];
 
-    double minX1 = _latitudeLongitudeBoundingBox.southWest.longitude;
-    double minX2 = newLatitudeLongitudeBoundingBox.southWest.longitude;
-    double maxX1 = _latitudeLongitudeBoundingBox.northEast.longitude;
-    double maxX2 = newLatitudeLongitudeBoundingBox.northEast.longitude;
+//    double minX1 = _latitudeLongitudeBoundingBox.southWest.longitude;
+//    double minX2 = newLatitudeLongitudeBoundingBox.southWest.longitude;
+//    double maxX1 = _latitudeLongitudeBoundingBox.northEast.longitude;
+//    double maxX2 = newLatitudeLongitudeBoundingBox.northEast.longitude;
+//
+//    double minY1 = _latitudeLongitudeBoundingBox.southWest.latitude;
+//    double minY2 = newLatitudeLongitudeBoundingBox.southWest.latitude;
+//    double maxY1 = _latitudeLongitudeBoundingBox.northEast.latitude;
+//    double maxY2 = newLatitudeLongitudeBoundingBox.northEast.latitude;
 
-    double minY1 = _latitudeLongitudeBoundingBox.southWest.latitude;
-    double minY2 = newLatitudeLongitudeBoundingBox.southWest.latitude;
-    double maxY1 = _latitudeLongitudeBoundingBox.northEast.latitude;
-    double maxY2 = newLatitudeLongitudeBoundingBox.northEast.latitude;
+//    BOOL intersects = (((minX1 <= minX2 && minX2 <= maxX1) || (minX2 <= minX1 && minX1 <= maxX2)) &&
+//                       ((minY1 <= minY2 && minY2 <= maxY1) || (minY2 <= minY1 && minY1 <= maxY2)));
 
-    BOOL intersects = (((minX1 <= minX2 && minX2 <= maxX1) || (minX2 <= minX1 && minX1 <= maxX2)) &&
-                       ((minY1 <= minY2 && minY2 <= maxY1) || (minY2 <= minY1 && minY1 <= maxY2)));
-
-    if ( ! intersects)
-    {
-        NSLog(@"The bounding box from tilesource '%@' doesn't intersect with the tilesource containers' bounding box", [tileSource shortName]);
-        [_tileSourcesLock unlock];
-        return NO;
-    }
+ //   if ( ! intersects)  
+ //   {
+ //       NSLog(@"The bounding box from tilesource '%@' doesn't intersect with the tilesource containers' bounding box", [tileSource shortName]);
+ //       [_tileSourcesLock unlock];
+//        return NO;
+//    }
 
     _latitudeLongitudeBoundingBox = ((RMSphericalTrapezium) {
         .northEast = {

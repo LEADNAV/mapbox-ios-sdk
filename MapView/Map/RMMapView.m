@@ -72,6 +72,8 @@
 #define kRMTrackingHaloAnnotationTypeName   @"RMTrackingHaloAnnotation"
 #define kRMAccuracyCircleAnnotationTypeName @"RMAccuracyCircleAnnotation"
 
+#define IS_PAD_PRO_12_7 ([[UIScreen mainScreen] nativeBounds].size.height == 2732)
+
 #pragma mark --- end constants ----
 
 @interface RMMapView (PrivateMethods) <UIScrollViewDelegate,
@@ -277,7 +279,9 @@
     _screenScale = [UIScreen mainScreen].scale;
 
     _adjustTilesForRetinaDisplay = NO;
-    _missingTilesDepth = 1;
+ 
+     _missingTilesDepth = 1;
+ 
     _debugTiles = NO;
 
     _orderMarkersByYPosition = YES;
@@ -1477,7 +1481,7 @@
 
     if (self.userTrackingMode != RMUserTrackingModeNone && wasUserAction)
         self.userTrackingMode = RMUserTrackingModeNone;
-    
+ 
     [self correctPositionOfAllAnnotations];
 
     if (_zoom < 3 && self.userTrackingMode == RMUserTrackingModeFollowWithHeading)
@@ -1619,13 +1623,11 @@
             //
             _currentCallout.delegate = nil;
 
-            // LeadNav customization for the latest version of SMCalloutView
-            /*[_currentCallout presentCalloutFromRect:_currentAnnotation.layer.bounds
+            [_currentCallout presentCalloutFromRect:_currentAnnotation.layer.bounds
                                             inLayer:_currentAnnotation.layer
                                  constrainedToLayer:self.layer
                            permittedArrowDirections:SMCalloutArrowDirectionDown
-                                           animated:NO];*/
-            [_currentCallout presentCalloutFromRect:_currentAnnotation.layer.bounds inLayer:_currentAnnotation.layer constrainedToLayer:self.layer animated:NO];
+                                           animated:NO];
 
             _currentCallout.delegate = self;
         }
@@ -1927,11 +1929,8 @@
         {
             _currentCallout = [SMCalloutView new];
 
-            // LeadNav customization for the latest version of SMCalloutView
-            //if (RMPreVersion7)
-            //    _currentCallout.backgroundView = [SMCalloutBackgroundView systemBackgroundView];
             if (RMPreVersion7)
-                _currentCallout.backgroundView = [[SMCalloutBackgroundView alloc] init];
+                _currentCallout.backgroundView = [SMCalloutBackgroundView systemBackgroundView];
 
             if (RMPostVersion7)
                 _currentCallout.tintColor = self.tintColor;
@@ -1959,13 +1958,11 @@
 
             _currentCallout.delegate = self;
 
-            // LeadNav customization for the latest version of SMCalloutView
-            /*[_currentCallout presentCalloutFromRect:anAnnotation.layer.bounds
+            [_currentCallout presentCalloutFromRect:anAnnotation.layer.bounds
                                             inLayer:anAnnotation.layer
                                  constrainedToLayer:self.layer
                            permittedArrowDirections:SMCalloutArrowDirectionDown
-                                           animated:animated];*/
-            [_currentCallout presentCalloutFromRect:anAnnotation.layer.bounds inLayer:anAnnotation.layer constrainedToLayer:self.layer animated:animated];
+                                           animated:animated];
         }
 
         [self correctPositionOfAllAnnotations];
@@ -2494,7 +2491,7 @@
 
 - (void)setMaxZoom:(float)newMaxZoom
 {
-    if (newMaxZoom < 0.0)
+ if (newMaxZoom < 0.0)
         newMaxZoom = 0.0;
 
     _maxZoom = newMaxZoom;
@@ -3336,7 +3333,7 @@
     [self setUserTrackingMode:mode animated:YES];
 }
 
-- (void)setUserTrackingMode:(RMUserTrackingMode)mode animated:(BOOL)animated
+- (void)setUserTrackingMode:(RMUserTrackingMode)mode animated:(BOOL)animated   //  BENBENLOC
 {
     if (mode == _userTrackingMode)
         return;

@@ -19,12 +19,6 @@ Usage
 To use SMCalloutView in your own projects, simply copy the files
 `SMCalloutView.h` and `SMCalloutView.m`.
 
-SMCalloutView, by default, will render in the new style introduced with
-iOS 7. If you need the old style, simply include `SMClassicCalloutView.h`
-and `SMClassicCalloutView.m` in your project as well. There is a special
-class constructor, `+[SMCalloutView platformCalloutView]` which will
-automatically select the appropriate callout class for the current platform.
-
 The comments in `SMCalloutView.h` do a lot of explaining on how to use the
 class, but the main function you'll need is `presentCalloutFromRect:`. You'll
 specify the view you'd like to add the callout to, as well as the rect
@@ -34,8 +28,7 @@ named `UIPopover` method). Most likely this will be `target.frame` if you're
 adding the callout view as a sibling of the target view, or it would be
 `target.bounds` if you're adding the callout view to the target itself.
 
-You can study the included project's UIViewController subclasses for a working
-example.
+You can study the included project's `AppDelegate.m` for a working example.
 
 
 Questions
@@ -56,8 +49,6 @@ callout will always be the "system standard" height. If you assign the
 Yes, the callout background is an instance of `SMCalloutBackgroundView`. You
 can set your own custom `View` subclass to be the background, or you can use
 one of the built-in subclasses:
-
- - `SMCalloutMaskedBackgroundView` renders an iOS-7 style background.
 
  - `SMCalloutImageBackgroundView` lets you specify each of the image
    "fragments" that make up a horizontally-stretchable background.
@@ -83,12 +74,12 @@ Nope, but other intrepid coders have!
 - For an awesome replacement of the pulsing blue "Current Location" dot, check
   out [Sam Vermette's SVPulsingAnnotationView][dot].
 
-- And for the outdoor map data and tiles themselves, check out [Mapbox's iOS
+- And for the outdoor map data and tiles themselves, check out [MapBox's iOS
   SDK][mapbox], a complete open-source solution for custom maps. They even use
   `SMCalloutView` out of the box!
 
   [dot]: https://github.com/samvermette/SVPulsingAnnotationView
-  [mapbox]: https://www.mapbox.com/mobile/
+  [mapbox]: https://github.com/mapbox/mapbox-ios-sdk
 
 
 More Info
@@ -96,7 +87,7 @@ More Info
 
 You can read more info if you wish in the [blog post][].
 
-  [blog post]: http://nfarina.com/post/78014139253/smcalloutview-for-ios-7
+  [blog post]: http://nfarina.com/post/29883229869/callout-view
 
 
 ARC Support

@@ -128,6 +128,8 @@ typedef enum : NSUInteger {
 // changes the labelView to a UILabel with supplied #text and default marker font, changing this marker's text foreground/background colors for this and future text strings; modifies position as in #changeLabelUsingText:position.
 - (void)changeLabelUsingText:(NSString *)text position:(CGPoint)position font:(UIFont *)font foregroundColor:(UIColor *)textColor backgroundColor:(UIColor *)backgroundColor;
 
+- (void)changeLabelUsingTextOnFirstLine:(NSString *)firstLine textOnSecondLine:(NSString *)secondLine position:(CGPoint)position font:(UIFont *)font foregroundColor:(UIColor *)textColor backgroundColor:(UIColor *)backgroundColor;
+
 /** @name Showing and Hiding Labels */
 
 /** Toggle the display of the marker's label, if any. If hidden, show and if shown, hide. */

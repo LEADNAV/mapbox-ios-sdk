@@ -329,8 +329,8 @@
 {
     // LeadNav customization to prevent a slow call to [NSDate date]
     //[points addObject:[[CLLocation alloc] initWithLatitude:[mapView projectedPointToCoordinate:point].latitude longitude:[mapView projectedPointToCoordinate:point].longitude]];
-    [points addObject:[[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake([mapView projectedPointToCoordinate:point].latitude, [mapView projectedPointToCoordinate:point].longitude) altitude:0 horizontalAccuracy:0 verticalAccuracy:0 timestamp:nil]];
-
+//    [points addObject:[[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake([mapView projectedPointToCoordinate:point].latitude, [mapView projectedPointToCoordinate:point].longitude) altitude:0 horizontalAccuracy:0 verticalAccuracy:0 timestamp:nil]];
+    [points addObject:[[CLLocation alloc] initWithLatitude:[mapView projectedPointToCoordinate:point].latitude longitude:[mapView projectedPointToCoordinate:point].longitude]];
     if (isFirstPoint)
     {
         isFirstPoint = FALSE;

@@ -35,7 +35,7 @@
         return nil;
 
     self.minZoom = 1;
-    self.maxZoom = 15;
+    self.maxZoom = 18;
 
 	return self;
 } 
@@ -46,7 +46,7 @@
 			  @"%@ tried to retrieve tile with zoomLevel %d, outside source's defined range %f to %f", 
 			  self, tile.zoom, self.minZoom, self.maxZoom);
 
-	return [NSURL URLWithString:[NSString stringWithFormat:@"http://tile.opencyclemap.org/cycle/%d/%d/%d.png", tile.zoom, tile.x, tile.y]];
+	return [NSURL URLWithString:[NSString stringWithFormat:@"https://tile.thunderforest.com/cycle/%d/%d/%d.png?apikey=2fd2d5d2d7db4457b35e9b83300b5246", tile.zoom, tile.x, tile.y]];   // http://tile.opencyclemap.org/cycle/%d/%d/%d.png  https://tile.thunderforest.com/cycle/3/3/3.png?apikey=2fd2d5d2d7db4457b35e9b83300b5246
 }
 
 - (NSString *)uniqueTilecacheKey

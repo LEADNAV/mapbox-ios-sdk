@@ -1,6 +1,6 @@
 // The MIT License
 // 
-// Copyright (c) 2014 Gwendal Roué
+// Copyright (c) 2013 Gwendal Roué
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 
 #import "GRMustachePublicAPITest.h"
-#import "NSJSONSerialization+Comments.h"
 
 static struct {
     NSString *tests;
@@ -30,7 +29,6 @@ static struct {
 };
 
 static struct {
-    NSString *name;
     NSString *partials;
     NSString *template;
     NSString *template_name;
@@ -39,7 +37,6 @@ static struct {
     NSString *expected;
     NSString *expected_error;
 } GRMustachePublicAPITestItemKeys = {
-    .name = @"name",
     .partials = @"partials",
     .template = @"template",
     .template_name = @"template_name",
@@ -61,21 +58,18 @@ static struct {
     
     NSError *error;
     NSData *testSuiteData = [NSData dataWithContentsOfFile:path];
-    XCTAssertNotNil(testSuiteData, @"Could not load test suite at %@", path);
-    if (!testSuiteData) {
-        // Allow breakpoint for failing tests
-        return;
-    }
+    STAssertNotNil(testSuiteData, @"Could not load test suite at %@", path);
+    if (!testSuiteData) return;
     
-    NSDictionary *testSuite = [NSJSONSerialization JSONObjectWithCommentedData:testSuiteData options:0 error:&error];
-    XCTAssertNotNil(testSuite, @"Could not load test suite at %@: %@", path, error);
+    NSDictionary *testSuite = [self JSONObjectWithData:testSuiteData error:&error];
+    STAssertNotNil(testSuite, @"Could not load test suite at %@: %@", path, error);
     if (!testSuite) {
         // Allow breakpoint for failing tests
         return;
     }
     
     NSArray *tests = [testSuite objectForKey:GRMustacheTestSuiteKeys.tests];
-    XCTAssertTrue((tests.count > 0), @"Empty test suite at %@", path);
+    STAssertTrue((tests.count > 0), @"Empty test suite at %@", path);
     
     for (NSDictionary *testDictionary in tests) {
         
@@ -93,10 +87,16 @@ static struct {
         NSRegularExpression *expectedErrorReg = nil;
         
         
+        // data is mandatory
+        
+        STAssertTrue((data != nil), @"Missing `%@` key in %@", GRMustachePublicAPITestItemKeys.data, testDescription);
+        if (!(data != nil)) continue;
+        
+        
         // expected rendering, if present, must be a string
         
         if (expectedRendering) {
-            XCTAssertTrue([expectedRendering isKindOfClass:[NSString class]], @"`%@` key is not a string in %@", GRMustachePublicAPITestItemKeys.expected, testDescription);
+            STAssertTrue([expectedRendering isKindOfClass:[NSString class]], @"`%@` key is not a string in %@", GRMustachePublicAPITestItemKeys.expected, testDescription);
             if (![expectedRendering isKindOfClass:[NSString class]]) continue;
         }
         
@@ -104,7 +104,7 @@ static struct {
         // expected error, if present, must be a string
         
         if (expectedError) {
-            XCTAssertTrue([expectedError isKindOfClass:[NSString class]], @"`%@` key is not a string in %@", GRMustachePublicAPITestItemKeys.expected_error, testDescription);
+            STAssertTrue([expectedError isKindOfClass:[NSString class]], @"`%@` key is not a string in %@", GRMustachePublicAPITestItemKeys.expected_error, testDescription);
             if (![expectedError isKindOfClass:[NSString class]]) continue;
         }
         
@@ -114,27 +114,27 @@ static struct {
         if (expectedError) {
             NSError *error;
             expectedErrorReg = [NSRegularExpression regularExpressionWithPattern:expectedError options:0 error:&error];
-            XCTAssertNotNil(expectedErrorReg, @"`%@` key is not a regular expression pattern in %@ (%@)", GRMustachePublicAPITestItemKeys.expected_error, testDescription, error.localizedDescription);
+            STAssertNotNil(expectedErrorReg, @"`%@` key is not a regular expression pattern in %@ (%@)", GRMustachePublicAPITestItemKeys.expected_error, testDescription, error.localizedDescription);
             if (!expectedErrorReg) continue;
         }
         
         
         // we need expected rendering, or expected error
         
-        XCTAssertTrue(!((expectedRendering == nil) && (expectedErrorReg == nil)), @"Missing both `%@` and `%@` keys in %@", GRMustachePublicAPITestItemKeys.expected, GRMustachePublicAPITestItemKeys.expected_error, testDescription);
+        STAssertTrue(!((expectedRendering == nil) && (expectedErrorReg == nil)), @"Missing both `%@` and `%@` keys in %@", GRMustachePublicAPITestItemKeys.expected, GRMustachePublicAPITestItemKeys.expected_error, testDescription);
         if (((expectedRendering == nil) && (expectedErrorReg == nil))) continue;
         
         
         // we need expected rendering, or expected error, but not both
         
-        XCTAssertTrue(!((expectedRendering != nil) && (expectedErrorReg != nil)), @"Can't have both `%@` and `%@` keys in %@", GRMustachePublicAPITestItemKeys.expected, GRMustachePublicAPITestItemKeys.expected_error, testDescription);
+        STAssertTrue(!((expectedRendering != nil) && (expectedErrorReg != nil)), @"Can't have both `%@` and `%@` keys in %@", GRMustachePublicAPITestItemKeys.expected, GRMustachePublicAPITestItemKeys.expected_error, testDescription);
         if (((expectedRendering != nil) && (expectedErrorReg != nil))) continue;
         
         
         // template string, if present, must be a string
         
         if (templateString) {
-            XCTAssertTrue([templateString isKindOfClass:[NSString class]], @"`%@` key is not a string in %@", GRMustachePublicAPITestItemKeys.template, testDescription);
+            STAssertTrue([templateString isKindOfClass:[NSString class]], @"`%@` key is not a string in %@", GRMustachePublicAPITestItemKeys.template, testDescription);
             if (![templateString isKindOfClass:[NSString class]]) continue;
         }
         
@@ -142,34 +142,32 @@ static struct {
         // template name, if present, must be a string
         
         if (templateName) {
-            XCTAssertTrue([templateName isKindOfClass:[NSString class]], @"`%@` key is not a string in %@", GRMustachePublicAPITestItemKeys.template_name, testDescription);
+            STAssertTrue([templateName isKindOfClass:[NSString class]], @"`%@` key is not a string in %@", GRMustachePublicAPITestItemKeys.template_name, testDescription);
             if (![templateName isKindOfClass:[NSString class]]) continue;
         }
         
         
         // we need template string, or template name
         
-        XCTAssertTrue(!((templateString == nil) && (templateName == nil)), @"Missing both `%@` and `%@` keys in %@", GRMustachePublicAPITestItemKeys.template, GRMustachePublicAPITestItemKeys.template_name, testDescription);
+        STAssertTrue(!((templateString == nil) && (templateName == nil)), @"Missing both `%@` and `%@` keys in %@", GRMustachePublicAPITestItemKeys.template, GRMustachePublicAPITestItemKeys.template_name, testDescription);
         if (((templateString == nil) && (templateName == nil))) continue;
         
         
         // we need template string, or template name, but not both
         
-        XCTAssertTrue(!((templateString != nil) && (templateName != nil)), @"Can't have both `%@` and `%@` keys in %@", GRMustachePublicAPITestItemKeys.template, GRMustachePublicAPITestItemKeys.template_name, testDescription);
+        STAssertTrue(!((templateString != nil) && (templateName != nil)), @"Can't have both `%@` and `%@` keys in %@", GRMustachePublicAPITestItemKeys.template, GRMustachePublicAPITestItemKeys.template_name, testDescription);
         if (((templateString != nil) && (templateName != nil))) continue;
         
         
         // partials dictionary, if present, must be a dictionary
         
         if (templatesDictionary) {
-            XCTAssertTrue([templatesDictionary isKindOfClass:[NSDictionary class]], @"`%@` key is not an object in %@", GRMustachePublicAPITestItemKeys.partials, testDescription);
+            STAssertTrue([templatesDictionary isKindOfClass:[NSDictionary class]], @"`%@` key is not an object in %@", GRMustachePublicAPITestItemKeys.partials, testDescription);
             if (![templatesDictionary isKindOfClass:[NSDictionary class]]) continue;
         }
         
         
         // run test
-        
-        NSLog(@"Run test \"%@\"", [testDictionary objectForKey:GRMustachePublicAPITestItemKeys.name]);
         
         if (templateName) {
             
@@ -284,14 +282,14 @@ static struct {
                     [template renderObject:object error:&error];
                 }
                 
-                XCTAssertEqualObjects(rendering, expectedRendering, @"Unexpected rendering: %@", testDescription);
+                STAssertEqualObjects(rendering, expectedRendering, @"Unexpected rendering: %@", testDescription);
             } else {
                 // error was expected
                 
                 // Allow breakpoint for failing tests
                 [template renderObject:object error:&error];
                 
-                XCTAssertTrue(NO, @"Unexpected rendering: %@: %@", rendering, testDescription);
+                STAssertTrue(NO, @"Unexpected rendering: %@: %@", rendering, testDescription);
             }
         } else {
             if (expectedErrorReg) {
@@ -304,13 +302,13 @@ static struct {
                     // Allow breakpoint for failing tests
                     [template renderObject:object error:&error];
                     
-                    XCTAssertTrue(NO, @"Unexpected error: %@: %@", error.localizedDescription, testDescription);
+                    STAssertTrue(NO, @"Unexpected error: %@: %@", error.localizedDescription, testDescription);
                 }
             } else {
                 // Allow breakpoint for failing tests
                 [template renderObject:object error:&error];
                 
-                XCTAssertTrue(NO, @"Unexpected error: %@: %@", error.localizedDescription, testDescription);
+                STAssertTrue(NO, @"Unexpected error: %@: %@", error.localizedDescription, testDescription);
             }
         }
     } else {
@@ -324,13 +322,13 @@ static struct {
                 // Allow breakpoint for failing tests
                 block(&template, &error);
                 
-                XCTAssertTrue(NO, @"Unexpected error: %@: %@", error.localizedDescription, testDescription);
+                STAssertTrue(NO, @"Unexpected error: %@: %@", error.localizedDescription, testDescription);
             }
         } else {
             // Allow breakpoint for failing tests
             block(&template, &error);
             
-            XCTAssertTrue(NO, @"Error loading template: %@: %@", error.localizedDescription, testDescription);
+            STAssertTrue(NO, @"Error loading template: %@: %@", error.localizedDescription, testDescription);
         }
     }
 }

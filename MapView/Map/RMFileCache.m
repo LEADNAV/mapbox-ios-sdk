@@ -405,7 +405,7 @@
         
         NSFileManager *fileManager = [NSFileManager defaultManager];
         NSError *error;
-        NSDate *purgeStartTime = [NSDate date];
+//        NSDate *purgeStartTime = [NSDate date];
         NSDate *expiryTime = [NSDate dateWithTimeIntervalSinceNow:(self.expiryPeriod * -1)];
         NSArray *cacheDirectoryContents = [fileManager contentsOfDirectoryAtPath:self.cacheDir error:&error];
         NSMutableArray *cachedImages = [NSMutableArray new];
@@ -510,7 +510,7 @@
             RMLog(@"Removed %lu images from the cache.", (unsigned long)count);
         }
         
-        RMLog(@"Completed purging cache (%.6f sec).", ([purgeStartTime timeIntervalSinceNow] * -1));
+        RMLog(@"Completed purging cache (%.6f sec).", ([[NSDate date] timeIntervalSinceNow] * -1));
         
         self.isPurgingCache = NO;
     });

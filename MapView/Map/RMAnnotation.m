@@ -202,12 +202,15 @@
 - (void)setIsUserLocationAnnotation:(BOOL)flag
 {
     isUserLocationAnnotation = flag;
+ 
+ if (flag) NSLog(@"User Location Annotation - YES");
 }
 
 #pragma mark -
 
 - (void)setBoundingBoxCoordinatesSouthWest:(CLLocationCoordinate2D)southWest northEast:(CLLocationCoordinate2D)northEast
 {
+// return;
     RMProjectedPoint first = [[mapView projection] coordinateToProjectedPoint:southWest];
     RMProjectedPoint second = [[mapView projection] coordinateToProjectedPoint:northEast];
     self.projectedBoundingBox = RMProjectedRectMake(first.x, first.y, second.x - first.x, second.y - first.y);

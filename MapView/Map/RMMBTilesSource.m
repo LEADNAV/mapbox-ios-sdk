@@ -96,6 +96,11 @@
 
 - (UIImage *)imageForTile:(RMTile)tile inCache:(RMTileCache *)tileCache
 {
+ 
+ if (tile.zoom > self.maxZoom) {
+        NSLog(@"****** Deflected attempt to grab image for zoom that doesn't exist ******");
+        return nil;
+ }
     NSAssert4(((tile.zoom >= self.minZoom) && (tile.zoom <= self.maxZoom)),
 			  @"%@ tried to retrieve tile with zoomLevel %d, outside source's defined range %f to %f", 
 			  self, tile.zoom, self.minZoom, self.maxZoom);
@@ -221,6 +226,65 @@
 - (void)setMaxZoom:(float)aMaxZoom
 {
     [tileProjection setMaxZoom:aMaxZoom];
+}
+
+- (RMSphericalTrapezium)maxAreaBoundingBox
+{
+ __block RMSphericalTrapezium bounds = kMBTilesDefaultLatLonBoundingBox;
+ 
+ __block double minX, minY, maxX, maxY;
+ 
+ __block NSNumber *minimumZoom = [NSNumber numberWithFloat:ceilf(self.minZoom)];
+  
+  [queue inDatabase:^(FMDatabase *db)
+   {
+    FMResultSet *resultsMinX = [db executeQuery:@"select min(tile_column) from tiles where zoom_level = ?", minimumZoom];
+    
+    if ([db hadError]) minX = 0.0;
+    
+    [resultsMinX next];
+    
+    minX = [resultsMinX doubleForColumnIndex:0];
+    
+    [resultsMinX close];
+    
+    FMResultSet *resultsMinY = [db executeQuery:@"select min(tile_row) from tiles where zoom_level = ?", minimumZoom];
+    
+    if ([db hadError]) minY = 0.0;
+    
+    [resultsMinY next];
+    
+    minY = [resultsMinY doubleForColumnIndex:0];
+    
+    [resultsMinY close];
+    
+    FMResultSet *resultsMaxX = [db executeQuery:@"select max(tile_column) from tiles where zoom_level = ?", minimumZoom];
+    
+    if ([db hadError]) maxX = 0.0;
+    
+    [resultsMaxX next];
+    
+    maxX = [resultsMaxX doubleForColumnIndex:0];
+    
+    [resultsMaxX close];
+    
+    FMResultSet *resultsMaxY = [db executeQuery:@"select max(tile_row) from tiles where zoom_level = ?", minimumZoom];
+    
+    if ([db hadError]) maxY = 0.0;
+    
+    [resultsMaxY next];
+    
+    maxY = [resultsMaxY doubleForColumnIndex:0];
+    
+    [resultsMaxY close];
+   }];
+ 
+ bounds.southWest.latitude  = atan(sinh(M_PI - ((minY)/pow(2, ceilf(self.minZoom)))*2*M_PI))*(180/M_PI) * -1;
+ bounds.southWest.longitude = (minX/pow(2, ceilf(self.minZoom)))*360 - 180;
+ bounds.northEast.latitude  = atan(sinh(M_PI - ((maxY + 1)/pow(2, ceilf(self.minZoom)))*2*M_PI))*(180/M_PI) * -1;
+ bounds.northEast.longitude = ((maxX + 1)/pow(2, ceilf(self.minZoom)))*360 - 180;
+ 
+ return bounds;
 }
 
 - (RMSphericalTrapezium)latitudeLongitudeBoundingBox
