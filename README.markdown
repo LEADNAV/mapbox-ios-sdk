@@ -5,8 +5,6 @@ Based on the Route-Me iOS map library (Alpstein fork) with [Mapbox][mapbox] cust
 
 Requires iOS 5 or greater (includes iOS 7 support at runtime), Xcode 5.0 or greater, and ARC.
 
-[![](https://raw.github.com/mapbox/mapbox-ios-sdk/packaging/screenshot.png)]()
-
 Major differences from [Alpstein fork of Route-Me](https://github.com/Alpstein/route-me): 
 
  * Requires iOS 5.0 and above. 
