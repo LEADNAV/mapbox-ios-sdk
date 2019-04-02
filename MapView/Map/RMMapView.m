@@ -178,6 +178,7 @@
 
     NSMutableSet *_annotations;
     NSMutableSet *_visibleAnnotations;
+    RMAnnotation *_userLocationAnnotation;
 
     BOOL _constrainMovement, _constrainMovementByUser;
     RMProjectedRect _constrainingProjectedBounds, _constrainingProjectedBoundsByUser;
@@ -289,6 +290,7 @@
 
     _annotations = [NSMutableSet new];
     _visibleAnnotations = [NSMutableSet new];
+    _userLocationAnnotation = nil;
     [self setQuadTree:[[RMQuadTree alloc] initWithMapView:self]];
     _clusteringEnabled = NO;
     _positionClusterMarkersAtTheGravityCenter = YES;
@@ -3166,6 +3168,17 @@
     {
         if ([_annotations containsObject:annotation])
             return;
+
+        if (annotation.isUserLocationAnnotation) {
+            if (_userLocationAnnotation == nil) {
+                _userLocationAnnotation = annotation;
+            } else {
+                NSLog(@"%s: Stopped a dup!", __FUNCTION__);
+                NSLog(@"%s:     a -> 0x%08x", __FUNCTION__, annotation);
+                NSLog(@"%s:     _ -> 0x%08x", __FUNCTION__, _userLocationAnnotation);
+                return;
+            }
+        }
 
         [_annotations addObject:annotation];
         [self.quadTree addAnnotation:annotation];
