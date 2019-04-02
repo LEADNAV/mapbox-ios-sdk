@@ -3173,9 +3173,10 @@
             if (_userLocationAnnotation == nil) {
                 _userLocationAnnotation = annotation;
             } else {
-                NSLog(@"%s: Stopped a dup!", __FUNCTION__);
-                NSLog(@"%s:     a -> 0x%08x", __FUNCTION__, annotation);
-                NSLog(@"%s:     _ -> 0x%08x", __FUNCTION__, _userLocationAnnotation);
+                // update the user's location data
+                _userLocationAnnotation.position = annotation.position;
+                _userLocationAnnotation.projectedLocation = annotation.projectedLocation;
+                _userLocationAnnotation.projectedBoundingBox = annotation.projectedBoundingBox;
                 return;
             }
         }
