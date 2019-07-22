@@ -3652,13 +3652,18 @@
 
     if ( ! [_annotations containsObject:self.userLocation]) {
         NSLog(@"MB/LM: Adding userLocation to annotations");
+        NSMutableArray *toRemove = [NSMutableArray new];
+
         for (RMAnnotation *a in _annotations) {
             if (a.isUserLocationAnnotation) {
-                NSLog(@"MB/LM: Removing old annotation!");
-                [self removeAnnotation:a];
+                [toRemove addObject:a];
             }
         }
+
         [self addAnnotation:self.userLocation];
+        for (RMAnnotation *a in toRemove) {
+            [self removeAnnotation:a];
+        }
     }
 }
 
