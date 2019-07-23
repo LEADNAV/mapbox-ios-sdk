@@ -3651,7 +3651,6 @@
     _trackingHaloAnnotation.layer.hidden = ( ! CLLocationCoordinate2DIsValid(self.userLocation.coordinate) || newLocation.horizontalAccuracy > 10 || self.userLocation.hasCustomLayer);
 
     if ( ! [_annotations containsObject:self.userLocation]) {
-        NSLog(@"MB/LM: Adding userLocation to annotations");
         NSMutableArray *toRemove = [NSMutableArray new];
 
         /* scan for old userLocations so we can cull them */
@@ -3661,11 +3660,12 @@
             }
         }
 
-        [self addAnnotation:self.userLocation];
         for (RMAnnotation *a in toRemove) {
             NSLog(@"MB/LM: Removing old userLocation, %@", a);
             [self removeAnnotation:a];
         }
+        NSLog(@"MB/LM: Adding userLocation to annotations, %@", self.userLocation);
+        [self addAnnotation:self.userLocation];
     }
 }
 
