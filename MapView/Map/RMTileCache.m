@@ -678,8 +678,8 @@ static NSMutableDictionary *predicateValues = nil;
 
 - (id <RMTileCache>)fileCacheWithConfig:(NSDictionary *)cfg
 {
-    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
-    NSString *cacheDir = [NSString pathWithComponents:@[ documentsDirectory, @"Cache" ]];
+    NSString *appSupportDir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) firstObject];
+    NSString *cacheDir = [NSString pathWithComponents:@[ appSupportDir, @"Cache" ]];
     NSUInteger capacity = 3000; // 1000
     NSTimeInterval expiryPeriod = 0;
     

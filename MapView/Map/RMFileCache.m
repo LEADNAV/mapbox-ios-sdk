@@ -49,9 +49,9 @@
     self = [super init];
     
     if (self) {
-        NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+        NSString *appSupportDir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) firstObject];
         
-        self.cacheDir = [NSString pathWithComponents:@[ documentsDirectory, @"Cache" ]];
+        self.cacheDir = [NSString pathWithComponents:@[ appSupportDir, @"Cache" ]];
         
         [self initialize];
     }
