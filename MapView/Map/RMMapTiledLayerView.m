@@ -296,7 +296,13 @@
                 UIGraphicsEndImageContext();
             }
 
-            [tileImage drawInRect:rect];
+            /* FIXME: iOS13 beta drawing hack */
+            //[tileImage drawInRect:rect];
+            CGFloat ty = rect.origin.y + rect.size.height;
+            CGContextTranslateCTM(context, 0, ty);
+            CGContextScaleCTM(context, 1.0, -1.0);
+            CGRect rect__y_zero = CGRectMake(rect.origin.x, 0, rect.size.width, rect.size.height);
+            CGContextDrawImage(context, rect__y_zero, tileImage.CGImage);
         }
         else
         {
