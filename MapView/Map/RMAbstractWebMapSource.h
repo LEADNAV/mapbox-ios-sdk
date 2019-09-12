@@ -27,6 +27,7 @@
 
 #import "RMAbstractMercatorTileSource.h"
 #import "RMProjection.h"
+#import "Enumerations.h"
 
 #define RMAbstractWebMapSourceDefaultRetryCount  3
 #define RMAbstractWebMapSourceDefaultWaitSeconds 15.0
@@ -41,6 +42,8 @@
 
 /** The network timeout for each attempt to download a tile image. */
 @property (nonatomic, assign) NSTimeInterval requestTimeoutSeconds;
+
+@property (nonatomic) LNMapSource LNMapSource;
 
 /** @name Providing Tile Images */
 

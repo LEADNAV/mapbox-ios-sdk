@@ -36,6 +36,7 @@
 
     self.minZoom = 1;
     self.maxZoom = 18;
+    self.LNMapSource = kMapSourceMapQuestOSM;
 
 	return self;
 } 

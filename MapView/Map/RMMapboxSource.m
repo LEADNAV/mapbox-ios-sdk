@@ -192,6 +192,16 @@
 {
     NSString *referenceURLString = [NSString stringWithFormat:@"http%@://api.tiles.mapbox.com/v3/%@.json%@", (enableSSL ? @"s" : @""), mapID, (enableSSL ? @"?secure" : @"")];
 
+    /* map mapID -> LNMapSource */
+    if ([mapID isEqualToString:@"leadnavsystems.ik5blff4"])
+        self.LNMapSource = kMapSourceMapboxStreet;
+    else if ([mapID isEqualToString:@"leadnavsystems.ik5afhmh"])
+        self.LNMapSource = kMapSourceMapboxTerrain;
+    else if ([mapID isEqualToString:@"leadnavsystems.ik210om1"])
+        self.LNMapSource = kMapSourceMapboxSatellite;
+    else
+        self.LNMapSource = kMapSourceNone;
+
     return [self initWithReferenceURL:[NSURL URLWithString:referenceURLString] enablingDataOnMapView:mapView];
 }
 

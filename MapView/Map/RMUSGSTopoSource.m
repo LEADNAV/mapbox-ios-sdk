@@ -36,6 +36,7 @@
 
     self.minZoom = 1;
     self.maxZoom = 15;
+    self.LNMapSource = kMapSourceUSGSTopo;
 
 	return self;
 } 

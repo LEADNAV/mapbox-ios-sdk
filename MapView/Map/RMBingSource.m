@@ -55,6 +55,18 @@
         self.minZoom = 1;
         self.maxZoom = 21;
 
+        switch (_imagerySet) {
+        case RMBingImagerySetAerial:
+            self.LNMapSource = kMapSourceBingSatellite;
+            break;
+        case RMBingImagerySetAerialWithLabels:
+            self.LNMapSource = kMapSourceBingHybrid;
+            break;
+        default:
+            self.LNMapSource = kMapSourceBingStreet;
+            break;
+        }
+
         return self;
     }
 

@@ -29,8 +29,11 @@
 
 #import "RMTileCache.h"
 #import "RMConfiguration.h"
+#import "LNStatistics.h"
 
 #define HTTP_404_NOT_FOUND 404
+
+LNSTATS_GLOBAL_STRUCT
 
 @implementation RMAbstractWebMapSource
 
@@ -84,6 +87,7 @@
     });
 
     NSArray *URLs = [self URLsForTile:tile];
+    NSInteger image_size = 0;
 
     if ([URLs count] == 0)
     {
@@ -158,6 +162,12 @@
     }
     else
     {
+        /* keep track of tile stats */
+        if (self.isCacheable) {
+            LNSTATS_INCR(self.LNMapSource, requestCacheTileCount);
+        } else {
+            LNSTATS_INCR(self.LNMapSource, requestTileCount);
+        }
         for (NSUInteger try = 0; image == nil && try < self.retryCount; ++try)
         {
             NSHTTPURLResponse *response = nil;
@@ -167,11 +177,22 @@
 
             if (response.statusCode == HTTP_404_NOT_FOUND)
                 break;
+
+            if (response.expectedContentLength >= 0)
+                image_size = response.expectedContentLength;
         }
     }
 
-    if (image && self.isCacheable)
-        [tileCache addImage:image forTile:tile withCacheKey:[self uniqueTilecacheKey]];
+    if (image) {
+        if (self.isCacheable) {
+            [tileCache addImage:image forTile:tile withCacheKey:[self uniqueTilecacheKey]];
+            LNSTATS_INCR(self.LNMapSource, receivedCacheTileCount);
+            LNSTATS_ADD(self.LNMapSource, receivedCacheTileBytes, image_size);
+        } else {
+            LNSTATS_INCR(self.LNMapSource, receivedTileCount);
+            LNSTATS_ADD(self.LNMapSource, receivedTileBytes, image_size);
+        }
+    }
 
     dispatch_async(dispatch_get_main_queue(), ^(void)
     {

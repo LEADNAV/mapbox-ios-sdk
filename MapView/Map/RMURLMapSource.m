@@ -29,6 +29,7 @@
     
     self.minZoom = minZoom;
     self.maxZoom = maxZoom;
+    self.LNMapSource = kMapSourceURL;
     
     return self;
 }
