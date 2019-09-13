@@ -163,11 +163,8 @@ LNSTATS_GLOBAL_STRUCT
     else
     {
         /* keep track of tile stats */
-        if (self.isCacheable) {
-            LNSTATS_INCR(self.LNMapSource, requestCacheTileCount);
-        } else {
-            LNSTATS_INCR(self.LNMapSource, requestTileCount);
-        }
+        LNSTATS_INCR(self.LNMapSource, requestTileCount);
+
         for (NSUInteger try = 0; image == nil && try < self.retryCount; ++try)
         {
             NSHTTPURLResponse *response = nil;
@@ -186,12 +183,9 @@ LNSTATS_GLOBAL_STRUCT
     if (image) {
         if (self.isCacheable) {
             [tileCache addImage:image forTile:tile withCacheKey:[self uniqueTilecacheKey]];
-            LNSTATS_INCR(self.LNMapSource, receivedCacheTileCount);
-            LNSTATS_ADD(self.LNMapSource, receivedCacheTileBytes, image_size);
-        } else {
-            LNSTATS_INCR(self.LNMapSource, receivedTileCount);
-            LNSTATS_ADD(self.LNMapSource, receivedTileBytes, image_size);
         }
+        LNSTATS_INCR(self.LNMapSource, receivedTileCount);
+        LNSTATS_ADD(self.LNMapSource, receivedTileBytes, image_size);
     }
 
     dispatch_async(dispatch_get_main_queue(), ^(void)
