@@ -142,17 +142,17 @@
 - (void)addCache:(id <RMTileCache>)cache
 {
     dispatch_barrier_async(_tileCacheQueue, ^{
-        [_tileCaches addObject:cache];
+      [self->_tileCaches addObject:cache];
     });
 }
 
 - (void)insertCache:(id <RMTileCache>)cache atIndex:(NSUInteger)index
 {
     dispatch_barrier_async(_tileCacheQueue, ^{
-        if (index >= [_tileCaches count])
-            [_tileCaches addObject:cache];
+      if (index >= [self->_tileCaches count])
+        [self->_tileCaches addObject:cache];
         else
-            [_tileCaches insertObject:cache atIndex:index];
+          [self->_tileCaches insertObject:cache atIndex:index];
     });
 }
 
@@ -232,7 +232,7 @@
         _backgroundFetchQueue.suspended = YES;
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 10 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            _backgroundFetchQueue.suspended = NO;
+          self->_backgroundFetchQueue.suspended = NO;
         });
     }
 }
@@ -430,17 +430,17 @@
                         {
                             progTile++;
 
-                            if ([_backgroundCacheDelegate respondsToSelector:@selector(tileCache:didBackgroundCacheTile:withIndex:ofTotalTileCount:)])
-                                [_backgroundCacheDelegate tileCache:self didBackgroundCacheTile:RMTileMake(x, y, zoom) withIndex:progTile ofTotalTileCount:totalTiles];
+                          if ([self->_backgroundCacheDelegate respondsToSelector:@selector(tileCache:didBackgroundCacheTile:withIndex:ofTotalTileCount:)])
+                            [self->_backgroundCacheDelegate tileCache:self didBackgroundCacheTile:RMTileMake(x, y, zoom) withIndex:progTile ofTotalTileCount:totalTiles];
 
                             if (progTile == totalTiles)
                             {
-                                 _backgroundFetchQueue = nil;
+                              self->_backgroundFetchQueue = nil;
 
-                                 _activeTileSource = nil;
+                              self->_activeTileSource = nil;
 
-                                if ([_backgroundCacheDelegate respondsToSelector:@selector(tileCacheDidFinishBackgroundCache:)])
-                                    [_backgroundCacheDelegate tileCacheDidFinishBackgroundCache:self];
+                              if ([self->_backgroundCacheDelegate respondsToSelector:@selector(tileCacheDidFinishBackgroundCache:)])
+                                [self->_backgroundCacheDelegate tileCacheDidFinishBackgroundCache:self];
                             }
                         }
 
@@ -462,24 +462,24 @@
         {
             BOOL didCancel = NO;
 
-            if (_backgroundFetchQueue)
+          if (self->_backgroundFetchQueue)
             {
-                [_backgroundFetchQueue cancelAllOperations];
-                [_backgroundFetchQueue waitUntilAllOperationsAreFinished];
-                 _backgroundFetchQueue = nil;
+              [self->_backgroundFetchQueue cancelAllOperations];
+              [self->_backgroundFetchQueue waitUntilAllOperationsAreFinished];
+              self->_backgroundFetchQueue = nil;
 
                 didCancel = YES;
             }
 
-            if (_activeTileSource)
-                 _activeTileSource = nil;
+          if (self->_activeTileSource)
+            self->_activeTileSource = nil;
 
             if (didCancel)
             {
                 dispatch_sync(dispatch_get_main_queue(), ^(void)
                 {
-                    if ([_backgroundCacheDelegate respondsToSelector:@selector(tileCacheDidCancelBackgroundCache:)])
-                        [_backgroundCacheDelegate tileCacheDidCancelBackgroundCache:self];
+                  if ([self->_backgroundCacheDelegate respondsToSelector:@selector(tileCacheDidCancelBackgroundCache:)])
+                    [self->_backgroundCacheDelegate tileCacheDidCancelBackgroundCache:self];
                 });
             }
         }

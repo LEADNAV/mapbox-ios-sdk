@@ -734,8 +734,8 @@
         {
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
-                if (_delegateHasBeforeMapMove)
-                    [_delegate beforeMapMove:self byUser:flag];
+              if (self->_delegateHasBeforeMapMove)
+                [self->_delegate beforeMapMove:self byUser:flag];
             });
         }
 
@@ -747,8 +747,8 @@
             {
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
-                    if (_delegateHasAfterMapMove)
-                        [_delegate afterMapMove:self byUser:flag];
+                  if (self->_delegateHasAfterMapMove)
+                    [self->_delegate afterMapMove:self byUser:flag];
                 });
             }];
         }
@@ -773,8 +773,8 @@
         {
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
-                if (_delegateHasBeforeMapZoom)
-                    [_delegate beforeMapZoom:self byUser:flag];
+              if (self->_delegateHasBeforeMapZoom)
+                [self->_delegate beforeMapZoom:self byUser:flag];
             });
         }
 
@@ -786,8 +786,8 @@
             {
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
-                    if (_delegateHasAfterMapZoom)
-                        [_delegate afterMapZoom:self byUser:flag];
+                  if (self->_delegateHasAfterMapZoom)
+                    [self->_delegate afterMapZoom:self byUser:flag];
                 });
             }];
         }
@@ -3363,18 +3363,18 @@
                                 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationCurveEaseInOut
                              animations:^(void)
                              {
-                                 _mapTransform = CGAffineTransformIdentity;
-                                 _annotationTransform = CATransform3DIdentity;
+              self->_mapTransform = CGAffineTransformIdentity;
+              self->_annotationTransform = CATransform3DIdentity;
 
-                                 _mapScrollView.transform = _mapTransform;
-                                 _compassButton.transform = _mapTransform;
-                                 _overlayView.transform   = _mapTransform;
+              self->_mapScrollView.transform = self->_mapTransform;
+              self->_compassButton.transform = self->_mapTransform;
+              self->_overlayView.transform   = self->_mapTransform;
 
-                                 _compassButton.alpha = 0;
+              self->_compassButton.alpha = 0;
 
-                                 for (RMAnnotation *annotation in _annotations)
+              for (RMAnnotation *annotation in self->_annotations)
                                      if ([annotation.layer isKindOfClass:[RMMarker class]])
-                                         annotation.layer.transform = _annotationTransform;
+                                       annotation.layer.transform = self->_annotationTransform;
                              }
                              completion:nil];
 
@@ -3412,18 +3412,18 @@
                                 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationCurveEaseInOut
                              animations:^(void)
                              {
-                                 _mapTransform = CGAffineTransformIdentity;
-                                 _annotationTransform = CATransform3DIdentity;
+              self->_mapTransform = CGAffineTransformIdentity;
+              self->_annotationTransform = CATransform3DIdentity;
 
-                                 _mapScrollView.transform = _mapTransform;
-                                 _compassButton.transform = _mapTransform;
-                                 _overlayView.transform   = _mapTransform;
+              self->_mapScrollView.transform = self->_mapTransform;
+              self->_compassButton.transform = self->_mapTransform;
+              self->_overlayView.transform   = self->_mapTransform;
 
-                                 _compassButton.alpha = 0;
+              self->_compassButton.alpha = 0;
 
-                                 for (RMAnnotation *annotation in _annotations)
+              for (RMAnnotation *annotation in self->_annotations)
                                      if ([annotation.layer isKindOfClass:[RMMarker class]])
-                                         annotation.layer.transform = _annotationTransform;
+                                       annotation.layer.transform = self->_annotationTransform;
                              }
                              completion:nil];
 
@@ -3506,7 +3506,7 @@
         if (fabs(userLocationPoint.x - mapCenterPoint.x) > 1.0 || fabs(userLocationPoint.y - mapCenterPoint.y) > 1.0)
         {
             // LeadNav customization to prevent zooming while tracking the user location
-            if (YES /*round(_zoom) >= 10*/)
+          if (/* DISABLES CODE */ (YES) /*round(_zoom) >= 10*/)
             {
                 // at sufficient detail, just re-center the map; don't zoom
                 //
@@ -3718,7 +3718,7 @@
     if (/*newHeading.trueHeading*/ heading != 0 && self.userTrackingMode == RMUserTrackingModeFollowWithHeading)
     {
         if (_userHeadingTrackingView.alpha < 1.0)
-            [UIView animateWithDuration:0.5 animations:^(void) { _userHeadingTrackingView.alpha = 1.0; }];
+          [UIView animateWithDuration:0.5 animations:^(void) { self->_userHeadingTrackingView.alpha = 1.0; }];
         
         [CATransaction begin];
         [CATransaction setAnimationDuration:0.5];
@@ -3731,16 +3731,16 @@
                          {
                              CGFloat angle = (M_PI / -180) * /*newHeading.trueHeading*/ heading;
 
-                             _mapTransform = CGAffineTransformMakeRotation(angle);
-                             _annotationTransform = CATransform3DMakeAffineTransform(CGAffineTransformMakeRotation(-angle));
+          self->_mapTransform = CGAffineTransformMakeRotation(angle);
+          self->_annotationTransform = CATransform3DMakeAffineTransform(CGAffineTransformMakeRotation(-angle));
 
-                             _mapScrollView.transform = _mapTransform;
-                             _compassButton.transform = _mapTransform;
-                             _overlayView.transform   = _mapTransform;
+          self->_mapScrollView.transform = self->_mapTransform;
+          self->_compassButton.transform = self->_mapTransform;
+          self->_overlayView.transform   = self->_mapTransform;
 
-                             _compassButton.alpha = 1.0;
+          self->_compassButton.alpha = 1.0;
 
-                             for (RMAnnotation *annotation in _annotations)
+          for (RMAnnotation *annotation in self->_annotations)
                                  if ([annotation.layer isKindOfClass:[RMMarker class]]) {
                                      //CABasicAnimation *previousAnimation = (CABasicAnimation *)[annotation.layer animationForKey:@"transform"];
                                      //CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
@@ -3751,7 +3751,7 @@
                                      
                                      //[annotation.layer addAnimation:animation forKey:@"transform"];
                                      
-                                     annotation.layer.transform = _annotationTransform;
+                                   annotation.layer.transform = self->_annotationTransform;
                                  }
 
                              [self correctPositionOfAllAnnotations];

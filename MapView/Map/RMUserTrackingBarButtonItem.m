@@ -98,7 +98,6 @@ typedef enum : NSUInteger {
     if (RMPreVersion7)
     {
         _segmentedControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@""]];
-        _segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
         [_segmentedControl setWidth:32.0 forSegmentAtIndex:0];
         _segmentedControl.userInteractionEnabled = NO;
         _segmentedControl.tintColor = self.tintColor;
@@ -289,19 +288,19 @@ typedef enum : NSUInteger {
                             options:UIViewAnimationOptionBeginFromCurrentState
                          animations:^(void)
                          {
-                             _buttonImageView.transform = CGAffineTransformMakeScale(0.01, 0.01);
-                             _activityView.transform    = CGAffineTransformMakeScale(0.01, 0.01);
+          self->_buttonImageView.transform = CGAffineTransformMakeScale(0.01, 0.01);
+          self->_activityView.transform    = CGAffineTransformMakeScale(0.01, 0.01);
                          }
                          completion:^(BOOL finished)
                          {
-                             _buttonImageView.hidden = YES;
+          self->_buttonImageView.hidden = YES;
 
-                             [_activityView startAnimating];
+          [self->_activityView startAnimating];
 
                              [UIView animateWithDuration:0.25 animations:^(void)
                              {
-                                 _buttonImageView.transform = CGAffineTransformIdentity;
-                                 _activityView.transform    = CGAffineTransformIdentity;
+                               self->_buttonImageView.transform = CGAffineTransformIdentity;
+                               self->_activityView.transform    = CGAffineTransformIdentity;
                              }];
                          }];
 
@@ -322,15 +321,15 @@ typedef enum : NSUInteger {
                                 options:UIViewAnimationOptionBeginFromCurrentState
                              animations:^(void)
                              {
-                                 if (_state == RMUserTrackingButtonStateHeading &&
-                                     _mapView.userTrackingMode != RMUserTrackingModeFollowWithHeading)
+              if (self->_state == RMUserTrackingButtonStateHeading &&
+                  self->_mapView.userTrackingMode != RMUserTrackingModeFollowWithHeading)
                                  {
                                      // coming out of heading mode
                                      //
                                      animate = YES;
                                  }
-                                 else if ((_state != RMUserTrackingButtonStateHeading) &&
-                                          _mapView.userTrackingMode == RMUserTrackingModeFollowWithHeading)
+              else if ((self->_state != RMUserTrackingButtonStateHeading) &&
+                       self->_mapView.userTrackingMode == RMUserTrackingModeFollowWithHeading)
                                  {
                                      // going into heading mode
                                      //
@@ -338,27 +337,27 @@ typedef enum : NSUInteger {
                                  }
 
                                  if (animate)
-                                     _buttonImageView.transform = CGAffineTransformMakeScale(0.01, 0.01);
+                                   self->_buttonImageView.transform = CGAffineTransformMakeScale(0.01, 0.01);
 
-                                 if (_state == RMUserTrackingButtonStateActivity)
-                                     _activityView.transform = CGAffineTransformMakeScale(0.01, 0.01);
+              if (self->_state == RMUserTrackingButtonStateActivity)
+                self->_activityView.transform = CGAffineTransformMakeScale(0.01, 0.01);
                              }
                              completion:^(BOOL finished)
                              {
                                  [self updateImage];
 
-                                 _buttonImageView.hidden = NO;
+              self->_buttonImageView.hidden = NO;
 
-                                 if (_state == RMUserTrackingButtonStateActivity)
-                                     [_activityView stopAnimating];
+              if (self->_state == RMUserTrackingButtonStateActivity)
+                [self->_activityView stopAnimating];
 
                                  [UIView animateWithDuration:0.25 animations:^(void)
                                  {
                                      if (animate)
-                                         _buttonImageView.transform = CGAffineTransformIdentity;
+                                       self->_buttonImageView.transform = CGAffineTransformIdentity;
 
-                                     if (_state == RMUserTrackingButtonStateActivity)
-                                         _activityView.transform = CGAffineTransformIdentity;
+                                   if (self->_state == RMUserTrackingButtonStateActivity)
+                                     self->_activityView.transform = CGAffineTransformIdentity;
                                  }];
                              }];
 

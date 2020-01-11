@@ -179,11 +179,11 @@
                     {
                         // ensure only one request for a URL at a time
                         //
-                        @synchronized ([(RMAbstractWebMapSource *)_tileSource URLForTile:RMTileMake(x, y, zoom)])
+                      @synchronized ([(RMAbstractWebMapSource *)self->_tileSource URLForTile:RMTileMake(x, y, zoom)])
                         {
                             // this will return quicker if cached since above attempt, else block on fetch
                             //
-                            if (_tileSource.isCacheable && [_tileSource imageForTile:RMTileMake(x, y, zoom) inCache:[_mapView tileCache]])
+                          if (self->_tileSource.isCacheable && [self->_tileSource imageForTile:RMTileMake(x, y, zoom) inCache:[self->_mapView tileCache]])
                             {
                                 dispatch_async(dispatch_get_main_queue(), ^(void)
                                 {
@@ -284,12 +284,16 @@
                 CGContextSetFillColorWithColor(debugContext, [UIColor whiteColor].CGColor);
 
                 NSString *debugString = [NSString stringWithFormat:@"Zoom %d", zoom];
-                CGSize debugSize1 = [debugString sizeWithFont:font];
-                [debugString drawInRect:CGRectMake(5.0, 5.0, debugSize1.width, debugSize1.height) withFont:font];
+                CGSize size = [debugString sizeWithAttributes:
+                             @{NSFontAttributeName: font}];
+                CGSize debugSize1 = CGSizeMake(ceilf(size.width), ceilf(size.height));
+                [debugString drawInRect:CGRectMake(5.0, 5.0, debugSize1.width, debugSize1.height) withAttributes:@{NSFontAttributeName: font.fontName}];
 
                 debugString = [NSString stringWithFormat:@"(%d, %d)", x, y];
-                CGSize debugSize2 = [debugString sizeWithFont:font];
-                [debugString drawInRect:CGRectMake(5.0, 5.0 + debugSize1.height + 5.0, debugSize2.width, debugSize2.height) withFont:font];
+                size = [debugString sizeWithAttributes:
+                             @{NSFontAttributeName: font}];
+                CGSize debugSize2 = CGSizeMake(ceilf(size.width), ceilf(size.height));
+                [debugString drawInRect:CGRectMake(5.0, 5.0 + debugSize1.height + 5.0, debugSize2.width, debugSize2.height) withAttributes: @{NSFontAttributeName: font.fontName}];
 
                 tileImage = UIGraphicsGetImageFromCurrentImageContext();
 
