@@ -198,7 +198,10 @@
 {
     if (navigationType == UIWebViewNavigationTypeLinkClicked)
     {
-        [[UIApplication sharedApplication] openURL:request.URL];
+      UIApplication *application = [UIApplication sharedApplication];
+      [application openURL:request.URL
+                   options:@{}
+         completionHandler:nil];
         
         [self performSelector:@selector(dismiss:) withObject:nil afterDelay:0];
     }
