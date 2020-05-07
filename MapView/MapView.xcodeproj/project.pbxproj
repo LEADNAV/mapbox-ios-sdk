@@ -86,6 +86,14 @@
 		B8F3FC610EA2B382004D8F85 /* RMMapLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F3FC600EA2B382004D8F85 /* RMMapLayer.m */; };
 		B8F3FC640EA2E792004D8F85 /* RMMarker.h in Headers */ = {isa = PBXBuildFile; fileRef = B8F3FC620EA2E792004D8F85 /* RMMarker.h */; };
 		B8F3FC650EA2E792004D8F85 /* RMMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F3FC630EA2E792004D8F85 /* RMMarker.m */; };
+		C454405A246442F500CDC8A2 /* RMArcGISSatelliteSource.h in Headers */ = {isa = PBXBuildFile; fileRef = C4544059246442F500CDC8A2 /* RMArcGISSatelliteSource.h */; };
+		C454405C2464433400CDC8A2 /* RMArcGISSatelliteSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C454405B2464433400CDC8A2 /* RMArcGISSatelliteSource.m */; };
+		C454405F2464A77D00CDC8A2 /* RMArcGISStreetSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C454405E2464A77D00CDC8A2 /* RMArcGISStreetSource.m */; };
+		C45440612464A7A900CDC8A2 /* RMArcGISStreetSource.h in Headers */ = {isa = PBXBuildFile; fileRef = C45440602464A7A900CDC8A2 /* RMArcGISStreetSource.h */; };
+		C45440632464AB0200CDC8A2 /* RMArcGISTerrainSource.h in Headers */ = {isa = PBXBuildFile; fileRef = C45440622464AB0200CDC8A2 /* RMArcGISTerrainSource.h */; };
+		C45440652464AB2200CDC8A2 /* RMArcGISTerrainSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C45440642464AB2200CDC8A2 /* RMArcGISTerrainSource.m */; };
+		C47A012D245C77FC0067CE3E /* RMArcGISSource.h in Headers */ = {isa = PBXBuildFile; fileRef = C47A012C245C77FC0067CE3E /* RMArcGISSource.h */; };
+		C47A0131245C7C8D0067CE3E /* RMArcGISSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C47A0130245C7C8D0067CE3E /* RMArcGISSource.m */; };
 		D1437B36122869E400888DAE /* RMDBMapSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D1437B32122869E400888DAE /* RMDBMapSource.m */; };
 		D1437B37122869E400888DAE /* RMDBMapSource.h in Headers */ = {isa = PBXBuildFile; fileRef = D1437B33122869E400888DAE /* RMDBMapSource.h */; };
 		D84F34CF19703B230050CE08 /* RMURLMapSource.h in Headers */ = {isa = PBXBuildFile; fileRef = D84F34CD19703B230050CE08 /* RMURLMapSource.h */; };
@@ -278,6 +286,14 @@
 		B8F3FC600EA2B382004D8F85 /* RMMapLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMMapLayer.m; sourceTree = "<group>"; };
 		B8F3FC620EA2E792004D8F85 /* RMMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMarker.h; sourceTree = "<group>"; };
 		B8F3FC630EA2E792004D8F85 /* RMMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMMarker.m; sourceTree = "<group>"; };
+		C4544059246442F500CDC8A2 /* RMArcGISSatelliteSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMArcGISSatelliteSource.h; sourceTree = "<group>"; };
+		C454405B2464433400CDC8A2 /* RMArcGISSatelliteSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMArcGISSatelliteSource.m; sourceTree = "<group>"; };
+		C454405E2464A77D00CDC8A2 /* RMArcGISStreetSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMArcGISStreetSource.m; sourceTree = "<group>"; };
+		C45440602464A7A900CDC8A2 /* RMArcGISStreetSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMArcGISStreetSource.h; sourceTree = "<group>"; };
+		C45440622464AB0200CDC8A2 /* RMArcGISTerrainSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMArcGISTerrainSource.h; sourceTree = "<group>"; };
+		C45440642464AB2200CDC8A2 /* RMArcGISTerrainSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMArcGISTerrainSource.m; sourceTree = "<group>"; };
+		C47A012C245C77FC0067CE3E /* RMArcGISSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMArcGISSource.h; sourceTree = "<group>"; };
+		C47A0130245C7C8D0067CE3E /* RMArcGISSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMArcGISSource.m; sourceTree = "<group>"; };
 		D1437B32122869E400888DAE /* RMDBMapSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMDBMapSource.m; sourceTree = "<group>"; };
 		D1437B33122869E400888DAE /* RMDBMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMDBMapSource.h; sourceTree = "<group>"; };
 		D84F34CD19703B230050CE08 /* RMURLMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMURLMapSource.h; sourceTree = "<group>"; };
@@ -417,6 +433,8 @@
 				1607499414E120A100D535F5 /* RMGenericMapSource.m */,
 				DD98B6F814D76B930092882F /* RMMapboxSource.h */,
 				DD98B6F914D76B930092882F /* RMMapboxSource.m */,
+				C47A0130245C7C8D0067CE3E /* RMArcGISSource.m */,
+				C47A012C245C77FC0067CE3E /* RMArcGISSource.h */,
 				16FFF2C914E3DBF700A170EC /* RMMapQuestOpenAerialSource.h */,
 				16FFF2CA14E3DBF700A170EC /* RMMapQuestOpenAerialSource.m */,
 				DD8CDB4814E0507100B73EB9 /* RMMapQuestOSMSource.h */,
@@ -433,6 +451,12 @@
 				531264E61EE63141005D8BDD /* RMOpenCycleMapOutdoorsSource.m */,
 				16128CF3148D295300C23C0E /* RMOpenSeaMapSource.h */,
 				16128CF4148D295300C23C0E /* RMOpenSeaMapSource.m */,
+				C4544059246442F500CDC8A2 /* RMArcGISSatelliteSource.h */,
+				C454405B2464433400CDC8A2 /* RMArcGISSatelliteSource.m */,
+				C45440602464A7A900CDC8A2 /* RMArcGISStreetSource.h */,
+				C454405E2464A77D00CDC8A2 /* RMArcGISStreetSource.m */,
+				C45440622464AB0200CDC8A2 /* RMArcGISTerrainSource.h */,
+				C45440642464AB2200CDC8A2 /* RMArcGISTerrainSource.m */,
 				161E56381594664E00B00BB6 /* RMOpenSeaMapLayer.h */,
 				161E56391594664E00B00BB6 /* RMOpenSeaMapLayer.m */,
 				B83E64ED0E80E73F001663B6 /* RMOpenStreetMapSource.h */,
@@ -804,12 +828,15 @@
 				161E563A1594664E00B00BB6 /* RMOpenSeaMapLayer.h in Headers */,
 				16128CF5148D295300C23C0E /* RMOpenSeaMapSource.h in Headers */,
 				B8C974250E8A19B2007D16AD /* RMOpenStreetMapSource.h in Headers */,
+				C47A012D245C77FC0067CE3E /* RMArcGISSource.h in Headers */,
 				B8C974270E8A19B2007D16AD /* RMPixel.h in Headers */,
 				DDE357E71651F570001DB842 /* RMPointAnnotation.h in Headers */,
 				DDE357F816522CD8001DB842 /* RMPolygonAnnotation.h in Headers */,
 				DDE357F416522661001DB842 /* RMPolylineAnnotation.h in Headers */,
 				B8C974220E8A19B2007D16AD /* RMProjection.h in Headers */,
 				16FAB66413E03D55002F4E1C /* RMQuadTree.h in Headers */,
+				C45440632464AB0200CDC8A2 /* RMArcGISTerrainSource.h in Headers */,
+				C45440612464A7A900CDC8A2 /* RMArcGISStreetSource.h in Headers */,
 				16F98C961590CFF000FF90CE /* RMShape.h in Headers */,
 				DDE357F0165223A3001DB842 /* RMShapeAnnotation.h in Headers */,
 				DD7C7E38164C894F0021CCA5 /* RMStaticMapView.h in Headers */,
@@ -828,6 +855,7 @@
 				DD2B374F14CF814F008DE8CB /* FMDatabasePool.h in Headers */,
 				DD2B375114CF814F008DE8CB /* FMDatabaseQueue.h in Headers */,
 				DD1E3C6E161F954F004FC649 /* SMCalloutView.h in Headers */,
+				C454405A246442F500CDC8A2 /* RMArcGISSatelliteSource.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -976,6 +1004,7 @@
 				16EC85D7133CA6C300219947 /* RMCacheObject.m in Sources */,
 				160EEDB013D41DEC007C5501 /* RMAnnotation.m in Sources */,
 				1606C9FF13D86BA400547581 /* RMOpenCycleMapSource.m in Sources */,
+				C454405C2464433400CDC8A2 /* RMArcGISSatelliteSource.m in Sources */,
 				16FAB66513E03D55002F4E1C /* RMQuadTree.m in Sources */,
 				160E535813FBDB48004F82F9 /* RMMapTiledLayerView.m in Sources */,
 				1609AF8F14068B09008344B7 /* RMMapOverlayView.m in Sources */,
@@ -995,11 +1024,13 @@
 				DD8FD7551559E4A40044D96F /* RMUserLocation.m in Sources */,
 				DDA6B8BE155CAB67003DB5D8 /* RMUserTrackingBarButtonItem.m in Sources */,
 				16F3581C15864135003A3AD9 /* RMMapScrollView.m in Sources */,
+				C45440652464AB2200CDC8A2 /* RMArcGISTerrainSource.m in Sources */,
 				16F98C971590CFF000FF90CE /* RMShape.m in Sources */,
 				16FBF07715936BF1004ECAD1 /* RMTileSourcesContainer.m in Sources */,
 				161E563B1594664E00B00BB6 /* RMOpenSeaMapLayer.m in Sources */,
 				1656665615A1DF7900EF3DC7 /* RMCoordinateGridSource.m in Sources */,
 				16E5A63B15E531F200C92A5A /* RMCompositeSource.m in Sources */,
+				C454405F2464A77D00CDC8A2 /* RMArcGISStreetSource.m in Sources */,
 				DD5FA1EC15E2B020004EB6C5 /* RMLoadingTileView.m in Sources */,
 				DD41960216250ED40049E6BA /* RMTileCacheDownloadOperation.m in Sources */,
 				DD4195CA162356900049E6BA /* RMBingSource.m in Sources */,
@@ -1012,6 +1043,7 @@
 				531264E81EE63141005D8BDD /* RMOpenCycleMapOutdoorsSource.m in Sources */,
 				DDE357F516522661001DB842 /* RMPolylineAnnotation.m in Sources */,
 				DDE357F916522CD8001DB842 /* RMPolygonAnnotation.m in Sources */,
+				C47A0131245C7C8D0067CE3E /* RMArcGISSource.m in Sources */,
 				DD1985C2165C5F6400DF667F /* RMTileMillSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
