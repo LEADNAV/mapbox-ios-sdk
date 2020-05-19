@@ -25,9 +25,9 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-#import "RMArcGISTerrainSource.h"
+#import "RMMapboxSatelliteSource.h"
 
-@implementation RMArcGISTerrainSource
+@implementation RMMapboxSatelliteSource
 
 - (id)init
 {
@@ -36,7 +36,7 @@
 
     self.minZoom = 0;
     self.maxZoom = 18;
-    self.LNMapSource = kMapSourceArcGISTerrain;
+    self.LNMapSource = kMapSourceMapboxStyledSatellite;
 
 	return self;
 }
@@ -47,17 +47,17 @@
 			  @"%@ tried to retrieve tile with zoomLevel %d, outside source's defined range %f to %f",
 			  self, tile.zoom, self.minZoom, self.maxZoom);
 
-	return [NSURL URLWithString:[NSString stringWithFormat:@"https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/%d/%d/%d.png", tile.zoom, tile.y, tile.x]];
+	return [NSURL URLWithString:[NSString stringWithFormat:@"https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v11/tiles/%d/%d/%d@2x?access_token=pk.eyJ1IjoibGVhZG5hdnN5c3RlbXMiLCJhIjoiU2hzTWxWMCJ9.gWxYcf0zK9EHZoctDkdfhg", tile.zoom, tile.x, tile.y]];
 }
 
 - (NSString *)uniqueTilecacheKey
 {
-	return @"EsriTerrain";
+	return @"MapboxStyledSatellite";
 }
 
 - (NSString *)shortName
 {
-	return @"Esri Terrain";
+	return @"Mapbox Satellite";
 }
 
 - (NSString *)longDescription

@@ -46,23 +46,9 @@
 	NSAssert4(((tile.zoom >= self.minZoom) && (tile.zoom <= self.maxZoom)),
 			  @"%@ tried to retrieve tile with zoomLevel %d, outside source's defined range %f to %f",
 			  self, tile.zoom, self.minZoom, self.maxZoom);
-  printf("https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/%d/%d/%d.png\n", tile.zoom, tile.y, tile.x);
 
 	return [NSURL URLWithString:[NSString stringWithFormat:@"https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/%d/%d/%d.png", tile.zoom, tile.y, tile.x]];
 }
-
-//- (NSArray *)URLsForTile:(RMTile)tile
-//{
-//	NSAssert4(((tile.zoom >= self.minZoom) && (tile.zoom <= self.maxZoom)),
-//			  @"%@ tried to retrieve tile with zoomLevel %d, outside source's defined range %f to %f",
-//			  self, tile.zoom, self.minZoom, self.maxZoom);
-//  printf("https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/%d/%d/%d.png\n", tile.zoom, tile.y, tile.x);
-//  printf("https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/%d/%d/%d.png\n", tile.zoom, tile.y, tile.x);
-//	return [NSArray arrayWithObjects:
-//            [NSURL URLWithString:[NSString stringWithFormat:@"https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/%d/%d/%d.png", tile.zoom, tile.y, tile.x]],
-//            [NSURL URLWithString:[NSString stringWithFormat:@"https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/%d/%d/%d.png", tile.zoom, tile.y, tile.x]],
-//            nil];
-//}
 
 - (NSString *)uniqueTilecacheKey
 {
@@ -71,7 +57,7 @@
 
 - (NSString *)shortName
 {
-	return @"ArcGIS Street";
+	return @"Esri Street";
 }
 
 - (NSString *)longDescription

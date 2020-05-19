@@ -1,5 +1,5 @@
 //
-//  RMOpenSeaMapSource.m
+//  RMOpenSeaMapSource.h
 //
 // Copyright (c) 2008-2013, Route-Me Contributors
 // All rights reserved.
@@ -25,54 +25,8 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-#import "RMArcGISTerrainSource.h"
+#import "RMAbstractWebMapSource.h"
 
-@implementation RMArcGISTerrainSource
-
-- (id)init
-{
-	if (!(self = [super init]))
-        return nil;
-
-    self.minZoom = 0;
-    self.maxZoom = 18;
-    self.LNMapSource = kMapSourceArcGISTerrain;
-
-	return self;
-}
-
-- (NSURL *)URLForTile:(RMTile)tile
-{
-	NSAssert4(((tile.zoom >= self.minZoom) && (tile.zoom <= self.maxZoom)),
-			  @"%@ tried to retrieve tile with zoomLevel %d, outside source's defined range %f to %f",
-			  self, tile.zoom, self.minZoom, self.maxZoom);
-
-	return [NSURL URLWithString:[NSString stringWithFormat:@"https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/%d/%d/%d.png", tile.zoom, tile.y, tile.x]];
-}
-
-- (NSString *)uniqueTilecacheKey
-{
-	return @"EsriTerrain";
-}
-
-- (NSString *)shortName
-{
-	return @"Esri Terrain";
-}
-
-- (NSString *)longDescription
-{
-	return @"Open Sea Map/Open Street Map, the free wiki world map, provides freely usable map data for all parts of the world, under the Creative Commons Attribution-Share Alike 2.0 license.";
-}
-
-- (NSString *)shortAttribution
-{
-	return @"© OpenStreetMap CC-BY-SA";
-}
-
-- (NSString *)longAttribution
-{
-	return @"Map data © OpenStreetMap, licensed under Creative Commons Share Alike By Attribution.";
-}
+@interface RMMapboxSatelliteSource : RMAbstractWebMapSource
 
 @end
