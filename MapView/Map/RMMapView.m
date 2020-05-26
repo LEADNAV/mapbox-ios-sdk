@@ -73,6 +73,7 @@
 #define kRMAccuracyCircleAnnotationTypeName @"RMAccuracyCircleAnnotation"
 
 #define IS_PAD_PRO_12_7 ([[UIScreen mainScreen] nativeBounds].size.height == 2732)
+#define IS_SMALL_RETINA ([[UIScreen mainScreen] nativeBounds].size.height == 568)
 
 #pragma mark --- end constants ----
 
